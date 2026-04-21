@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>·</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+  * { -webkit-tap-highlight-color: transparent; }
+  html, body { background: #0a0a0a; color: #e5e5e5; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif; }
+  .serif { font-family: ui-serif, Georgia, 'Times New Roman', serif; }
+  .gold { color: #c9a961; }
+  .gold-bg { background-color: #c9a961; }
+  .gold-border { border-color: #c9a961; }
+
+  body {
+    background-image:
+      radial-gradient(circle at 30% 20%, rgba(201, 169, 97, 0.04) 0%, transparent 40%),
+      radial-gradient(circle at 70% 80%, rgba(201, 169, 97, 0.03) 0%, transparent 50%);
+    background-attachment: fixed;
+  }
+
+  .fade-in { animation: fadeIn 0.8s ease-out; }
+  .fade-in-delay-1 { animation: fadeIn 0.8s ease-out 0.15s both; }
+  .fade-in-delay-2 { animation: fadeIn 0.8s ease-out 0.3s both; }
+  .fade-in-delay-3 { animation: fadeIn 0.8s ease-out 0.45s both; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+
+  .app-card {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+  }
+  .app-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(201, 169, 97, 0) 0%, rgba(201, 169, 97, 0.08) 100%);
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+  .app-card:hover { transform: translateY(-2px); border-color: rgba(201, 169, 97, 0.4); }
+  .app-card:hover::before { opacity: 1; }
+  .app-card:hover .arrow { transform: translateX(4px); color: #c9a961; }
+  .arrow { transition: all 0.3s; }
+
+  .clock { font-feature-settings: 'tnum'; letter-spacing: 0.05em; }
+  .ornament { color: rgba(201, 169, 97, 0.4); font-size: 14px; }
+</style>
+</head>
+<body class="min-h-screen flex flex-col">
+
+<div class="flex-1 flex flex-col items-center justify-center px-6 py-12 max-w-2xl mx-auto w-full">
+
+  <div class="fade-in text-center mb-16">
+    <div class="ornament mb-4 serif">— · —</div>
+    <div id="clock" class="clock serif text-5xl md:text-6xl text-neutral-300 font-light">--:--</div>
+    <div id="dateLabel" class="serif italic text-sm text-neutral-500 mt-3 tracking-wide">—</div>
+    <div class="mt-8 w-16 h-px gold-bg opacity-30 mx-auto"></div>
+  </div>
+
+  <div class="fade-in-delay-1 text-center mb-12">
+    <p id="greeting" class="serif italic text-neutral-400 text-base">—</p>
+  </div>
+
+  <div class="w-full space-y-3 fade-in-delay-2">
+
+    <a href="https://vutti14.github.io/journal/" class="app-card block bg-neutral-900/40 border border-neutral-800 rounded-xl p-5 hover:bg-neutral-900/70">
+      <div class="flex items-center gap-4">
+        <div class="w-10 h-10 rounded-full border gold-border flex items-center justify-center flex-shrink-0">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#c9a961" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M20.24 12.24a6 6 0 0 0-8.49-8.49L5 10.5V19h8.5z"></path>
+            <line x1="16" y1="8" x2="2" y2="22"></line>
+            <line x1="17.5" y1="15" x2="9" y2="15"></line>
+          </svg>
+        </div>
+        <div class="flex-1 min-w-0">
+          <div class="text-sm tracking-widest gold uppercase">Daily</div>
+          <div class="text-xs text-neutral-500 mt-0.5">บันทึกประจำวัน · ส่วนตัว</div>
+        </div>
+        <svg class="arrow text-neutral-600" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="5" y1="12" x2="19" y2="12"></line>
+          <polyline points="12 5 19 12 12 19"></polyline>
+        </svg>
+      </div>
+    </a>
+
+    <div class="pt-6 pb-2 flex items-center gap-3">
+      <div class="flex-1 h-px bg-neutral-800"></div>
+      <div class="text-[10px] tracking-[0.3em] text-neutral-600 uppercase">Work</div>
+      <div class="flex-1 h-px bg-neutral-800"></div>
+    </div>
+
+    <a href="https://vutti14.github.io/rabbiz-teamhub/" class="app-card block bg-neutral-900/40 border border-neutral-800 rounded-xl p-5 hover:bg-neutral-900/70">
+      <div class="flex items-center gap-4">
+        <div class="w-10 h-10 rounded-full border border-neutral-700 flex items-center justify-center flex-shrink-0">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#a3a3a3" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+            <circle cx="9" cy="7" r="4"></circle>
+            <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+            <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+          </svg>
+        </div>
+        <div class="flex-1 min-w-0">
+          <div class="text-sm tracking-widest text-neutral-200 uppercase">TeamHub</div>
+          <div class="text-xs text-neutral-500 mt-0.5">ระบบสื่อสารทีม RABBiZ</div>
+        </div>
+        <svg class="arrow text-neutral-600" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="5" y1="12" x2="19" y2="12"></line>
+          <polyline points="12 5 19 12 12 19"></polyline>
+        </svg>
+      </div>
+    </a>
+
+    <a href="https://vutti14.github.io/CIS/" class="app-card block bg-neutral-900/40 border border-neutral-800 rounded-xl p-5 hover:bg-neutral-900/70">
+      <div class="flex items-center gap-4">
+        <div class="w-10 h-10 rounded-full border border-neutral-700 flex items-center justify-center flex-shrink-0">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#a3a3a3" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+            <line x1="8" y1="21" x2="16" y2="21"></line>
+            <line x1="12" y1="17" x2="12" y2="21"></line>
+          </svg>
+        </div>
+        <div class="flex-1 min-w-0">
+          <div class="text-sm tracking-widest text-neutral-200 uppercase">CIS</div>
+          <div class="text-xs text-neutral-500 mt-0.5">ระบบภายใน</div>
+        </div>
+        <svg class="arrow text-neutral-600" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="5" y1="12" x2="19" y2="12"></line>
+          <polyline points="12 5 19 12 12 19"></polyline>
+        </svg>
+      </div>
+    </a>
+
+  </div>
+
+  <div class="fade-in-delay-3 mt-16 text-center">
+    <div class="ornament serif">— · —</div>
+  </div>
+</div>
+
+<script>
+function updateClock() {
+  const now = new Date();
+  const hh = String(now.getHours()).padStart(2, '0');
+  const mm = String(now.getMinutes()).padStart(2, '0');
+  document.getElementById('clock').textContent = `${hh}:${mm}`;
+
+  const dateStr = now.toLocaleDateString('th-TH', {
+    weekday: 'long',
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric'
+  });
+  document.getElementById('dateLabel').textContent = dateStr;
+
+  const h = now.getHours();
+  let g = '';
+  if (h >= 5 && h < 11) g = 'อรุณสวัสดิ์';
+  else if (h >= 11 && h < 14) g = 'กลางวันดี';
+  else if (h >= 14 && h < 18) g = 'บ่ายดี';
+  else if (h >= 18 && h < 22) g = 'เย็นดี';
+  else g = 'ราตรีดี';
+  document.getElementById('greeting').textContent = g;
+}
+updateClock();
+setInterval(updateClock, 30000);
+</script>
+</body>
+</html>
