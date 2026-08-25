@@ -1,0 +1,542 @@
+[
+ {
+  "item_id": "I001",
+  "category": "คอนกรีต",
+  "item_name": "คอนกรีตผสมเสร็จ 280 ksc cube",
+  "unit": "คิว",
+  "ref_price_min": 1916.82,
+  "ref_price_max": 2282.31,
+  "vendor_count": 4,
+  "status": "ใช้งาน"
+ },
+ {
+  "item_id": "I002",
+  "category": "คอนกรีต",
+  "item_name": "คอนกรีตผสมเสร็จ 240 ksc",
+  "unit": "คิว",
+  "ref_price_min": 1888.6,
+  "ref_price_max": 2098.0,
+  "vendor_count": 2,
+  "status": "ใช้งาน"
+ },
+ {
+  "item_id": "I003",
+  "category": "คอนกรีต",
+  "item_name": "คอนกรีตผสมเสร็จ 210 ksc cube",
+  "unit": "คิว",
+  "ref_price_min": 2214.69,
+  "ref_price_max": 2214.69,
+  "vendor_count": 1,
+  "status": "ใช้งาน"
+ },
+ {
+  "item_id": "I004",
+  "category": "เหล็กรูปพรรณ",
+  "item_name": "เหล็กท่อเหลี่ยม 2x2 นิ้ว 1.5mm",
+  "unit": "เส้น",
+  "ref_price_min": 310.0,
+  "ref_price_max": 310.0,
+  "vendor_count": 1,
+  "status": "ใช้งาน"
+ },
+ {
+  "item_id": "I005",
+  "category": "เหล็กรูปพรรณ",
+  "item_name": "เหล็กท่อเหลี่ยม 2x2 นิ้ว 1.8mm",
+  "unit": "เส้น",
+  "ref_price_min": 335.0,
+  "ref_price_max": 390.0,
+  "vendor_count": 2,
+  "status": "ใช้งาน"
+ },
+ {
+  "item_id": "I006",
+  "category": "เหล็กรูปพรรณ",
+  "item_name": "เหล็กท่อเหลี่ยม 2x2 นิ้ว 2.3mm มอก.",
+  "unit": "เส้น",
+  "ref_price_min": 475.0,
+  "ref_price_max": 475.0,
+  "vendor_count": 1,
+  "status": "ใช้งาน"
+ },
+ {
+  "item_id": "I007",
+  "category": "เหล็กรูปพรรณ",
+  "item_name": "เหล็กแป๊ปแบน 4x2 นิ้ว 2.3mm",
+  "unit": "เส้น",
+  "ref_price_min": 650.0,
+  "ref_price_max": 650.0,
+  "vendor_count": 1,
+  "status": "ใช้งาน"
+ },
+ {
+  "item_id": "I008",
+  "category": "เหล็กรูปพรรณ",
+  "item_name": "เหล็กแป๊ปแบน 4x2 นิ้ว 2.3mm มอก.",
+  "unit": "เส้น",
+  "ref_price_min": 745.0,
+  "ref_price_max": 745.0,
+  "vendor_count": 1,
+  "status": "ใช้งาน"
+ },
+ {
+  "item_id": "I009",
+  "category": "เหล็กรูปพรรณ",
+  "item_name": "เหล็กแป๊ปแบน 4x2 นิ้ว 3.2mm มอก.",
+  "unit": "เส้น",
+  "ref_price_min": 1025.0,
+  "ref_price_max": 1025.0,
+  "vendor_count": 1,
+  "status": "ใช้งาน"
+ },
+ {
+  "item_id": "I010",
+  "category": "เหล็กรูปพรรณ",
+  "item_name": "เหล็กแป๊ปแบน 6x2 นิ้ว 2.3mm มอก.",
+  "unit": "เส้น",
+  "ref_price_min": 966.0,
+  "ref_price_max": 1035.0,
+  "vendor_count": 2,
+  "status": "ใช้งาน"
+ },
+ {
+  "item_id": "I011",
+  "category": "เหล็กรูปพรรณ",
+  "item_name": "เหล็กแป๊ปแบน 6x2 นิ้ว 3.2mm",
+  "unit": "เส้น",
+  "ref_price_min": 1280.0,
+  "ref_price_max": 1280.0,
+  "vendor_count": 1,
+  "status": "ใช้งาน"
+ },
+ {
+  "item_id": "I012",
+  "category": "เหล็กรูปพรรณ",
+  "item_name": "เหล็กแป๊ปแบน 6x2 นิ้ว 3.2mm มอก.",
+  "unit": "เส้น",
+  "ref_price_min": 1732.0,
+  "ref_price_max": 1732.0,
+  "vendor_count": 1,
+  "status": "ใช้งาน"
+ },
+ {
+  "item_id": "I013",
+  "category": "เหล็กรูปพรรณ",
+  "item_name": "WF 197x150x6x9 ยาว 6m",
+  "unit": "เส้น",
+  "ref_price_min": 4575.0,
+  "ref_price_max": 4895.0,
+  "vendor_count": 1,
+  "status": "ใช้งาน"
+ },
+ {
+  "item_id": "I014",
+  "category": "เหล็กเส้น",
+  "item_name": "เหล็กเส้นกลม 9mm ยาว 6m (4.99kg)",
+  "unit": "เส้น",
+  "ref_price_min": 94.0,
+  "ref_price_max": 105.0,
+  "vendor_count": 1,
+  "status": "ใช้งาน"
+ },
+ {
+  "item_id": "I015",
+  "category": "เหล็กเส้น",
+  "item_name": "เหล็กเส้นกลม 9mm ยาว 6m",
+  "unit": "เส้น",
+  "ref_price_min": 118.0,
+  "ref_price_max": 130.0,
+  "vendor_count": 1,
+  "status": "ใช้งาน"
+ },
+ {
+  "item_id": "I016",
+  "category": "เหล็กเส้น",
+  "item_name": "เหล็กเส้นกลม 9mm ยาว 10m",
+  "unit": "เส้น",
+  "ref_price_min": 96.0,
+  "ref_price_max": 96.0,
+  "vendor_count": 1,
+  "status": "ใช้งาน"
+ },
+ {
+  "item_id": "I017",
+  "category": "เหล็กเส้น",
+  "item_name": "เหล็กข้ออ้อย 12mm ยาว 6m",
+  "unit": "เส้น",
+  "ref_price_min": 182.0,
+  "ref_price_max": 222.0,
+  "vendor_count": 2,
+  "status": "ใช้งาน"
+ },
+ {
+  "item_id": "I018",
+  "category": "เหล็กเส้น",
+  "item_name": "เหล็กข้ออ้อย 16mm ยาว 6m",
+  "unit": "เส้น",
+  "ref_price_min": 290.0,
+  "ref_price_max": 290.0,
+  "vendor_count": 1,
+  "status": "ใช้งาน"
+ },
+ {
+  "item_id": "I019",
+  "category": "เหล็กเส้น",
+  "item_name": "เหล็กข้ออ้อย 16mm ยาว 10m",
+  "unit": "เส้น",
+  "ref_price_min": 318.0,
+  "ref_price_max": 318.0,
+  "vendor_count": 1,
+  "status": "ใช้งาน"
+ },
+ {
+  "item_id": "I020",
+  "category": "หลังคา",
+  "item_name": "เมทัลชีท หลังคา เทาเข้ม DG",
+  "unit": "เมตร",
+  "ref_price_min": 55.0,
+  "ref_price_max": 74.0,
+  "vendor_count": 1,
+  "status": "ใช้งาน"
+ },
+ {
+  "item_id": "I021",
+  "category": "หลังคา",
+  "item_name": "เมทัลชีท ลูกฟูก 260 (0.35mm) ลายไม้",
+  "unit": "เมตร",
+  "ref_price_min": 71.0,
+  "ref_price_max": 71.0,
+  "vendor_count": 1,
+  "status": "ใช้งาน"
+ },
+ {
+  "item_id": "I022",
+  "category": "หลังคา",
+  "item_name": "เมทัลชีท หลังคาลายไม้อ่อน (0.35mm)",
+  "unit": "เมตร",
+  "ref_price_min": 105.0,
+  "ref_price_max": 105.0,
+  "vendor_count": 1,
+  "status": "ใช้งาน"
+ },
+ {
+  "item_id": "I023",
+  "category": "หลังคา",
+  "item_name": "เมทัลชีท แผ่นตรง อลูซิงค์ 0.35mm",
+  "unit": "เมตร",
+  "ref_price_min": 82.67,
+  "ref_price_max": 82.67,
+  "vendor_count": 1,
+  "status": "ใช้งาน"
+ },
+ {
+  "item_id": "I024",
+  "category": "หลังคา",
+  "item_name": "เมทัลชีท ลอนใหญ่ 0.35mm",
+  "unit": "เมตร",
+  "ref_price_min": 57.0,
+  "ref_price_max": 57.0,
+  "vendor_count": 1,
+  "status": "ใช้งาน"
+ },
+ {
+  "item_id": "I025",
+  "category": "ผนัง-ฝ้า",
+  "item_name": "แผ่นยิปซั่ม 9mm ขอบลาด ตราช้าง",
+  "unit": "แผ่น",
+  "ref_price_min": 116.62,
+  "ref_price_max": 116.62,
+  "vendor_count": 1,
+  "status": "ใช้งาน"
+ },
+ {
+  "item_id": "I026",
+  "category": "ผนัง-ฝ้า",
+  "item_name": "แผ่นยิปซั่ม 9mm",
+  "unit": "แผ่น",
+  "ref_price_min": 160.0,
+  "ref_price_max": 160.0,
+  "vendor_count": 1,
+  "status": "ใช้งาน"
+ },
+ {
+  "item_id": "I027",
+  "category": "ผนัง-ฝ้า",
+  "item_name": "แผ่นยิปซั่ม 12mm ตราช้าง",
+  "unit": "แผ่น",
+  "ref_price_min": 145.93,
+  "ref_price_max": 145.93,
+  "vendor_count": 1,
+  "status": "ใช้งาน"
+ },
+ {
+  "item_id": "I028",
+  "category": "ผนัง-ฝ้า",
+  "item_name": "โครงคร่าว C-line",
+  "unit": "เส้น",
+  "ref_price_min": 32.0,
+  "ref_price_max": 36.75,
+  "vendor_count": 2,
+  "status": "ใช้งาน"
+ },
+ {
+  "item_id": "I029",
+  "category": "ผนัง-ฝ้า",
+  "item_name": "โครงคร่าวผนัง ตัวซี 3m ตราช้าง",
+  "unit": "เส้น",
+  "ref_price_min": 127.07,
+  "ref_price_max": 127.07,
+  "vendor_count": 1,
+  "status": "ใช้งาน"
+ },
+ {
+  "item_id": "I030",
+  "category": "ผนัง-ฝ้า",
+  "item_name": "โครงคร่าวผนัง ตัวยู 3m ตราช้าง",
+  "unit": "เส้น",
+  "ref_price_min": 115.46,
+  "ref_price_max": 115.46,
+  "vendor_count": 1,
+  "status": "ใช้งาน"
+ },
+ {
+  "item_id": "I031",
+  "category": "สี",
+  "item_name": "สีน้ำกึ่งเงา ภายนอก 9L",
+  "unit": "ถัง",
+  "ref_price_min": 1570.0,
+  "ref_price_max": 1570.0,
+  "vendor_count": 1,
+  "status": "ใช้งาน"
+ },
+ {
+  "item_id": "I032",
+  "category": "สี",
+  "item_name": "สีน้ำกึ่งเงา ภายนอก 2.5GL",
+  "unit": "ถัง",
+  "ref_price_min": 1190.0,
+  "ref_price_max": 1295.0,
+  "vendor_count": 2,
+  "status": "ใช้งาน"
+ },
+ {
+  "item_id": "I033",
+  "category": "สี",
+  "item_name": "สีกันสนิม alkyd primer (ขนาดตามบิล 6m)",
+  "unit": "ถัง",
+  "ref_price_min": 4200.0,
+  "ref_price_max": 4200.0,
+  "vendor_count": 1,
+  "status": "ใช้งาน"
+ },
+ {
+  "item_id": "I034",
+  "category": "สี",
+  "item_name": "สีกันสนิม denzo เทา (ถัง)",
+  "unit": "ถัง",
+  "ref_price_min": 1775.0,
+  "ref_price_max": 1775.0,
+  "vendor_count": 1,
+  "status": "ใช้งาน"
+ },
+ {
+  "item_id": "I035",
+  "category": "สี",
+  "item_name": "สีรองพื้นโลหะ kobe GR 5GL",
+  "unit": "ถัง",
+  "ref_price_min": 1625.0,
+  "ref_price_max": 1625.0,
+  "vendor_count": 1,
+  "status": "ใช้งาน"
+ },
+ {
+  "item_id": "I036",
+  "category": "สี",
+  "item_name": "สีน้ำภายใน 9L",
+  "unit": "ถัง",
+  "ref_price_min": 745.0,
+  "ref_price_max": 745.0,
+  "vendor_count": 1,
+  "status": "ใช้งาน"
+ },
+ {
+  "item_id": "I037",
+  "category": "เข็ม-ฐานราก",
+  "item_name": "เสาเข็ม I 0.18x0.18x21m",
+  "unit": "ต้น",
+  "ref_price_min": 2730.0,
+  "ref_price_max": 2730.0,
+  "vendor_count": 1,
+  "status": "ใช้งาน"
+ },
+ {
+  "item_id": "I038",
+  "category": "เข็ม-ฐานราก",
+  "item_name": "เสาเข็ม I 0.22x0.22x21m",
+  "unit": "ต้น",
+  "ref_price_min": 3780.0,
+  "ref_price_max": 3780.0,
+  "vendor_count": 1,
+  "status": "ใช้งาน"
+ },
+ {
+  "item_id": "I039",
+  "category": "เข็ม-ฐานราก",
+  "item_name": "เสาเข็ม I 0.26x0.26x21m",
+  "unit": "ต้น",
+  "ref_price_min": 4830.0,
+  "ref_price_max": 4830.0,
+  "vendor_count": 1,
+  "status": "ใช้งาน"
+ },
+ {
+  "item_id": "I040",
+  "category": "เข็ม-ฐานราก",
+  "item_name": "ค่าตอกเข็ม",
+  "unit": "ต้น",
+  "ref_price_min": 1240.0,
+  "ref_price_max": 1666.67,
+  "vendor_count": 2,
+  "status": "ใช้งาน"
+ },
+ {
+  "item_id": "I041",
+  "category": "เข็ม-ฐานราก",
+  "item_name": "เข็มไมโครไพล์ I18 พร้อมตอก",
+  "unit": "ต้น",
+  "ref_price_min": 5500.0,
+  "ref_price_max": 5500.0,
+  "vendor_count": 1,
+  "status": "ใช้งาน"
+ },
+ {
+  "item_id": "I042",
+  "category": "เครื่องจักร",
+  "item_name": "รถแบคโฮ PC-30 (หัวตัก)",
+  "unit": "วัน",
+  "ref_price_min": 3500.0,
+  "ref_price_max": 4000.0,
+  "vendor_count": 3,
+  "status": "ใช้งาน"
+ },
+ {
+  "item_id": "I043",
+  "category": "เครื่องจักร",
+  "item_name": "รถแบคโฮ PC-55 (หัวตัก)",
+  "unit": "วัน",
+  "ref_price_min": 5500.0,
+  "ref_price_max": 5500.0,
+  "vendor_count": 1,
+  "status": "ใช้งาน"
+ },
+ {
+  "item_id": "I044",
+  "category": "เครื่องจักร",
+  "item_name": "รถแบคโฮ PC-120",
+  "unit": "วัน",
+  "ref_price_min": 6500.0,
+  "ref_price_max": 6500.0,
+  "vendor_count": 1,
+  "status": "ใช้งาน"
+ },
+ {
+  "item_id": "I045",
+  "category": "เครื่องจักร",
+  "item_name": "รถ 6 ล้อ",
+  "unit": "วัน",
+  "ref_price_min": 3500.0,
+  "ref_price_max": 3500.0,
+  "vendor_count": 1,
+  "status": "ใช้งาน"
+ },
+ {
+  "item_id": "I046",
+  "category": "เครื่องจักร",
+  "item_name": "รถ 6 ล้อ ดั๊ม",
+  "unit": "วัน",
+  "ref_price_min": 3000.0,
+  "ref_price_max": 3000.0,
+  "vendor_count": 1,
+  "status": "ใช้งาน"
+ },
+ {
+  "item_id": "I047",
+  "category": "เครื่องจักร",
+  "item_name": "รถเครน 25-30 ตัน",
+  "unit": "วัน",
+  "ref_price_min": 7500.0,
+  "ref_price_max": 8000.0,
+  "vendor_count": 2,
+  "status": "ใช้งาน"
+ },
+ {
+  "item_id": "I048",
+  "category": "ค่าแรงต่อหน่วย",
+  "item_name": "ค่าแรงเทพื้นคอนกรีตอาคาร",
+  "unit": "ตร.ม.",
+  "ref_price_min": 100.0,
+  "ref_price_max": 100.0,
+  "vendor_count": 2,
+  "status": "ใช้งาน"
+ },
+ {
+  "item_id": "I049",
+  "category": "ค่าแรงต่อหน่วย",
+  "item_name": "ค่าแรงงานเทถนน",
+  "unit": "ตร.ม.",
+  "ref_price_min": 100.0,
+  "ref_price_max": 300.0,
+  "vendor_count": 3,
+  "status": "ใช้งาน"
+ },
+ {
+  "item_id": "I050",
+  "category": "ค่าแรงต่อหน่วย",
+  "item_name": "ค่าแรงวางท่อระบายน้ำ",
+  "unit": "เมตร",
+  "ref_price_min": 100.0,
+  "ref_price_max": 100.0,
+  "vendor_count": 1,
+  "status": "ใช้งาน"
+ },
+ {
+  "item_id": "I051",
+  "category": "ค่าแรงต่อหน่วย",
+  "item_name": "ค่าแรงทำฝ้า",
+  "unit": "ตร.ม.",
+  "ref_price_min": 100.0,
+  "ref_price_max": 100.0,
+  "vendor_count": 1,
+  "status": "ใช้งาน"
+ },
+ {
+  "item_id": "I052",
+  "category": "ค่าแรงต่อหน่วย",
+  "item_name": "ค่าแรงติดตั้งแผ่น MCM",
+  "unit": "ตร.ม.",
+  "ref_price_min": 350.0,
+  "ref_price_max": 350.0,
+  "vendor_count": 1,
+  "status": "ใช้งาน"
+ },
+ {
+  "item_id": "I053",
+  "category": "ค่าแรงต่อหน่วย",
+  "item_name": "ค่าแรงขัดมันพื้น",
+  "unit": "ตร.ม.",
+  "ref_price_min": 130.0,
+  "ref_price_max": 130.0,
+  "vendor_count": 1,
+  "status": "ใช้งาน"
+ },
+ {
+  "item_id": "I054",
+  "category": "ค่าแรงต่อหน่วย",
+  "item_name": "ค่าแรงทำรั้วเหล็กกล่อง",
+  "unit": "เมตร",
+  "ref_price_min": 172.5,
+  "ref_price_max": 172.5,
+  "vendor_count": 1,
+  "status": "ใช้งาน"
+ }
+]

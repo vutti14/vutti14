@@ -1,0 +1,112 @@
+[
+ {
+  "design_code": "D-RCH",
+  "design_name": "RICHY (R6 / R7)",
+  "floors": 1,
+  "std_area_sqm": 300.0,
+  "structure": "โครงเหล็ก ผนังเมทัลชีท ไม่มีเสาเข็ม (ดินแข็ง)",
+  "ref_cost_per_sqm": 3320.38,
+  "status": "ยืนยันแล้ว",
+  "note": "คู่แฝดที่ต้นทุนต่างกัน 4.2% เชื่อถือได้ที่สุดในฐานข้อมูล"
+ },
+ {
+  "design_code": "D-TOY",
+  "design_name": "TOY คุณต๋อย(ใหม่)",
+  "floors": 1,
+  "std_area_sqm": 390.0,
+  "structure": "อาคารชั้นเดียว ตกแต่งเสร็จ มีงานก่อผนัง งานระบบครบ",
+  "ref_cost_per_sqm": 3854.78,
+  "status": "ยืนยันแล้ว",
+  "note": "ระดับตกแต่งสูงกว่า D-RCH ห้ามเอามาเทียบกันตรง ๆ"
+ },
+ {
+  "design_code": "D-GD1",
+  "design_name": "GD1",
+  "floors": null,
+  "std_area_sqm": null,
+  "structure": "แบบเดียวกัน คนละโครงการ",
+  "ref_cost_per_sqm": null,
+  "status": "รอยืนยัน",
+  "note": "คุณบอกว่าหน้าตาอาคารเดียวกันแต่คนละที่ — ถ้ายืนยันแล้วจะเทียบต้นทุนกันได้ทันที"
+ },
+ {
+  "design_code": "D-GD2",
+  "design_name": "GD2",
+  "floors": null,
+  "std_area_sqm": null,
+  "structure": "",
+  "ref_cost_per_sqm": null,
+  "status": "รอยืนยัน",
+  "note": "รอตรวจว่าเป็นแบบเดียวกับ GD1 หรือคนละแบบ"
+ },
+ {
+  "design_code": "D-SATM",
+  "design_name": "SATOSHI-M (ซาโตชี เอสเตท)",
+  "floors": 2,
+  "std_area_sqm": 240.0,
+  "structure": "อาคาร 2 ชั้น 2 ห้องน้ำ",
+  "ref_cost_per_sqm": 4469.38,
+  "status": "ยืนยันแล้ว",
+  "note": "ข้อมูลครบ 100% เริ่มเบิก 21 พ.ค. หลังระบบเริ่มบันทึก · ยังขาดงานกระจกประมาณ 125,672"
+ },
+ {
+  "design_code": "D-SATL",
+  "design_name": "SATOSHI-L",
+  "floors": 2,
+  "std_area_sqm": 600.0,
+  "structure": "อาคาร 2 ชั้น · มี BOQ ตั้งไว้ก่อนสร้าง",
+  "ref_cost_per_sqm": 4713.47,
+  "status": "ยืนยันแล้ว",
+  "note": "BOQ 2,828,084 · จ่ายจริงแล้ว 36.1% · เหลืออีก 1,807,072"
+ },
+ {
+  "design_code": "D-GOLDY",
+  "design_name": "GOLDY",
+  "floors": 2,
+  "std_area_sqm": 189.0,
+  "structure": "อาคาร 2 ชั้น",
+  "ref_cost_per_sqm": 6314.35,
+  "status": "ยืนยันแล้ว",
+  "note": "BOQ แบบมาตรฐานที่ใช้ซ้ำหลายอาคาร"
+ },
+ {
+  "design_code": "D-AIA",
+  "design_name": "AIA",
+  "floors": null,
+  "std_area_sqm": null,
+  "structure": "อีกแบบหนึ่ง — งานเด่นคือไฟฟ้าและก่อผนัง",
+  "ref_cost_per_sqm": null,
+  "status": "ยืนยันแล้ว",
+  "note": "จ่ายจริง 1,076,018 · เริ่มเบิก 1 มี.ค. ซึ่งเป็นวันแรกที่ระบบมีข้อมูล จึงอาจมีส่วนที่เกิดก่อนหน้า"
+ },
+ {
+  "design_code": "D-BOX",
+  "design_name": "BOX",
+  "floors": null,
+  "std_area_sqm": null,
+  "structure": "แบบใหม่ · โครงเหล็ก หลังคาเด่น",
+  "ref_cost_per_sqm": null,
+  "status": "ยืนยันแล้ว",
+  "note": "จ่ายจริง 765,502 · เสร็จราว 60% → ต้นทุนเต็มน่าจะราว 1,275,836"
+ },
+ {
+  "design_code": "D-PB600SQL",
+  "design_name": "PB600SQL",
+  "floors": null,
+  "std_area_sqm": null,
+  "structure": "งานต่อเติม ไม่ใช่อาคารเต็มหลัง",
+  "ref_cost_per_sqm": null,
+  "status": "ยืนยันแล้ว",
+  "note": "จ่ายจริง 330,684 · เป็นส่วนเติม ห้ามเอาไปเทียบ บาท/ตร.ม. กับอาคารเต็มหลัง"
+ },
+ {
+  "design_code": "D-WH1000",
+  "design_name": "WH1000",
+  "floors": null,
+  "std_area_sqm": null,
+  "structure": "แบบใหม่",
+  "ref_cost_per_sqm": null,
+  "status": "ยืนยันแล้ว",
+  "note": "จ่ายจริง 200,354"
+ }
+]

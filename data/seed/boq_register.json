@@ -1,0 +1,52 @@
+[
+ {
+  "boq_id": "BOQ-001",
+  "title": "Goldy (แบบมาตรฐาน 189 ตร.ม.)",
+  "version": "v1",
+  "received_date": "12/10/2025",
+  "source_file": "BOQ_Goldy_บางขนุน.pdf",
+  "boq_value": 1233553.15,
+  "author": "—",
+  "status": "รับแล้ว"
+ },
+ {
+  "boq_id": "BOQ-002",
+  "title": "SL1",
+  "version": "v1",
+  "received_date": "30/9/2025",
+  "source_file": "BOQ_Satoshi_L_สร้างจริง.pdf",
+  "boq_value": 2828184.07,
+  "author": "—",
+  "status": "รับแล้ว (as-built)"
+ },
+ {
+  "boq_id": "BOQ-003",
+  "title": "คุณต๋อย(ใหม่) · D-TOY",
+  "version": "v1 (as-built)",
+  "received_date": "25/8/2026",
+  "source_file": "BOQ_TOY_B001_คุณต๋อย.xlsx",
+  "boq_value": 1503364.65,
+  "author": "AI จากข้อมูลจ่ายจริง",
+  "status": "สร้างจากต้นทุนจริง"
+ },
+ {
+  "boq_id": "BOQ-004",
+  "title": "R6 RICHY · D-RCH",
+  "version": "v1 (as-built)",
+  "received_date": "25/8/2026",
+  "source_file": "BOQ_RICHY_R6_ไทยรามัญ.xlsx",
+  "boq_value": 1016444.35,
+  "author": "AI จากข้อมูลจ่ายจริง",
+  "status": "สร้างจากต้นทุนจริง · มีคู่แฝด R7 ตรวจสอบข้าม"
+ },
+ {
+  "boq_id": "BOQ-005",
+  "title": "V5 ซาโตชี เอสเตท · D-SATM",
+  "version": "v1 (as-built)",
+  "received_date": "25/8/2026",
+  "source_file": "BOQ_SATOSHI_M_V5_และเทียบ_Satoshi_L.xlsx",
+  "boq_value": 1072650.69,
+  "author": "AI จากข้อมูลจ่ายจริง",
+  "status": "ยังไม่จบ · ขาดงานกระจก ประมาณ 125,672"
+ }
+]

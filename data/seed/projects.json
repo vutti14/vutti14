@@ -1,0 +1,130 @@
+[
+ {
+  "project_id": "BMB",
+  "project_name": "บ้านม้าบิน",
+  "nature": "",
+  "is_real_project": 1,
+  "note": "",
+  "status": "ใช้งาน"
+ },
+ {
+  "project_id": "BNN",
+  "project_name": "บางนา-ศรีนครินทร์",
+  "nature": "",
+  "is_real_project": 1,
+  "note": "",
+  "status": "ใช้งาน"
+ },
+ {
+  "project_id": "BPI",
+  "project_name": "รังสิต-บางปะอิน",
+  "nature": "",
+  "is_real_project": 1,
+  "note": "",
+  "status": "ใช้งาน"
+ },
+ {
+  "project_id": "BRM",
+  "project_name": "บรมราชชนนี",
+  "nature": "",
+  "is_real_project": 1,
+  "note": "",
+  "status": "ใช้งาน"
+ },
+ {
+  "project_id": "MGB",
+  "project_name": "เมก้า-บางนา",
+  "nature": "",
+  "is_real_project": 1,
+  "note": "",
+  "status": "ใช้งาน"
+ },
+ {
+  "project_id": "NA",
+  "project_name": "ไม่ระบุ",
+  "nature": "",
+  "is_real_project": 0,
+  "note": "",
+  "status": "ใช้งาน"
+ },
+ {
+  "project_id": "NTP",
+  "project_name": "บ้านคุณณัฐ",
+  "nature": "",
+  "is_real_project": 1,
+  "note": "",
+  "status": "ใช้งาน"
+ },
+ {
+  "project_id": "OFF",
+  "project_name": "ค่าใช้จ่ายออฟฟิศ",
+  "nature": "ไม่ใช่โครงการ",
+  "is_real_project": 0,
+  "note": "ค่าใช้จ่ายส่วนกลางของออฟฟิศ ไม่ควรนำไปคิดเป็นต้นทุนอาคาร",
+  "status": "ใช้งาน"
+ },
+ {
+  "project_id": "ONN",
+  "project_name": "อ่อนนุช-ลาดกระบัง",
+  "nature": "",
+  "is_real_project": 1,
+  "note": "",
+  "status": "ใช้งาน"
+ },
+ {
+  "project_id": "PRB",
+  "project_name": "ปลายบาง-กาญจนาภิเษก",
+  "nature": "",
+  "is_real_project": 1,
+  "note": "",
+  "status": "ใช้งาน"
+ },
+ {
+  "project_id": "RAC",
+  "project_name": "ราชพฤกษ์-บางขนุน",
+  "nature": "",
+  "is_real_project": 1,
+  "note": "",
+  "status": "ใช้งาน"
+ },
+ {
+  "project_id": "RBX",
+  "project_name": "แรปบิทบ็อก",
+  "nature": "",
+  "is_real_project": 1,
+  "note": "",
+  "status": "ใช้งาน"
+ },
+ {
+  "project_id": "RMT",
+  "project_name": "ไทยรามัญ-รามอินทรา",
+  "nature": "",
+  "is_real_project": 1,
+  "note": "",
+  "status": "ใช้งาน"
+ },
+ {
+  "project_id": "RSP",
+  "project_name": "ราชพฤกษ์-บ้านลุงสมพงษ์",
+  "nature": "",
+  "is_real_project": 1,
+  "note": "",
+  "status": "ใช้งาน"
+ },
+ {
+  "project_id": "T22",
+  "project_name": "เทพกุญชร22",
+  "nature": "",
+  "is_real_project": 1,
+  "note": "",
+  "status": "ใช้งาน"
+ },
+ {
+  "project_id": "TLT",
+  "project_name": "ตลาดไท-ไอยรา",
+  "nature": "",
+  "is_real_project": 1,
+  "note": "",
+  "status": "ใช้งาน"
+ }
+]
