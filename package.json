@@ -10,7 +10,8 @@
     "setup": "node server/setup.js",
     "reset": "node server/setup.js --reset",
     "seed:xlsx": "python3 tools/xlsx_to_seed.py",
-    "test": "node --test tests/*.test.js"
+    "test": "node --test tests/*.test.js",
+    "test:ui": "node tests/ui-smoke.mjs"
   },
   "dependencies": {
     "bcryptjs": "^3.0.2",
