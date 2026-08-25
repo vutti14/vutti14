@@ -35,6 +35,37 @@ export async function render({ params }) {
   const linesBox = el('div');
   const attachBox = el('div', { class: 'row wrap tiny muted' });
 
+  /**
+   * แถบรหัสอ้างอิง 10 หลัก — ประกอบตัวเองขณะเลือก ไม่ให้คนพิมพ์ (สเปก §6.3)
+   * ทีมงานยังเห็นรหัสเดิมที่คุ้นเคย แต่พิมพ์ผิดแบบ WAl แทน WAL ไม่เกิดขึ้นอีก
+   */
+  const codeBox = el('div', { class: 'code' });
+  const codeStrip = el('div', { class: 'strip' },
+    el('div', { class: 'lbl', text: 'รหัสอ้างอิง — ระบบประกอบให้เอง' }),
+    codeBox,
+    el('div', { class: 'seg' },
+      el('i', { text: 'ผู้เบิก' }), el('i', { text: 'โครงการ' }),
+      el('i', { text: 'อาคาร' }), el('i', { text: 'หมวดงาน' })));
+
+  const pad = (v, n) => {
+    const clean = String(v || '').toUpperCase().replace(/[^A-Z0-9]/g, '').slice(0, n);
+    return clean.padEnd(n, '·');
+  };
+
+  function paintCode() {
+    const bname = state.buildings.find((b) => b.building_id === form.building_id)?.building_name;
+    const parts = [
+      pad(state.user.user_id, 1), pad(form.project_id, 3),
+      pad(bname, 3), pad(form.lines[0]?.cost_code, 3),
+    ];
+    clear(codeBox);
+    parts.forEach((part, i) => {
+      for (const ch of part)
+        codeBox.append(el('span', { class: ch === '·' ? 'off' : '', text: ch }));
+      if (i < 3) codeBox.append(el('span', { class: 'off', text: '·' }));
+    });
+  }
+
   function newLine() {
     return { cost_code: '', cost_type: '', item_id: null, description: '', qty: 1, unit: '', unit_price: 0, line_amount: 0 };
   }
@@ -46,7 +77,7 @@ export async function render({ params }) {
     {
       value: form.project_id,
       placeholder: 'เลือกโครงการ',
-      onchange: (e) => { form.project_id = e.target.value; form.building_id = ''; fillBuildings(); },
+      onchange: (e) => { form.project_id = e.target.value; form.building_id = ''; fillBuildings(); paintCode(); },
     });
 
   function fillBuildings() {
@@ -59,7 +90,7 @@ export async function render({ params }) {
       buildingSelect.append(opt);
     }
   }
-  buildingSelect.addEventListener('change', (e) => { form.building_id = e.target.value; });
+  buildingSelect.addEventListener('change', (e) => { form.building_id = e.target.value; paintCode(); });
   fillBuildings();
 
   const vendorSelect = select(
@@ -67,7 +98,22 @@ export async function render({ params }) {
       value: v.vendor_id,
       label: `${v.vendor_name}${v.entity_type === 'บุคคลธรรมดา' ? ' · บุคคลธรรมดา' : ''}${v.doc_status === 'รอตรวจเอกสาร' ? ' · รอตรวจเอกสาร' : ''}`,
     })),
-    { value: form.vendor_id, placeholder: 'เลือกผู้ขาย', onchange: (e) => { form.vendor_id = e.target.value; recalc(); } });
+    {
+      value: form.vendor_id, placeholder: 'เลือกผู้ขาย',
+      onchange: (e) => { form.vendor_id = e.target.value; paintVendorNote(); recalc(); },
+    });
+
+  const vendorNote = el('div');
+  function paintVendorNote() {
+    const v = state.vendors.find((x) => x.vendor_id === form.vendor_id);
+    clear(vendorNote);
+    if (v?.is_own_staff)
+      vendorNote.append(el('div', { class: 'flag' }, el('b', { text: 'W10 ' }),
+        'ผู้รับเงินรายนี้เป็นทีมงานของเราเอง — ตรวจว่าควรลงเป็นค่าแรงหรือเงินทดรอง'));
+    else if (v && v.doc_status === 'รอตรวจเอกสาร')
+      vendorNote.append(el('div', { class: 'flag' }, el('b', { text: 'W1 ' }),
+        'ผู้ขายรายนี้ยังไม่ผ่านการตรวจเอกสาร — จ่ายได้ถ้า COO อนุมัติ แต่จะติดธงเสมอ'));
+  }
 
   const newVendorBtn = el('button', { class: 'btn sm', type: 'button', onclick: openNewVendor }, '+ สร้างผู้ขายใหม่');
 
@@ -112,6 +158,7 @@ export async function render({ params }) {
           line.cost_code = e.target.value;
           const def = state.costCodes.find((c) => c.cost_code === line.cost_code)?.default_cost_type;
           if (def && !line.cost_type) { line.cost_type = def; paintTypes(); }
+          paintCode();
         },
       });
 
@@ -221,7 +268,7 @@ export async function render({ params }) {
   }
 
   const row = (label, value, strong = false) =>
-    el('div', { class: 'spread', style: strong ? 'font-weight:700;font-size:1.05rem' : 'font-size:.85rem' },
+    el('div', { class: 'spread', style: strong ? 'font-weight:700;font-size:1.1rem' : 'font-size:.84rem' },
       el('span', { class: strong ? '' : 'muted', text: label }),
       el('span', { class: 'mono', text: value + ' บาท' }));
 
@@ -330,11 +377,12 @@ export async function render({ params }) {
 
   root.append(
     el('h1', { text: editId ? `แก้ไข ${editId}` : 'สร้างใบเบิก' }),
+    codeStrip,
     el('div', { class: 'card' },
       field('วันที่ขอ', dateInput),
       field('โครงการ', projectSelect),
       field('อาคาร', buildingSelect),
-      field('ผู้ขาย', el('div', {}, vendorSelect, el('div', { class: 'mt' }, newVendorBtn))),
+      field('ผู้ขาย', el('div', {}, vendorSelect, vendorNote, el('div', { class: 'mt' }, newVendorBtn))),
       vatRadios, vatModeWrap,
       el('label', { class: 'row', style: 'gap:.5rem;align-items:center' },
         pettyToggle, el('span', { class: 'small', text: 'จ่ายจากเงินสดย่อย (ต่อรายการไม่เกิน 2,000)' }))),
@@ -358,5 +406,7 @@ export async function render({ params }) {
       attachBox.append(el('span', { class: 'pill blue', text: a.orig_name }));
   }
   paintLines();
+  paintVendorNote();
+  paintCode();
   return root;
 }

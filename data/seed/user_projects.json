@@ -1,0 +1,474 @@
+[
+ {
+  "user_id": "A",
+  "project_id": "RMT"
+ },
+ {
+  "user_id": "A",
+  "project_id": "RAC"
+ },
+ {
+  "user_id": "A",
+  "project_id": "BRM"
+ },
+ {
+  "user_id": "A",
+  "project_id": "ONN"
+ },
+ {
+  "user_id": "A",
+  "project_id": "RSP"
+ },
+ {
+  "user_id": "A",
+  "project_id": "NTP"
+ },
+ {
+  "user_id": "A",
+  "project_id": "PRB"
+ },
+ {
+  "user_id": "A",
+  "project_id": "OFF"
+ },
+ {
+  "user_id": "A",
+  "project_id": "RBX"
+ },
+ {
+  "user_id": "A",
+  "project_id": "MGB"
+ },
+ {
+  "user_id": "A",
+  "project_id": "TLT"
+ },
+ {
+  "user_id": "A",
+  "project_id": "T22"
+ },
+ {
+  "user_id": "A",
+  "project_id": "BMB"
+ },
+ {
+  "user_id": "A",
+  "project_id": "BNN"
+ },
+ {
+  "user_id": "A",
+  "project_id": "BPI"
+ },
+ {
+  "user_id": "K",
+  "project_id": "RMT"
+ },
+ {
+  "user_id": "K",
+  "project_id": "RAC"
+ },
+ {
+  "user_id": "K",
+  "project_id": "BRM"
+ },
+ {
+  "user_id": "K",
+  "project_id": "ONN"
+ },
+ {
+  "user_id": "K",
+  "project_id": "RSP"
+ },
+ {
+  "user_id": "K",
+  "project_id": "NTP"
+ },
+ {
+  "user_id": "K",
+  "project_id": "PRB"
+ },
+ {
+  "user_id": "K",
+  "project_id": "OFF"
+ },
+ {
+  "user_id": "K",
+  "project_id": "RBX"
+ },
+ {
+  "user_id": "K",
+  "project_id": "MGB"
+ },
+ {
+  "user_id": "K",
+  "project_id": "TLT"
+ },
+ {
+  "user_id": "K",
+  "project_id": "T22"
+ },
+ {
+  "user_id": "K",
+  "project_id": "BMB"
+ },
+ {
+  "user_id": "K",
+  "project_id": "BNN"
+ },
+ {
+  "user_id": "K",
+  "project_id": "BPI"
+ },
+ {
+  "user_id": "S",
+  "project_id": "RMT"
+ },
+ {
+  "user_id": "S",
+  "project_id": "RAC"
+ },
+ {
+  "user_id": "S",
+  "project_id": "BRM"
+ },
+ {
+  "user_id": "S",
+  "project_id": "ONN"
+ },
+ {
+  "user_id": "S",
+  "project_id": "RSP"
+ },
+ {
+  "user_id": "S",
+  "project_id": "NTP"
+ },
+ {
+  "user_id": "S",
+  "project_id": "PRB"
+ },
+ {
+  "user_id": "S",
+  "project_id": "OFF"
+ },
+ {
+  "user_id": "S",
+  "project_id": "RBX"
+ },
+ {
+  "user_id": "S",
+  "project_id": "MGB"
+ },
+ {
+  "user_id": "S",
+  "project_id": "TLT"
+ },
+ {
+  "user_id": "S",
+  "project_id": "T22"
+ },
+ {
+  "user_id": "S",
+  "project_id": "BMB"
+ },
+ {
+  "user_id": "S",
+  "project_id": "BNN"
+ },
+ {
+  "user_id": "S",
+  "project_id": "BPI"
+ },
+ {
+  "user_id": "N",
+  "project_id": "RMT"
+ },
+ {
+  "user_id": "N",
+  "project_id": "RAC"
+ },
+ {
+  "user_id": "N",
+  "project_id": "BRM"
+ },
+ {
+  "user_id": "N",
+  "project_id": "ONN"
+ },
+ {
+  "user_id": "N",
+  "project_id": "RSP"
+ },
+ {
+  "user_id": "N",
+  "project_id": "NTP"
+ },
+ {
+  "user_id": "N",
+  "project_id": "PRB"
+ },
+ {
+  "user_id": "N",
+  "project_id": "OFF"
+ },
+ {
+  "user_id": "N",
+  "project_id": "RBX"
+ },
+ {
+  "user_id": "N",
+  "project_id": "MGB"
+ },
+ {
+  "user_id": "N",
+  "project_id": "TLT"
+ },
+ {
+  "user_id": "N",
+  "project_id": "T22"
+ },
+ {
+  "user_id": "N",
+  "project_id": "BMB"
+ },
+ {
+  "user_id": "N",
+  "project_id": "BNN"
+ },
+ {
+  "user_id": "N",
+  "project_id": "BPI"
+ },
+ {
+  "user_id": "M",
+  "project_id": "RMT"
+ },
+ {
+  "user_id": "M",
+  "project_id": "ONN"
+ },
+ {
+  "user_id": "M",
+  "project_id": "OFF"
+ },
+ {
+  "user_id": "M",
+  "project_id": "RBX"
+ },
+ {
+  "user_id": "F",
+  "project_id": "RAC"
+ },
+ {
+  "user_id": "F",
+  "project_id": "ONN"
+ },
+ {
+  "user_id": "F",
+  "project_id": "RSP"
+ },
+ {
+  "user_id": "F",
+  "project_id": "OFF"
+ },
+ {
+  "user_id": "B",
+  "project_id": "RAC"
+ },
+ {
+  "user_id": "B",
+  "project_id": "BRM"
+ },
+ {
+  "user_id": "B",
+  "project_id": "RSP"
+ },
+ {
+  "user_id": "B",
+  "project_id": "PRB"
+ },
+ {
+  "user_id": "B",
+  "project_id": "OFF"
+ },
+ {
+  "user_id": "J",
+  "project_id": "RMT"
+ },
+ {
+  "user_id": "J",
+  "project_id": "RAC"
+ },
+ {
+  "user_id": "J",
+  "project_id": "BRM"
+ },
+ {
+  "user_id": "J",
+  "project_id": "ONN"
+ },
+ {
+  "user_id": "J",
+  "project_id": "RSP"
+ },
+ {
+  "user_id": "J",
+  "project_id": "NTP"
+ },
+ {
+  "user_id": "J",
+  "project_id": "PRB"
+ },
+ {
+  "user_id": "J",
+  "project_id": "OFF"
+ },
+ {
+  "user_id": "J",
+  "project_id": "RBX"
+ },
+ {
+  "user_id": "J",
+  "project_id": "MGB"
+ },
+ {
+  "user_id": "J",
+  "project_id": "TLT"
+ },
+ {
+  "user_id": "J",
+  "project_id": "T22"
+ },
+ {
+  "user_id": "J",
+  "project_id": "BMB"
+ },
+ {
+  "user_id": "J",
+  "project_id": "BNN"
+ },
+ {
+  "user_id": "J",
+  "project_id": "BPI"
+ },
+ {
+  "user_id": "T",
+  "project_id": "RMT"
+ },
+ {
+  "user_id": "T",
+  "project_id": "RAC"
+ },
+ {
+  "user_id": "T",
+  "project_id": "BRM"
+ },
+ {
+  "user_id": "T",
+  "project_id": "ONN"
+ },
+ {
+  "user_id": "T",
+  "project_id": "RSP"
+ },
+ {
+  "user_id": "T",
+  "project_id": "NTP"
+ },
+ {
+  "user_id": "T",
+  "project_id": "PRB"
+ },
+ {
+  "user_id": "T",
+  "project_id": "OFF"
+ },
+ {
+  "user_id": "T",
+  "project_id": "RBX"
+ },
+ {
+  "user_id": "T",
+  "project_id": "MGB"
+ },
+ {
+  "user_id": "T",
+  "project_id": "TLT"
+ },
+ {
+  "user_id": "T",
+  "project_id": "T22"
+ },
+ {
+  "user_id": "T",
+  "project_id": "BMB"
+ },
+ {
+  "user_id": "T",
+  "project_id": "BNN"
+ },
+ {
+  "user_id": "T",
+  "project_id": "BPI"
+ },
+ {
+  "user_id": "I",
+  "project_id": "RMT"
+ },
+ {
+  "user_id": "I",
+  "project_id": "RAC"
+ },
+ {
+  "user_id": "I",
+  "project_id": "BRM"
+ },
+ {
+  "user_id": "I",
+  "project_id": "ONN"
+ },
+ {
+  "user_id": "I",
+  "project_id": "RSP"
+ },
+ {
+  "user_id": "I",
+  "project_id": "NTP"
+ },
+ {
+  "user_id": "I",
+  "project_id": "PRB"
+ },
+ {
+  "user_id": "I",
+  "project_id": "OFF"
+ },
+ {
+  "user_id": "I",
+  "project_id": "RBX"
+ },
+ {
+  "user_id": "I",
+  "project_id": "MGB"
+ },
+ {
+  "user_id": "I",
+  "project_id": "TLT"
+ },
+ {
+  "user_id": "I",
+  "project_id": "T22"
+ },
+ {
+  "user_id": "I",
+  "project_id": "BMB"
+ },
+ {
+  "user_id": "I",
+  "project_id": "BNN"
+ },
+ {
+  "user_id": "I",
+  "project_id": "BPI"
+ }
+]

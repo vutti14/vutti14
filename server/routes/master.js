@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import { db, audit, getSetting } from '../db.js';
 import { requireAuth, requireCap, can, allowedProjectIds, seesAllProjects } from '../auth.js';
+import { estimateBudget } from '../rules.js';
 
 const r = Router();
 r.use(requireAuth);
@@ -46,6 +47,14 @@ r.get('/bootstrap', (req, res) => {
     vendors: db.prepare("SELECT * FROM vendors WHERE status = 'ใช้งาน' ORDER BY vendor_name").all(),
     items: db.prepare("SELECT * FROM items WHERE status = 'ใช้งาน' ORDER BY category, item_name").all(),
     users: db.prepare('SELECT user_id, display_name, role, title, status FROM users ORDER BY user_id').all(),
+    // โครงการที่ยังไม่มีสิทธิ์ — ใช้กับปุ่มขอสิทธิ์ชั่วคราว (v9 §21)
+    other_projects: allowed === null ? [] : db.prepare(
+      `SELECT project_id, project_name, project_type FROM projects
+       WHERE project_id NOT IN (${projectIds.map(() => '?').join(',') || "''"})
+         AND status = 'ใช้งาน' ORDER BY project_name`).all(...projectIds),
+    pending_access: db.prepare(
+      `SELECT project_id, status FROM project_access_requests
+       WHERE user_id = ? AND status = 'รออนุมัติ'`).all(req.user.user_id),
     settings: {
       cutover_date: getSetting('cutover_date'),
       flag_W2_enabled: getSetting('flag_W2_enabled') === '1',
@@ -171,6 +180,152 @@ r.patch('/buildings/:id', (req, res) => {
             newValue: req.body[f], userId: req.user.user_id, reason: req.body?.reason || '' });
   }
   res.json({ building: db.prepare('SELECT * FROM buildings WHERE building_id = ?').get(b.building_id) });
+});
+
+// ---------------------------------------------------------------- สิทธิ์ชั่วคราว (v9 §21)
+/**
+ * "วันที่ต้องไปช่วยไซต์อื่นจะเบิกไม่ได้" — ถ้าไม่มีปุ่มนี้ คนจะกลับไปเบิกผ่านไลน์
+ * COO/CEO กดอนุมัติได้ในคลิกเดียว
+ */
+r.post('/project-access', (req, res) => {
+  const projectId = String(req.body?.project_id || '').trim();
+  const reason = String(req.body?.reason || '').trim();
+  if (!projectId || !reason)
+    return res.status(400).json({ error: 'ต้องเลือกโครงการและระบุเหตุผล' });
+  if (!db.prepare("SELECT 1 FROM projects WHERE project_id = ? AND status = 'ใช้งาน'").get(projectId))
+    return res.status(404).json({ error: 'ไม่พบโครงการ' });
+  if (allowedProjectIds(req.user) === null ||
+      allowedProjectIds(req.user).includes(projectId))
+    return res.status(400).json({ error: 'คุณมีสิทธิ์เข้าถึงโครงการนี้อยู่แล้ว' });
+  const dup = db.prepare(
+    "SELECT access_id FROM project_access_requests WHERE user_id = ? AND project_id = ? AND status = 'รออนุมัติ'")
+    .get(req.user.user_id, projectId);
+  if (dup) return res.status(409).json({ error: 'คุณขอสิทธิ์โครงการนี้ไว้แล้ว รออนุมัติอยู่' });
+
+  const days = Math.min(Math.max(Number(req.body?.days || 7), 1), 90);
+  const info = db.prepare(`INSERT INTO project_access_requests
+      (user_id, project_id, reason, expires_at) VALUES (?, ?, ?, date('now', ?))`)
+    .run(req.user.user_id, projectId, reason, `+${days} days`);
+  audit({ table: 'project_access_requests', recordId: info.lastInsertRowid,
+          action: 'ขอสิทธิ์ชั่วคราว', newValue: projectId, userId: req.user.user_id, reason });
+  res.status(201).json({ access_id: info.lastInsertRowid, days });
+});
+
+r.get('/project-access', (req, res) => {
+  const mine = !can(req.user, 'request.approve');
+  const rows = db.prepare(`SELECT a.*, u.display_name, u.role, p.project_name,
+      d.display_name AS decided_by_name
+    FROM project_access_requests a
+    JOIN users u ON u.user_id = a.user_id
+    JOIN projects p ON p.project_id = a.project_id
+    LEFT JOIN users d ON d.user_id = a.decided_by
+    ${mine ? 'WHERE a.user_id = ?' : ''}
+    ORDER BY CASE a.status WHEN 'รออนุมัติ' THEN 0 ELSE 1 END, a.access_id DESC`)
+    .all(...(mine ? [req.user.user_id] : []));
+  res.json({ requests: rows });
+});
+
+r.post('/project-access/:id/decide', requireCap('request.approve'), (req, res) => {
+  const row = db.prepare('SELECT * FROM project_access_requests WHERE access_id = ?').get(req.params.id);
+  if (!row) return res.status(404).json({ error: 'ไม่พบคำขอ' });
+  if (row.status !== 'รออนุมัติ') return res.status(400).json({ error: `คำขอนี้ ${row.status} แล้ว` });
+  const approve = req.body?.approve !== false;
+  db.prepare(`UPDATE project_access_requests
+      SET status = ?, decided_by = ?, decided_at = datetime('now') WHERE access_id = ?`)
+    .run(approve ? 'อนุมัติแล้ว' : 'ไม่อนุมัติ', req.user.user_id, row.access_id);
+  audit({ table: 'project_access_requests', recordId: row.access_id, field: 'status',
+          oldValue: 'รออนุมัติ', newValue: approve ? 'อนุมัติแล้ว' : 'ไม่อนุมัติ',
+          action: 'ตัดสินคำขอสิทธิ์', userId: req.user.user_id, reason: req.body?.reason || '' });
+  res.json({ ok: true });
+});
+
+// ---------------------------------------------------------------- อาคาร (v9 §15 · §20)
+/** ค้นทะเบียนชื่อพ้องก่อนสร้างอาคารใหม่เสมอ ไม่งั้นต้นทุนจะแตกเป็นสองก้อน */
+r.get('/building-search', (req, res) => {
+  const q = String(req.query.q || '').trim();
+  if (q.length < 2) return res.json({ matches: [] });
+  const like = `%${q}%`;
+  const matches = db.prepare(`SELECT DISTINCT b.building_id, b.building_name, b.project_id,
+      p.project_name, b.design_code, b.area_sqm, b.status,
+      (SELECT GROUP_CONCAT(a.alias, ' · ') FROM building_aliases a WHERE a.building_id = b.building_id) AS aliases
+    FROM buildings b
+    JOIN projects p ON p.project_id = b.project_id
+    LEFT JOIN building_aliases a ON a.building_id = b.building_id
+    WHERE b.building_name LIKE ? OR a.alias LIKE ? OR b.building_id LIKE ?
+    ORDER BY b.project_id, b.building_name LIMIT 20`).all(like, like, like);
+  res.json({ matches });
+});
+
+/** ประมาณงบก่อสร้างจากเส้นโค้งต้นทุน */
+r.get('/cost-curve', (req, res) => {
+  const { floors, area_sqm, design_code } = req.query;
+  res.json({
+    points: db.prepare('SELECT * FROM cost_curve ORDER BY floors, area_sqm').all(),
+    estimate: floors && area_sqm
+      ? estimateBudget({ floors: Number(floors), areaSqm: Number(area_sqm), designCode: design_code || null })
+      : null,
+  });
+});
+
+r.post('/buildings', (req, res) => {
+  if (!['CEO', 'COO', 'PM'].includes(req.user.role))
+    return res.status(403).json({ error: 'บทบาทของคุณสร้างอาคารไม่ได้' });
+  const b = req.body || {};
+  const name = String(b.building_name || '').trim();
+  const projectId = String(b.project_id || '').trim();
+  if (!name || !projectId) return res.status(400).json({ error: 'ต้องระบุชื่ออาคารและโครงการ' });
+  const allowed = allowedProjectIds(req.user);
+  if (allowed && !allowed.includes(projectId))
+    return res.status(403).json({ error: 'คุณไม่มีสิทธิ์ในโครงการนี้' });
+
+  // §20 กันอาคารซ้ำ — ต้องยืนยันว่าตรวจชื่อพ้องแล้ว
+  const clash = db.prepare(`SELECT b.building_id, b.building_name FROM buildings b
+    LEFT JOIN building_aliases a ON a.building_id = b.building_id
+    WHERE b.building_name = ? OR a.alias = ? LIMIT 1`).get(name, name);
+  if (clash && !b.confirm_not_duplicate)
+    return res.status(409).json({
+      error: `มีอาคารชื่อนี้อยู่แล้ว (${clash.building_id} · ${clash.building_name}) — ถ้าเป็นคนละหลังจริง ให้ยืนยันอีกครั้ง`,
+      existing: clash, code: 'DUPLICATE_BUILDING',
+    });
+
+  const last = db.prepare("SELECT building_id FROM buildings WHERE building_id LIKE 'B___' ORDER BY building_id DESC LIMIT 1").get();
+  const id = 'B' + String((last ? parseInt(last.building_id.slice(1), 10) : 0) + 1).padStart(3, '0');
+  const area = b.area_sqm ? Number(b.area_sqm) : null;
+  const floors = b.floors ? Number(b.floors) : null;
+  const est = area && floors ? estimateBudget({ floors, areaSqm: area, designCode: b.design_code || null }) : null;
+
+  db.prepare(`INSERT INTO buildings
+      (building_id, project_id, building_name, design_code, work_nature, status, area_sqm,
+       floors, is_building, budget, value_source, note)
+    VALUES (?,?,?,?,?, 'กำลังทำ', ?,?,?,?, 'ข้อเท็จจริง', ?)`)
+    .run(id, projectId, name, b.design_code || null,
+      ['สร้างใหม่', 'ต่อเติม', 'ซ่อมบำรุง'].includes(b.work_nature) ? b.work_nature : 'สร้างใหม่',
+      area, floors, b.is_building === 'N' ? 'N' : 'Y',
+      b.budget != null ? Number(b.budget) : (est ? est.estimate : null), b.note || '');
+  db.prepare('INSERT OR IGNORE INTO building_aliases (building_id, alias, alias_kind) VALUES (?,?,?)')
+    .run(id, name, 'ชื่อที่ใช้หน้างาน');
+  audit({ table: 'buildings', recordId: id, action: 'สร้างอาคาร', newValue: name, userId: req.user.user_id });
+  res.status(201).json({
+    building: db.prepare('SELECT * FROM buildings WHERE building_id = ?').get(id),
+    budget_estimate: est,
+  });
+});
+
+// ---------------------------------------------------------------- ข้อมูลอ้างอิง v9
+r.get('/reference/:kind', (req, res) => {
+  const kinds = {
+    employees: 'SELECT * FROM employees ORDER BY status, emp_id',
+    cost_curve: 'SELECT * FROM cost_curve ORDER BY floors, area_sqm',
+    rental_units: 'SELECT * FROM rental_units ORDER BY location_code, unit_label',
+    lessors: 'SELECT * FROM lessors ORDER BY lessor_id',
+    land_leases: 'SELECT * FROM land_leases ORDER BY years_left',
+    location_pl: 'SELECT * FROM location_pl ORDER BY margin_year DESC',
+    building_aliases: `SELECT a.*, b.building_name, b.project_id FROM building_aliases a
+                       JOIN buildings b ON b.building_id = a.building_id ORDER BY a.building_id`,
+  };
+  const sql = kinds[req.params.kind];
+  if (!sql) return res.status(404).json({ error: 'ไม่มีข้อมูลชุดนี้', available: Object.keys(kinds) });
+  res.json({ kind: req.params.kind, rows: db.prepare(sql).all() });
 });
 
 r.get('/audit', (req, res) => {

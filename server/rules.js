@@ -218,7 +218,58 @@ export function evaluateFlags({ header, lines, vendor, totals, excludeRequestId 
   if (total >= 20000 && Math.round(total) % 1000 === 0 && Math.abs(total - Math.round(total)) < 0.01)
     add('W9', 'ยอดเป็นเลขกลมผิดปกติ', `${total.toLocaleString('th-TH')} บาท — เลขกลมมักไม่มีบิลจริงรองรับ`);
 
+  // W10 — จ่ายให้ทีมงานของเราเอง (เพิ่มจากฐาน v9 §25/§30)
+  // ก่อนมีชื่อ-สกุลจริงในทะเบียน ระบบเดิมมองว่าเป็นทีมช่างภายนอกและจัดเป็นค่าแรง
+  const staff = staffMatch(vendor, header.payee_name_raw);
+  if (staff) {
+    const self = staff.user_id && staff.user_id === header.requester_id;
+    add('W10', self ? 'เบิกเองจ่ายตัวเอง' : 'จ่ายให้ทีมงานของเราเอง',
+      `${staff.name} — ${self ? 'ผู้ขอกับผู้รับเงินเป็นคนเดียวกัน น่าจะเป็นการคืนเงินสำรองจ่าย ต้องระบุประเภทที่แท้จริง'
+        : 'ไม่ใช่ผู้รับเหมาภายนอก — ตรวจว่าควรลงเป็นค่าแรงหรือเงินเดือน/เงินทดรอง'}`);
+  }
+
   return flags;
+}
+
+/**
+ * ผู้รับเงินรายนี้คือคนของเราเองหรือไม่
+ * ตรวจสองทาง: ธงที่ติดไว้บน vendor (จาก 30_VENDOR_MATCH) และชื่อในทะเบียนพนักงาน
+ */
+export function staffMatch(vendor, payeeName = '') {
+  if (vendor?.is_own_staff)
+    return { name: vendor.vendor_name, user_id: vendor.staff_user_id || null, source: 'ทะเบียนผู้ขาย' };
+  const name = String(payeeName || vendor?.vendor_name || '').trim();
+  if (!name) return null;
+  const emp = db.prepare('SELECT emp_id, full_name, status FROM employees WHERE full_name = ?').get(name);
+  if (emp) return { name: emp.full_name, user_id: null, source: `ทะเบียนพนักงาน ${emp.emp_id}` };
+  const user = db.prepare('SELECT user_id, display_name, full_name FROM users WHERE full_name = ?').get(name);
+  if (user) return { name: user.full_name, user_id: user.user_id, source: 'ทีมงานในระบบ' };
+  return null;
+}
+
+/**
+ * ประมาณงบก่อสร้างจากเส้นโค้งต้นทุน (v9 §15)
+ * เลือกจุดที่จำนวนชั้นตรงกันและพื้นที่ใกล้ที่สุด — ใช้เฉพาะจุดที่ข้อมูลครบ 100%
+ */
+export function estimateBudget({ floors, areaSqm, designCode = null }) {
+  if (!(areaSqm > 0) || !floors) return null;
+  const points = db.prepare(
+    'SELECT * FROM cost_curve WHERE floors = ? ORDER BY ABS(area_sqm - ?)').all(floors, areaSqm);
+  if (!points.length) return null;
+  const exact = designCode ? points.find((p) => p.design_code === designCode) : null;
+  const complete = points.filter((p) => p.completeness === 'ครบ 100%');
+  const best = exact || complete[0] || points[0];
+  return {
+    estimate: round2(areaSqm * best.cost_per_sqm),
+    cost_per_sqm: best.cost_per_sqm,
+    based_on: best.building_label,
+    design_code: best.design_code,
+    completeness: best.completeness,
+    exact_design: !!exact,
+    note: exact
+      ? 'อ้างอิงอาคารแบบเดียวกัน'
+      : 'อ้างอิงอาคารจำนวนชั้นเดียวกันที่ขนาดใกล้ที่สุด — ยิ่งเล็กยิ่งแพงต่อ ตร.ม.',
+  };
 }
 
 /** W7 — ใบของผู้อนุมัติเอง (ประเมินตอนกดอนุมัติ) */

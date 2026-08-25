@@ -8,6 +8,7 @@ import { state } from '../app.js';
 
 const TABS = [
   { key: 'project', label: 'รายโครงการ' },
+  { key: 'staff', label: 'จ่ายให้ทีมงานเอง' },
   { key: 'building', label: 'รายอาคาร' },
   { key: 'vendor', label: 'รายผู้ขาย' },
   { key: 'requester', label: 'รายผู้เบิก' },
@@ -21,7 +22,7 @@ const TABS = [
 ];
 
 export async function render() {
-  const filters = { exclude_non_project: '', project_id: '', value_source: '', from: '', to: '' };
+  const filters = { exclude_non_project: '', project_id: '', value_source: '', group_asset: '', from: '', to: '' };
   const root = el('div');
   const kpiBox = el('div', { class: 'kpi-grid mb' });
   const chartBox = el('div');
@@ -41,11 +42,19 @@ export async function render() {
     loadAll();
   });
 
+  // v9 §29 — แยกทรัพย์สินกลุ่มออกจากงานรับเหมา/ส่วนตัว ก่อนคิดต้นทุนทรัพย์สิน
+  const assetSel = select([
+    { value: '1', label: 'เฉพาะทรัพย์สินกลุ่ม' },
+    { value: '0', label: 'เฉพาะงานอื่น (รับเหมา · ส่วนตัว · หน่วยธุรกิจอื่น)' },
+  ], { placeholder: 'ทุกประเภทโครงการ', onchange: (e) => { filters.group_asset = e.target.value; loadAll(); } });
+
   root.append(
+    el('div', { class: 'eyebrow', text: 'ฝั่งรายจ่าย' }),
     el('h1', { text: 'ภาพรวม' }),
     el('div', { class: 'card tight' },
       el('div', { class: 'row wrap' },
         el('div', { class: 'grow' }, projectSel),
+        el('div', { class: 'grow' }, assetSel),
         el('div', { class: 'grow' }, sourceSel)),
       el('label', { class: 'row mt', style: 'gap:.4rem' }, excludeToggle,
         el('span', { class: 'tiny', text: 'ไม่รวมค่าใช้จ่ายออฟฟิศและรายการที่ไม่ระบุโครงการ' }))),
@@ -71,10 +80,10 @@ export async function render() {
 
     clear(chartBox).append(
       el('div', { class: 'card' },
-        el('h2', { text: 'เงินออกรายเดือน' }),
+        el('div', { class: 'rule-head', text: 'เงินออกรายเดือน' }),
         d.monthly.length ? barChart(d.monthly) : el('div', { class: 'empty', text: 'ยังไม่มีข้อมูล' })),
       el('div', { class: 'card' },
-        el('h2', { text: 'สัดส่วนประเภทต้นทุน' }),
+        el('div', { class: 'rule-head', text: 'สัดส่วนประเภทต้นทุน' }),
         stackBar(d.cost_type_mix),
         el('div', { class: 'mt small' },
           el('div', { class: 'muted tiny mb', text: 'เทียบสัดส่วนอ้างอิงจาก BOQ' }),
@@ -89,7 +98,24 @@ export async function render() {
             },
           ], d.cost_type_mix))),
       el('div', { class: 'card' },
-        el('h2', { text: 'ที่มาของค่าและความเชื่อถือ' }),
+        el('div', { class: 'rule-head', text: 'ทรัพย์สินกลุ่ม เทียบ งานอื่น' }),
+        el('p', { class: 'tiny muted', text: 'v9 พบว่า 4 โครงการไม่ใช่ทรัพย์สินกลุ่ม (บ้านลูกค้า · งานซ่อมให้ลูกค้า · หน่วยธุรกิจอื่น · บ้านของ CEO) — ต้องแยกออกก่อนคิดมูลค่าทรัพย์สินและค่าเสื่อม' }),
+        table([
+          { label: 'ประเภท', key: 'label' },
+          { label: 'จำนวนใบ', num: true, key: 'n' },
+          { label: 'จำนวนเงิน', num: true, render: (x) => baht(x.amount) },
+        ], d.asset_split),
+        d.staff_payments.count > 0
+          ? el('div', { class: 'banner warn mt' },
+            el('b', { text: 'จ่ายให้ทีมงานของเราเอง' }),
+            `${d.staff_payments.count} ใบ · ${baht(d.staff_payments.amount)} บาท` +
+            (d.staff_payments.self_count
+              ? ` — ในนั้นเป็นการเบิกเองจ่ายตัวเอง ${d.staff_payments.self_count} ใบ ${baht(d.staff_payments.self_amount)} บาท`
+              : '') +
+            ' · ระบบเดิมมองเป็นทีมช่างภายนอกจึงจัดเป็นค่าแรง ต้องระบุประเภทที่แท้จริงก่อนใช้ตัวเลขค่าแรง')
+          : null),
+      el('div', { class: 'card' },
+        el('div', { class: 'rule-head', text: 'ที่มาของค่าและความเชื่อถือ' }),
         el('p', { class: 'tiny muted', text: 'ระดับ C/D คือการประมาณจากสัดส่วน BOQ ไม่ใช่ข้อเท็จจริง — ห้ามใช้เป็นตัวเลขตัดสินใจโดยไม่ระบุที่มา' }),
         table([
           { label: 'ที่มาของค่า', key: 'value_source' },
@@ -125,11 +151,37 @@ export async function render() {
       const { rows } = await api.get('/api/reports/by-project' + q);
       node = table([
         { label: 'โครงการ', render: (x) => `${x.project_name} (${x.project_id})` },
+        { label: 'ประเภท', key: 'project_type' },
+        {
+          label: 'ทรัพย์สินกลุ่ม', render: (x) => el('span', {
+            class: `pill ${x.is_group_asset ? 'green' : 'red'}`,
+            text: x.is_group_asset ? 'ใช่' : 'ไม่ใช่',
+          }),
+        },
+        { label: 'สถานะ', key: 'asset_status' },
         { label: 'ใบ', num: true, key: 'request_count' },
         { label: 'จ่ายจริง', num: true, render: (x) => baht(x.spent) },
-        { label: 'งบ', num: true, render: (x) => (x.budget ? baht(x.budget) : '—') },
-        { label: 'ใช้ไป', num: true, render: (x) => pct(x.used_pct) },
       ], rows);
+    } else if (activeTab === 'staff') {
+      const d2 = await api.get('/api/reports/staff-payments' + q);
+      node = el('div', {},
+        el('div', { class: 'banner warn' }, el('b', { text: 'ทำไมต้องดูตารางนี้' }), d2.note),
+        el('div', { class: 'spread small mb' },
+          el('span', { text: `${d2.rows.length} ใบ` }),
+          el('span', { class: 'mono', text: `${baht(d2.total)} บาท · เบิกเองจ่ายตัวเอง ${baht(d2.self_paid_total)} บาท` })),
+        table([
+          { label: 'ใบเบิก', key: 'request_id' },
+          { label: 'วันที่', render: (x) => thaiDate(x.request_date) },
+          { label: 'ผู้เบิก', key: 'requester_name' },
+          { label: 'ผู้รับเงิน', render: (x) => x.staff_name || x.vendor_name || x.payee_name_raw || '—' },
+          {
+            label: 'เบิกเองจ่ายตัวเอง', render: (x) => x.self_paid
+              ? el('span', { class: 'pill red', text: 'ใช่' }) : '—',
+          },
+          { label: 'ลงเป็น', key: 'cost_types' },
+          { label: 'โครงการ', key: 'project_name' },
+          { label: 'จำนวนเงิน', num: true, render: (x) => baht(x.total_amount) },
+        ], d2.rows, { empty: 'ไม่พบการจ่ายให้ทีมงานของเราเอง' }));
     } else if (activeTab === 'building') {
       const { rows } = await api.get('/api/reports/by-building' + q);
       node = table([

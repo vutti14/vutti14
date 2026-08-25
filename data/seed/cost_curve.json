@@ -1,0 +1,90 @@
+[
+ {
+  "curve_id": "CC001",
+  "floors": 1,
+  "area_sqm": 300.0,
+  "design_code": "D-RCH",
+  "building_label": "R6 (B004)",
+  "total_cost": 1016444.35,
+  "cost_per_sqm": 3388.15,
+  "source": "จ่ายจริง",
+  "completeness": "ครบ 100%"
+ },
+ {
+  "curve_id": "CC002",
+  "floors": 1,
+  "area_sqm": 300.0,
+  "design_code": "D-RCH",
+  "building_label": "R7 (B005)",
+  "total_cost": 975785.38,
+  "cost_per_sqm": 3252.62,
+  "source": "จ่ายจริง",
+  "completeness": "ครบ 100%"
+ },
+ {
+  "curve_id": "CC003",
+  "floors": 1,
+  "area_sqm": 390.0,
+  "design_code": "D-TOY",
+  "building_label": "คุณต๋อย(ใหม่) B001",
+  "total_cost": 1503364.65,
+  "cost_per_sqm": 3854.78,
+  "source": "จ่ายจริง",
+  "completeness": "ครบ 100%"
+ },
+ {
+  "curve_id": "CC004",
+  "floors": 2,
+  "area_sqm": 189.0,
+  "design_code": "D-GOLDY",
+  "building_label": "Goldy บางขนุน",
+  "total_cost": 1193412.96,
+  "cost_per_sqm": 6314.35,
+  "source": "BOQ ประมาณการ",
+  "completeness": "ประมาณการก่อนสร้าง"
+ },
+ {
+  "curve_id": "CC005",
+  "floors": 2,
+  "area_sqm": 190.0,
+  "design_code": "D-AAA",
+  "building_label": "AIA (B006)",
+  "total_cost": 1076018.4,
+  "cost_per_sqm": 5663.25,
+  "source": "จ่ายจริง",
+  "completeness": "ขาดงานฐานราก"
+ },
+ {
+  "curve_id": "CC006",
+  "floors": 2,
+  "area_sqm": 240.0,
+  "design_code": "D-SATM",
+  "building_label": "V5 ซาโตชี เอสเตท",
+  "total_cost": 1072650.69,
+  "cost_per_sqm": 4469.38,
+  "source": "จ่ายจริง",
+  "completeness": "ครบ ยังไม่จบ ขาดกระจก"
+ },
+ {
+  "curve_id": "CC007",
+  "floors": 2,
+  "area_sqm": 240.0,
+  "design_code": "D-SATM",
+  "building_label": "V5 + ประมาณการกระจก",
+  "total_cost": 1198323.02,
+  "cost_per_sqm": 4993.01,
+  "source": "จ่ายจริง + อนุมาน",
+  "completeness": "ประมาณการตอนจบ"
+ },
+ {
+  "curve_id": "CC008",
+  "floors": 2,
+  "area_sqm": 600.0,
+  "design_code": "D-SATL",
+  "building_label": "Satoshi L",
+  "total_cost": 2828084.08,
+  "cost_per_sqm": 4713.47,
+  "source": "BOQ ประมาณการ",
+  "completeness": "ประมาณการก่อนสร้าง"
+ }
+]

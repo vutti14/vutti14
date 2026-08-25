@@ -9,11 +9,9 @@ export async function render() {
   const data = await api.get('/api/payments/queue');
   const root = el('div');
 
-  root.append(el('div', { class: 'card tight spread' },
-    el('div', {}, el('div', { class: 'muted tiny', text: 'อนุมัติแล้วรอจ่าย' }),
-      el('div', { style: 'font-weight:700', text: `${data.queue.length} ใบ` })),
-    el('div', { class: 'right' }, el('div', { class: 'muted tiny', text: 'ยอดจ่ายสุทธิรวม' }),
-      el('div', { class: 'mono', style: 'font-weight:700', text: `${baht(data.total_amount)} บาท` }))));
+  root.append(
+    el('div', { class: 'eyebrow', text: 'อนุมัติแล้ว รอจ่าย' }),
+    el('h1', { text: `${data.queue.length} ใบ · ${baht(data.total_amount, 0)}` }));
 
   if (!data.queue.length) {
     root.append(el('div', { class: 'empty', text: 'ไม่มีรายการรอจ่าย' }));
@@ -21,17 +19,23 @@ export async function render() {
   }
 
   root.append(el('div', { class: 'banner' },
-    'เคล็ดลับ: ในช่อง "บันทึกช่วยจำ" ของแอปธนาคาร ให้พิมพ์เลขที่ใบเบิก เช่น REQ-2609-0042 แทนคำอธิบายงาน แล้วสลิปจะจับคู่กับใบเบิกได้ตลอดไป'));
+    el('b', { text: 'สิ่งที่คุ้มที่สุดในหน้านี้' }),
+    'พิมพ์เลขที่ใบเบิกในช่อง "บันทึกช่วยจำ" ของแอปธนาคาร แทนคำอธิบายงาน — ไม่ได้ทำงานเพิ่มเลย แค่เปลี่ยนสิ่งที่พิมพ์ แล้วสลิปทุกใบจะจับคู่กับใบเบิกได้ตลอดไป'));
 
-  root.append(el('div', { class: 'list' }, data.queue.map((r) => el('div', { class: 'item' },
+  root.append(el('div', { class: 'list' }, data.queue.map((r) => el('div', { class: 'item ok' },
     el('div', { class: 'line1', onclick: () => navigate(`requests/${r.request_id}`) },
       el('span', { class: 'id', text: r.request_id }),
-      r.flags?.length ? el('span', { text: '⚠️' }) : null,
-      el('span', { class: 'amt mono', text: baht(r.net_amount) })),
-    el('div', { class: 'line2 truncate' },
-      `${r.vendor_name || '—'} · ${r.building_name} · อนุมัติโดย ${r.approver_name || '—'}`),
+      r.flags?.length ? el('span', { text: '⚑' }) : null,
+      el('span', { class: 'amt', text: baht(r.net_amount, 0) })),
+    el('div', { class: 'line2 truncate', text: r.vendor_name || '—' }),
+    el('div', { class: 'line3 mono', text: r.bank_account || 'ยังไม่มีเลขบัญชีในระบบ' }),
+    el('div', { class: 'line3 truncate' },
+      `${r.building_name} · อนุมัติโดย ${r.approver_name || '—'}`),
+    el('div', { class: 'tip' },
+      'พิมพ์ในช่องบันทึกช่วยจำของแอปธนาคาร',
+      el('b', { text: r.request_id })),
     r.wht_amount > 0
-      ? el('div', { class: 'line2', text: `ยอดรวม ${baht(r.total_amount)} − หัก ณ ที่จ่าย ${baht(r.wht_amount)}` })
+      ? el('div', { class: 'line3', text: `ยอดเต็ม ${baht(r.total_amount)} − หัก ณ ที่จ่าย ${baht(r.wht_amount)}` })
       : null,
     r.vendor_credit > 0
       ? el('div', { class: 'flag' }, el('b', { text: 'W4 ' }),

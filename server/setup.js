@@ -59,7 +59,7 @@ function seedUsers() {
   });
   const n = insert('users', rows, ['user_id', 'display_name', 'full_name', 'title', 'role',
     'username', 'password_hash', 'phone', 'require_2fa', 'status', 'note']);
-  if (temp.length) console.log('  รหัสผ่านชั่วคราว (ไม่มีเบอร์โทรในฐาน v8): ' + temp.join(' · '));
+  if (temp.length) console.log('  รหัสผ่านชั่วคราว (ไม่มีเบอร์โทรในฐาน v9): ' + temp.join(' · '));
   return n;
 }
 
@@ -72,22 +72,12 @@ function seedBuildingPairs() {
     'building_b', 'project_id', 'same_amount_count', 'status', 'note']);
 }
 
-/** PM/SERVICE เห็นเฉพาะโครงการที่ตัวเองรับผิดชอบ — เดาจากประวัติการเบิกใน v8 */
-function seedUserProjects(legacyReqs) {
-  const roles = Object.fromEntries(db.prepare('SELECT user_id, role FROM users').all()
-    .map((r) => [r.user_id, r.role]));
-  const projects = new Set(db.prepare('SELECT project_id FROM projects').all().map((r) => r.project_id));
-  const pairs = new Set();
-  for (const r of legacyReqs) {
-    if (!['PM', 'SERVICE'].includes(roles[r.requester_id])) continue;
-    if (!projects.has(r.project_id)) continue;
-    pairs.add(`${r.requester_id}|${r.project_id}`);
-  }
-  const rows = [...pairs].map((k) => {
-    const [user_id, project_id] = k.split('|');
-    return { user_id, project_id };
-  });
-  return insert('user_projects', rows, ['user_id', 'project_id']);
+/**
+ * สิทธิ์รายโครงการมาจากชีต 21_DIM_USER_ACCESS ของ v9 โดยตรง (กฎ 3%)
+ * ไม่ได้เดาจากประวัติอีกแล้ว — เจ้าของงานยืนยันตารางนี้แล้ว
+ */
+function seedUserProjects() {
+  return insert('user_projects', read('user_projects'), ['user_id', 'project_id']);
 }
 
 function seedLegacyRequests() {
@@ -112,13 +102,14 @@ function seedLegacyRequests() {
   const n1 = insert('requests', reqRows, ['request_id', 'legacy_txn_id', 'request_date',
     'requester_id', 'project_id', 'building_id', 'vendor_id', 'payee_name_raw', 'has_vat',
     'vat_mode', 'amount_before_vat', 'vat_amount', 'total_amount', 'wht_amount', 'net_amount',
-    'status', 'legacy_code', 'confidence', 'value_source', 'note']);
+    'status', 'legacy_code', 'confidence', 'value_source', 'paid_to_staff', 'staff_user_id',
+    'self_paid', 'note']);
 
   const lineRows = [];
   for (const [rid, ls] of byReq) ls.forEach((l, i) => lineRows.push({ ...l, line_no: i + 1 }));
   const n2 = insert('request_lines', lineRows, ['request_id', 'line_no', 'cost_code', 'cost_type',
     'description', 'qty', 'unit', 'unit_price', 'line_amount', 'confidence']);
-  return [n1, n2, reqs];
+  return [n1, n2];
 }
 
 function main() {
@@ -130,7 +121,8 @@ function main() {
   report.push(['cost_types', seedCostTypes()]);
   report.push(['users', seedUsers()]);
   report.push(['projects', insert('projects', read('projects'),
-    ['project_id', 'project_name', 'nature', 'is_real_project', 'note', 'status'])]);
+    ['project_id', 'project_name', 'project_type', 'asset_status', 'is_group_asset',
+     'is_real_project', 'note', 'status'])]);
   report.push(['designs', insert('designs', read('designs'),
     ['design_code', 'design_name', 'floors', 'std_area_sqm', 'structure', 'ref_cost_per_sqm', 'status', 'note'])]);
   report.push(['buildings', insert('buildings', read('buildings'),
@@ -138,9 +130,13 @@ function main() {
      'area_sqm', 'floors', 'is_building', 'budget', 'value_source', 'note'])]);
   report.push(['cost_codes', insert('cost_codes', read('cost_codes'),
     ['cost_code', 'cost_name', 'work_group', 'group_order', 'status', 'merge_into', 'default_cost_type', 'note'])]);
+  report.push(['employees', insert('employees', read('employees'),
+    ['emp_id', 'full_name', 'employer', 'employment_type', 'base_salary', 'allowance',
+     'social_security', 'start_date', 'end_date', 'status', 'risk_flag'])]);
   report.push(['vendors', insert('vendors', read('vendors'),
     ['vendor_id', 'vendor_name', 'vendor_type', 'category', 'phone', 'entity_type', 'tax_id',
-     'bank_account', 'payment_terms', 'vat_registered', 'wht_percent', 'doc_status', 'status'])]);
+     'bank_account', 'payment_terms', 'vat_registered', 'wht_percent', 'doc_status',
+     'is_own_staff', 'staff_user_id', 'match_note', 'status'])]);
   report.push(['items', insert('items', read('items'),
     ['item_id', 'category', 'item_name', 'unit', 'ref_price_min', 'ref_price_max', 'vendor_count', 'status'])]);
   report.push(['item_prices', insert('item_prices', read('item_prices'),
@@ -148,6 +144,11 @@ function main() {
   report.push(['rates', insert('rates', read('rates'),
     ['rate_id', 'cost_type', 'rate_name', 'unit', 'rate_satoshi', 'rate_goldy', 'std_rate', 'method', 'status'])]);
   report.push(['building_pairs', seedBuildingPairs()]);
+  report.push(['building_aliases', insert('building_aliases', read('building_aliases'),
+    ['building_id', 'alias', 'alias_kind'])]);
+  report.push(['cost_curve', insert('cost_curve', read('cost_curve'),
+    ['curve_id', 'floors', 'area_sqm', 'design_code', 'building_label', 'total_cost',
+     'cost_per_sqm', 'source', 'completeness'])]);
   report.push(['funding_in', insert('funding_in', read('funding_in'),
     ['funding_id', 'funding_date', 'amount', 'company', 'source', 'accounting_status', 'period_label', 'value_source'])]);
   report.push(['boq_register', insert('boq_register', read('boq_register'),
@@ -156,10 +157,24 @@ function main() {
     read('boq_buildings').filter((b) => db.prepare('SELECT 1 FROM buildings WHERE building_id = ?').get(b.building_id)),
     ['boq_id', 'building_id', 'boq_budget', 'status', 'note'])]);
 
-  const [nReq, nLine, legacyReqs] = seedLegacyRequests();
+  // ฝั่งรายได้ — เก็บเป็นข้อมูลอ้างอิง ยังไม่เชื่อมเข้าหน้าจอฝั่งจ่ายใน V1
+  report.push(['rental_units', insert('rental_units', read('rental_units'),
+    ['unit_id', 'location', 'location_code', 'unit_label', 'official_name', 'status', 'tenant',
+     'base_rent', 'lessor', 'risk_level', 'building_id', 'issue'])]);
+  report.push(['lessors', insert('lessors', read('lessors'),
+    ['lessor_id', 'lessor_name', 'entity_type', 'tax_id', 'unit_count', 'monthly_rent',
+     'staff_count', 'monthly_payroll', 'note'])]);
+  report.push(['land_leases', insert('land_leases', read('land_leases'),
+    ['location_code', 'location', 'our_lessee', 'land_owner', 'deed_no', 'area_wa',
+     'monthly_rent', 'start_date', 'end_date', 'years_left', 'renewal', 'building_on_expiry'])]);
+  report.push(['location_pl', insert('location_pl', read('location_pl'),
+    ['location_code', 'location', 'units', 'vacant', 'rent_in', 'land_rent_out', 'margin_month',
+     'margin_year', 'years_left', 'construction_spend', 'depreciation_year', 'flag'])]);
+
+  const [nReq, nLine] = seedLegacyRequests();
   report.push(['requests (นำเข้าย้อนหลัง)', nReq]);
   report.push(['request_lines', nLine]);
-  report.push(['user_projects', seedUserProjects(legacyReqs)]);
+  report.push(['user_projects', seedUserProjects()]);
 
   // งบตาม BOQ → งบอาคาร (ใช้กับกฎเตือน W8)
   db.prepare(`UPDATE buildings SET budget = (
@@ -175,7 +190,13 @@ function main() {
 
   const sum = db.prepare(
     "SELECT COUNT(*) AS n, COALESCE(SUM(total_amount),0) AS s FROM requests WHERE value_source = 'นำเข้าย้อนหลัง'").get();
+  const asset = db.prepare(`SELECT COALESCE(SUM(q.total_amount),0) AS s FROM requests q
+    JOIN projects p ON p.project_id = q.project_id WHERE p.is_group_asset = 1`).get().s;
+  const staff = db.prepare(
+    'SELECT COUNT(*) AS n, COALESCE(SUM(total_amount),0) AS s FROM requests WHERE paid_to_staff = 1').get();
   console.log(`\nใบเบิกนำเข้าย้อนหลัง ${sum.n.toLocaleString('th-TH')} ใบ · ${round2(sum.s).toLocaleString('th-TH')} บาท`);
+  console.log(`  ทรัพย์สินกลุ่ม ${round2(asset).toLocaleString('th-TH')} · งานอื่น ${round2(sum.s - asset).toLocaleString('th-TH')} บาท`);
+  console.log(`  จ่ายให้ทีมงานของเราเอง ${staff.n} ใบ · ${round2(staff.s).toLocaleString('th-TH')} บาท`);
   console.log(`วันตัดข้อมูล ${getSetting('cutover_date')} · กฎเตือน W2 ${getSetting('flag_W2_enabled') === '1' ? 'เปิด' : 'ปิด'}`);
   console.log('\nรหัสผ่านครั้งแรกของทุกคน = เบอร์โทรศัพท์ · ระบบจะบังคับเปลี่ยนทันทีที่ล็อกอินครั้งแรก');
 }

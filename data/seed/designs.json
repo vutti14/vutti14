@@ -70,12 +70,12 @@
   "note": "BOQ แบบมาตรฐานที่ใช้ซ้ำหลายอาคาร"
  },
  {
-  "design_code": "D-AIA",
-  "design_name": "AIA",
-  "floors": null,
-  "std_area_sqm": null,
+  "design_code": "D-AAA",
+  "design_name": "AAA (AIA)",
+  "floors": 2,
+  "std_area_sqm": 190.0,
   "structure": "อีกแบบหนึ่ง — งานเด่นคือไฟฟ้าและก่อผนัง",
-  "ref_cost_per_sqm": null,
+  "ref_cost_per_sqm": 5663.25,
   "status": "ยืนยันแล้ว",
   "note": "จ่ายจริง 1,076,018 · เริ่มเบิก 1 มี.ค. ซึ่งเป็นวันแรกที่ระบบมีข้อมูล จึงอาจมีส่วนที่เกิดก่อนหน้า"
  },

@@ -38,6 +38,10 @@ CREATE TABLE IF NOT EXISTS projects (
   project_id      TEXT PRIMARY KEY,
   project_name    TEXT NOT NULL,
   nature          TEXT DEFAULT '',
+  -- v9 §29: 4 โครงการไม่ใช่ทรัพย์สินกลุ่ม ต้องแยกก่อนคิดต้นทุนทรัพย์สินและค่าเสื่อม
+  project_type    TEXT DEFAULT '',
+  asset_status    TEXT DEFAULT '',
+  is_group_asset  INTEGER NOT NULL DEFAULT 0,
   is_real_project INTEGER NOT NULL DEFAULT 1,
   owner_company   TEXT DEFAULT '',
   budget          REAL,
@@ -76,9 +80,33 @@ CREATE TABLE IF NOT EXISTS buildings (
   is_building   TEXT NOT NULL DEFAULT 'Y' CHECK (is_building IN ('Y','N')),
   budget        REAL,
   value_source  TEXT NOT NULL DEFAULT 'ข้อเท็จจริง',
+  rental_unit_id TEXT,          -- สะพานไปฝั่งรายได้ (ยังไม่เชื่อมใน V1)
   note          TEXT DEFAULT ''
 );
 CREATE INDEX IF NOT EXISTS idx_buildings_project ON buildings(project_id);
+
+-- v9 §20: ค้นทะเบียนชื่อพ้องก่อนสร้างอาคารใหม่เสมอ ไม่งั้นต้นทุนจะแตกเป็นสองก้อน
+CREATE TABLE IF NOT EXISTS building_aliases (
+  alias_id    INTEGER PRIMARY KEY AUTOINCREMENT,
+  building_id TEXT NOT NULL REFERENCES buildings(building_id) ON DELETE CASCADE,
+  alias       TEXT NOT NULL,
+  alias_kind  TEXT DEFAULT '',
+  UNIQUE (building_id, alias)
+);
+CREATE INDEX IF NOT EXISTS idx_alias_name ON building_aliases(alias);
+
+-- v9 §15: เส้นโค้งต้นทุนตามขนาดและจำนวนชั้น — ใช้ตั้งงบอาคารใหม่
+CREATE TABLE IF NOT EXISTS cost_curve (
+  curve_id       TEXT PRIMARY KEY,
+  floors         INTEGER NOT NULL,
+  area_sqm       REAL NOT NULL,
+  design_code    TEXT REFERENCES designs(design_code),
+  building_label TEXT DEFAULT '',
+  total_cost     REAL,
+  cost_per_sqm   REAL,
+  source         TEXT DEFAULT '',
+  completeness   TEXT DEFAULT ''
+);
 
 -- แกน 1 — หมวดงาน
 CREATE TABLE IF NOT EXISTS cost_codes (
@@ -114,6 +142,10 @@ CREATE TABLE IF NOT EXISTS vendors (
   vat_registered INTEGER NOT NULL DEFAULT 0,
   wht_percent    REAL NOT NULL DEFAULT 0 CHECK (wht_percent IN (0,1,2,3,5)),
   doc_status     TEXT NOT NULL DEFAULT 'รอตรวจเอกสาร' CHECK (doc_status IN ('รอตรวจเอกสาร','ยืนยันแล้ว','ระงับ')),
+  -- v9 §30: จับคู่ผู้รับเงินแล้วพบว่าบางรายคือทีมงานของเราเอง ไม่ใช่ผู้ขายภายนอก
+  is_own_staff   INTEGER NOT NULL DEFAULT 0,
+  staff_user_id  TEXT REFERENCES users(user_id),
+  match_note     TEXT DEFAULT '',
   created_by     TEXT REFERENCES users(user_id),
   verified_by    TEXT REFERENCES users(user_id),
   verified_at    TEXT,
@@ -200,8 +232,12 @@ CREATE TABLE IF NOT EXISTS requests (
   goods_received_by TEXT REFERENCES users(user_id),
   closed_at         TEXT,
   is_petty_cash     INTEGER NOT NULL DEFAULT 0,
+  -- v9 §25: จ่ายเงินให้ทีมงานของเราเอง (53 ใบ 165,730 บาทในเดือน ส.ค.)
+  paid_to_staff     INTEGER NOT NULL DEFAULT 0,
+  staff_user_id     TEXT REFERENCES users(user_id),
+  self_paid         INTEGER NOT NULL DEFAULT 0,
   flags             TEXT NOT NULL DEFAULT '[]',   -- JSON array ของธงเตือน
-  confidence        TEXT,                          -- A/B/C/D (เฉพาะข้อมูลนำเข้า)
+  confidence        TEXT,                          -- A/B/C/C2/D (เฉพาะข้อมูลนำเข้า)
   value_source      TEXT NOT NULL DEFAULT 'ข้อเท็จจริง'
                       CHECK (value_source IN ('ข้อเท็จจริง','อนุมาน','นำเข้าย้อนหลัง')),
   note              TEXT DEFAULT '',
@@ -382,4 +418,100 @@ CREATE INDEX IF NOT EXISTS idx_audit_rec ON audit_log(table_name, record_id);
 CREATE TABLE IF NOT EXISTS settings (
   key   TEXT PRIMARY KEY,
   value TEXT NOT NULL
+);
+
+-- ============================================================ v9 — ทะเบียนเพิ่มเติม
+
+-- ทะเบียนพนักงาน ใช้ตรวจว่าเงินที่จ่ายออกไปเป็นการจ่ายให้คนของเราเองหรือไม่
+CREATE TABLE IF NOT EXISTS employees (
+  emp_id          TEXT PRIMARY KEY,
+  full_name       TEXT NOT NULL,
+  employer        TEXT DEFAULT '',
+  employment_type TEXT DEFAULT '',
+  base_salary     REAL,
+  allowance       REAL,
+  social_security TEXT DEFAULT '',
+  start_date      TEXT,
+  end_date        TEXT,
+  status          TEXT DEFAULT '',
+  risk_flag       TEXT DEFAULT ''
+);
+CREATE INDEX IF NOT EXISTS idx_emp_name ON employees(full_name);
+
+/*
+ * ปุ่มขอสิทธิ์ชั่วคราว (v9 §21) — วันที่ PM ต้องไปช่วยไซต์อื่น
+ * ถ้าไม่มีปุ่มนี้ คนที่ไปช่วยงานจะเบิกไม่ได้ แล้วจะกลับไปเบิกผ่านไลน์
+ */
+CREATE TABLE IF NOT EXISTS project_access_requests (
+  access_id   INTEGER PRIMARY KEY AUTOINCREMENT,
+  user_id     TEXT NOT NULL REFERENCES users(user_id),
+  project_id  TEXT NOT NULL REFERENCES projects(project_id),
+  reason      TEXT NOT NULL,
+  status      TEXT NOT NULL DEFAULT 'รออนุมัติ' CHECK (status IN ('รออนุมัติ','อนุมัติแล้ว','ไม่อนุมัติ','หมดอายุ')),
+  expires_at  TEXT,
+  decided_by  TEXT REFERENCES users(user_id),
+  decided_at  TEXT,
+  created_at  TEXT NOT NULL DEFAULT (datetime('now'))
+);
+CREATE INDEX IF NOT EXISTS idx_access_user ON project_access_requests(user_id, status);
+
+-- ============================================================ ฝั่งรายได้ (ข้อมูลอ้างอิง)
+-- V1 ตั้งใจไม่เชื่อมฝั่งรายรับเข้าหน้าจอฝั่งจ่าย เก็บไว้เพื่อไม่ให้ข้อมูลหาย
+-- และเพื่อให้ช่อง buildings.rental_unit_id มีปลายทางเมื่อถึงเวลาเชื่อม
+
+CREATE TABLE IF NOT EXISTS rental_units (
+  unit_id       TEXT PRIMARY KEY,
+  location      TEXT DEFAULT '',
+  location_code TEXT DEFAULT '',
+  unit_label    TEXT DEFAULT '',
+  official_name TEXT DEFAULT '',
+  status        TEXT DEFAULT '',
+  tenant        TEXT DEFAULT '',
+  base_rent     REAL,
+  lessor        TEXT DEFAULT '',
+  risk_level    TEXT DEFAULT '',
+  building_id   TEXT,
+  issue         TEXT DEFAULT ''
+);
+
+CREATE TABLE IF NOT EXISTS lessors (
+  lessor_id       TEXT PRIMARY KEY,
+  lessor_name     TEXT NOT NULL,
+  entity_type     TEXT DEFAULT '',
+  tax_id          TEXT DEFAULT '',
+  unit_count      INTEGER DEFAULT 0,
+  monthly_rent    REAL,
+  staff_count     INTEGER DEFAULT 0,
+  monthly_payroll REAL,
+  note            TEXT DEFAULT ''
+);
+
+CREATE TABLE IF NOT EXISTS land_leases (
+  location_code       TEXT PRIMARY KEY,
+  location            TEXT DEFAULT '',
+  our_lessee          TEXT DEFAULT '',
+  land_owner          TEXT DEFAULT '',
+  deed_no             TEXT DEFAULT '',
+  area_wa             REAL,
+  monthly_rent        REAL,
+  start_date          TEXT,
+  end_date            TEXT,
+  years_left          REAL,
+  renewal             TEXT DEFAULT '',
+  building_on_expiry  TEXT DEFAULT ''
+);
+
+CREATE TABLE IF NOT EXISTS location_pl (
+  location_code      TEXT PRIMARY KEY,
+  location           TEXT DEFAULT '',
+  units              INTEGER DEFAULT 0,
+  vacant             INTEGER DEFAULT 0,
+  rent_in            REAL,
+  land_rent_out      REAL,
+  margin_month       REAL,
+  margin_year        REAL,
+  years_left         REAL,
+  construction_spend REAL,
+  depreciation_year  REAL,
+  flag               TEXT DEFAULT ''
 );

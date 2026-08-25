@@ -2,7 +2,7 @@
 import { api } from '../api.js';
 import {
   el, field, select, toast, modal, confirmDialog, baht, thaiDate, thaiDateTime,
-  duration, statusPill, flagList, table, today,
+  duration, statusPill, flagList, table, today, docGrid,
 } from '../ui.js';
 import { state, navigate, reload, buildingsOf } from '../app.js';
 
@@ -24,8 +24,9 @@ export async function renderDetail(id) {
       statusPill(r.status)),
     r.value_source === 'นำเข้าย้อนหลัง'
       ? el('div', { class: 'banner warn' },
-        `ข้อมูลนำเข้าย้อนหลังจากไฟล์ v8${r.confidence ? ` · ระดับความเชื่อถือ ${r.confidence}` : ''}` +
-        (r.confidence === 'C' || r.confidence === 'D' ? ' — ตัวเลขแยกประเภทต้นทุนเป็นการประมาณ ไม่ใช่ข้อเท็จจริง' : ''))
+        `ข้อมูลนำเข้าย้อนหลังจากฐานกลาง v9${r.confidence ? ` · ระดับความเชื่อถือ ${r.confidence}` : ''}` +
+        (['C', 'C2', 'D'].includes(r.confidence)
+          ? ' — ตัวเลขแยกประเภทต้นทุนเป็นการประมาณ ไม่ใช่ข้อเท็จจริง' : ''))
       : null,
     kv('วันที่ขอ', thaiDate(r.request_date)),
     kv('ผู้ขอ', `${r.requester_name} (${r.requester_id})`),
@@ -33,6 +34,11 @@ export async function renderDetail(id) {
     kv('อาคาร', `${r.building_name}${r.design_code ? ` · แบบ ${r.design_code}` : ''}`),
     kv('ผู้ขาย', r.vendor_name || r.payee_name_raw || '—'),
     kv('รหัสอ้างอิงเดิม', r.legacy_code || '—'),
+    r.paid_to_staff
+      ? el('div', { class: 'flag' }, el('b', { text: 'W10 ' }),
+        r.self_paid ? 'เบิกเองจ่ายตัวเอง — น่าจะเป็นการคืนเงินสำรองจ่าย ต้องระบุประเภทที่แท้จริง'
+          : 'จ่ายให้ทีมงานของเราเอง — ไม่ใช่ผู้รับเหมาภายนอก ตรวจว่าควรลงเป็นค่าแรงหรือเงินทดรอง')
+      : null,
     r.note ? kv('หมายเหตุ', r.note) : null,
     r.approver_name ? kv('ผู้อนุมัติ', `${r.approver_name} · ${thaiDateTime(r.approved_at)}`) : null,
     r.approval_seconds !== null && r.approval_seconds !== undefined
@@ -41,11 +47,12 @@ export async function renderDetail(id) {
     r.cancel_reason ? kv('เหตุผลที่ยกเลิก', r.cancel_reason) : null));
 
   if (r.flags?.length)
-    root.append(el('div', { class: 'card' }, el('h2', { text: 'ธงเตือน' }), ...flagList(r.flags)));
+    root.append(el('div', { class: 'card' },
+      el('div', { class: 'rule-head', text: 'ธงเตือน' }), ...flagList(r.flags)));
 
   // ------------------------------------------------------------ รายการย่อย
   root.append(el('div', { class: 'card' },
-    el('h2', { text: 'รายการย่อย' }),
+    el('div', { class: 'rule-head', text: 'รายการย่อย' }),
     table([
       { label: 'หมวดงาน', render: (l) => `${l.cost_code}` },
       { label: 'ประเภท', render: (l) => el('span', { class: 'pill', text: l.cost_type }) },
@@ -64,7 +71,7 @@ export async function renderDetail(id) {
   // ------------------------------------------------------------ การจ่าย
   if (r.payment)
     root.append(el('div', { class: 'card' },
-      el('h2', { text: 'การจ่ายเงิน' }),
+      el('div', { class: 'rule-head', text: 'การจ่ายเงิน' }),
       kv('เลขที่', r.payment.payment_id),
       kv('วันที่จ่าย', thaiDate(r.payment.payment_date)),
       kv('บัญชีที่จ่ายออก', r.payment.bank_account || '—'),
@@ -76,8 +83,19 @@ export async function renderDetail(id) {
 
   // ------------------------------------------------------------ เอกสาร
   if (['จ่ายแล้ว', 'ปิดรายการ'].includes(r.status)) {
-    const docBox = el('div', { class: 'card' }, el('h2', { text: 'เอกสารที่ต้องเก็บ' }));
+    const docBox = el('div', { class: 'card' },
+      el('div', { class: 'rule-head', text: 'เอกสารที่ต้องเก็บ' }));
     const done = new Map((r.documents || []).map((d) => [d.doc_type, d]));
+    // ภาพรวมสามช่องแบบต้นแบบ กดที่ช่องเพื่อบันทึกได้เลย
+    docBox.append(docGrid(r.required_documents.map((need) => {
+      const d = done.get(need.doc_type) || {};
+      return {
+        label: need.doc_type,
+        hint: d.received ? thaiDate(d.doc_date) : 'ยังไม่ได้รับ',
+        state: d.received ? 'done' : 'late',
+        onclick: state.caps.documents ? () => openDocForm(r, need.doc_type, d) : undefined,
+      };
+    })));
     for (const need of r.required_documents) {
       const d = done.get(need.doc_type) || {};
       docBox.append(el('div', { class: 'doc-row' },
@@ -108,7 +126,7 @@ export async function renderDetail(id) {
   // ------------------------------------------------------------ ใบกลับรายการ
   if (r.reversals?.length)
     root.append(el('div', { class: 'card' },
-      el('h2', { text: 'ใบกลับรายการ' }),
+      el('div', { class: 'rule-head', text: 'ใบกลับรายการ' }),
       table([
         { label: 'เลขที่', key: 'reversal_id' },
         { label: 'ประเภท', key: 'reversal_type' },
@@ -120,7 +138,7 @@ export async function renderDetail(id) {
   // ------------------------------------------------------------ ไฟล์แนบ
   if (r.attachments?.length)
     root.append(el('div', { class: 'card' },
-      el('h2', { text: 'ไฟล์แนบ' }),
+      el('div', { class: 'rule-head', text: 'ไฟล์แนบ' }),
       el('div', { class: 'row wrap' }, r.attachments.map((a) =>
         el('a', { class: 'pill blue', href: `/api/files/${a.file_id}`, target: '_blank' },
           `${a.purpose} · ${a.orig_name}`)))));

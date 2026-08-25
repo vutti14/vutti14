@@ -7,8 +7,19 @@ const TABS = [
   { key: 'users', label: 'ผู้ใช้และสิทธิ์' },
   { key: 'codes', label: 'ผัง Expense Code' },
   { key: 'settings', label: 'สวิตช์ระบบ' },
+  { key: 'reference', label: 'ข้อมูลอ้างอิง v9' },
+  { key: 'access', label: 'คำขอสิทธิ์' },
   { key: 'export', label: 'ส่งออกข้อมูล' },
   { key: 'health', label: 'สถานะข้อมูล' },
+];
+
+const REFERENCE = [
+  { kind: 'cost_curve', label: 'เส้นโค้งต้นทุน', note: 'ใช้ตั้งงบอาคารใหม่จากขนาดและจำนวนชั้น — ห้ามเทียบข้าม design_code' },
+  { kind: 'building_aliases', label: 'ชื่อพ้องของอาคาร', note: 'ค้นที่นี่ก่อนสร้างอาคารใหม่เสมอ ไม่งั้นต้นทุนจะแตกเป็นสองก้อน' },
+  { kind: 'employees', label: 'ทะเบียนพนักงาน', note: 'ใช้ตรวจว่าเงินที่จ่ายออกไปเป็นการจ่ายให้คนของเราเองหรือไม่' },
+  { kind: 'rental_units', label: 'ยูนิตให้เช่า', note: 'ฝั่งรายได้ — ยังไม่เชื่อมกับฝั่งจ่ายใน V1 ตามที่ตกลง' },
+  { kind: 'land_leases', label: 'สัญญาเช่าที่ดิน', note: 'ทุกสัญญาระบุรื้อถอนอาคารเมื่อสิ้นสุด มูลค่าคงเหลือเป็นศูนย์' },
+  { kind: 'location_pl', label: 'ภาพรวมรายทำเล', note: 'ฝั่งรายได้ — ยังไม่เชื่อมกับฝั่งจ่ายใน V1 ตามที่ตกลง' },
 ];
 
 const ROLES = ['CEO', 'COO', 'FINANCE', 'ACCOUNT', 'PM', 'SERVICE', 'VIEWER'];
@@ -30,7 +41,10 @@ export async function render() {
 
   async function load() {
     clear(box).append(el('div', { class: 'loading', text: 'กำลังโหลด…' }));
-    const view = { users: usersView, codes: codesView, settings: settingsView, export: exportView, health: healthView }[active];
+    const view = {
+      users: usersView, codes: codesView, settings: settingsView,
+      reference: referenceView, access: accessView, export: exportView, health: healthView,
+    }[active];
     clear(box).append(await view());
   }
 
@@ -238,6 +252,57 @@ async function settingsView() {
     }, 'บันทึก'));
 }
 
+// ---------------------------------------------------------------- ข้อมูลอ้างอิง v9
+async function referenceView() {
+  const wrap = el('div');
+  wrap.append(el('div', { class: 'banner' },
+    el('b', { text: 'ตารางที่ v9 เพิ่มเข้ามา' }),
+    'ตารางฝั่งรายได้ถูกนำเข้าไว้ครบแต่ตั้งใจยังไม่เชื่อมกับหน้าจอฝั่งจ่ายใน V1 — ' +
+    'ช่อง buildings.rental_unit_id เตรียมไว้แล้วสำหรับวันที่พร้อมเชื่อม'));
+  for (const ref of REFERENCE) {
+    const box = el('div', { class: 'card' },
+      el('div', { class: 'rule-head', text: ref.label }),
+      el('p', { class: 'tiny muted', text: ref.note }),
+      el('div', { class: 'loading', text: 'กำลังโหลด…' }));
+    wrap.append(box);
+    api.get(`/api/reference/${ref.kind}`).then(({ rows }) => {
+      box.lastChild.remove();
+      if (!rows.length) return box.append(el('div', { class: 'empty', text: 'ไม่มีข้อมูล' }));
+      const cols = Object.keys(rows[0]).map((k) => ({
+        label: k, key: k,
+        num: typeof rows[0][k] === 'number',
+      }));
+      box.append(table(cols, rows.slice(0, 100)));
+      if (rows.length > 100)
+        box.append(el('div', { class: 'tiny muted mt', text: `แสดง 100 จาก ${rows.length} แถว — ส่งออก CSV เพื่อดูทั้งหมด` }));
+    }).catch((err) => { box.lastChild.remove(); box.append(el('div', { class: 'banner error', text: err.message })); });
+  }
+  return wrap;
+}
+
+// ---------------------------------------------------------------- คำขอสิทธิ์ชั่วคราว
+async function accessView() {
+  const { requests } = await api.get('/api/project-access');
+  return el('div', {},
+    el('div', { class: 'banner' },
+      el('b', { text: 'กฎ 3%' }),
+      'สิทธิ์ถาวรมาจากประวัติการเบิกจริง — เบิกโครงการไหนเกิน 3% ของยอดตัวเอง = งานประจำ ได้สิทธิ์ถาวร ' +
+      'ต่ำกว่านั้นใช้คำขอสิทธิ์ชั่วคราว'),
+    el('div', { class: 'card' }, table([
+      { label: 'ผู้ขอ', render: (x) => `${x.display_name} (${x.user_id})` },
+      { label: 'โครงการ', key: 'project_name' },
+      { label: 'เหตุผล', key: 'reason' },
+      { label: 'หมดอายุ', key: 'expires_at' },
+      {
+        label: 'สถานะ', render: (x) => el('span', {
+          class: `pill ${x.status === 'อนุมัติแล้ว' ? 'green' : x.status === 'รออนุมัติ' ? 'amber' : 'red'}`,
+          text: x.status,
+        }),
+      },
+      { label: 'ตัดสินโดย', key: 'decided_by_name' },
+    ], requests, { empty: 'ยังไม่มีคำขอสิทธิ์ชั่วคราว' })));
+}
+
 // ---------------------------------------------------------------- ส่งออก
 async function exportView() {
   const { tables } = await api.get('/api/reports/export');
@@ -252,11 +317,11 @@ async function healthView() {
   const d = await api.get('/api/admin/health');
   return el('div', {},
     el('div', { class: 'card' },
-      el('h2', { text: 'จำนวนแถวในแต่ละตาราง' }),
+      el('div', { class: 'rule-head', text: 'จำนวนแถวในแต่ละตาราง' }),
       table([{ label: 'ตาราง', key: 'name' }, { label: 'จำนวนแถว', num: true, key: 'n' }],
         Object.entries(d.counts).map(([name, n]) => ({ name, n: n.toLocaleString('th-TH') })))),
     el('div', { class: 'card' },
-      el('h2', { text: 'แยกตามที่มาของค่า' }),
+      el('div', { class: 'rule-head', text: 'แยกตามที่มาของค่า' }),
       table([
         { label: 'ที่มาของค่า', key: 'value_source' },
         { label: 'จำนวนใบ', num: true, key: 'n' },

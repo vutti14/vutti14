@@ -18,13 +18,16 @@ function scope(req) {
   const args = [];
   const allowed = projectFilter(req.user);
   if (allowed) { where.push(`q.project_id IN (${allowed.map(() => '?').join(',')})`); args.push(...allowed); }
-  const { from, to, project_id, value_source, exclude_non_project } = req.query;
+  const { from, to, project_id, value_source, exclude_non_project, group_asset } = req.query;
   if (from) { where.push(`${SPEND_DATE} >= ?`); args.push(from); }
   if (to) { where.push(`${SPEND_DATE} <= ?`); args.push(to); }
   if (project_id) { where.push('q.project_id = ?'); args.push(project_id); }
   if (value_source) { where.push('q.value_source = ?'); args.push(value_source); }
   if (exclude_non_project === '1')
     where.push('q.project_id IN (SELECT project_id FROM projects WHERE is_real_project = 1)');
+  // v9 §29 — แยกทรัพย์สินกลุ่มออกจากงานรับเหมา/งานส่วนตัว ก่อนคิดต้นทุนทรัพย์สิน
+  if (group_asset === '1' || group_asset === '0')
+    where.push(`q.project_id IN (SELECT project_id FROM projects WHERE is_group_asset = ${group_asset === '1' ? 1 : 0})`);
   return { clause: where.length ? ' AND ' + where.join(' AND ') : '', args };
 }
 
@@ -86,6 +89,19 @@ r.get('/dashboard', (req, res) => {
     `SELECT q.value_source, COALESCE(SUM(q.total_amount),0) AS amount, COUNT(*) AS n
      FROM requests q WHERE ${SPENT}${clause} GROUP BY q.value_source`).all(...args);
 
+  // v9 §29 — 964,690 บาท (6.4%) ไม่ใช่ทรัพย์สินกลุ่ม ต้องแยกก่อนคิดค่าเสื่อม
+  const assetSplit = db.prepare(
+    `SELECT p.is_group_asset, COUNT(*) AS n, COALESCE(SUM(q.total_amount),0) AS amount
+     FROM requests q JOIN projects p ON p.project_id = q.project_id
+     WHERE ${SPENT}${clause} GROUP BY p.is_group_asset`).all(...args);
+
+  // v9 §25 — จ่ายเงินให้ทีมงานของเราเอง
+  const staffPay = db.prepare(
+    `SELECT COUNT(*) AS n, COALESCE(SUM(q.total_amount),0) AS amount,
+        SUM(q.self_paid) AS self_n,
+        COALESCE(SUM(CASE WHEN q.self_paid = 1 THEN q.total_amount ELSE 0 END),0) AS self_amount
+     FROM requests q WHERE ${SPENT} AND q.paid_to_staff = 1${clause}`).get(...args);
+
   const cur = monthSpend(thisMonth);
   const prv = monthSpend(prev);
 
@@ -110,6 +126,14 @@ r.get('/dashboard', (req, res) => {
     boq_reference_mix: { 'ของ': 70.6, 'แรง': 27.8, 'เช่า': 1.6 },
     confidence: byConfidence.map((x) => ({ ...x, amount: round2(x.amount) })),
     value_source: bySource.map((x) => ({ ...x, amount: round2(x.amount) })),
+    asset_split: assetSplit.map((x) => ({
+      label: x.is_group_asset ? 'ทรัพย์สินกลุ่ม' : 'งานอื่น (รับเหมา · ส่วนตัว · หน่วยธุรกิจอื่น)',
+      is_group_asset: !!x.is_group_asset, n: x.n, amount: round2(x.amount),
+    })),
+    staff_payments: {
+      count: staffPay.n, amount: round2(staffPay.amount),
+      self_count: staffPay.self_n || 0, self_amount: round2(staffPay.self_amount),
+    },
     cutover_date: getSetting('cutover_date'),
   });
 });
@@ -119,6 +143,7 @@ r.get('/by-project', (req, res) => {
   const { clause, args } = scope(req);
   res.json({
     rows: db.prepare(`SELECT q.project_id, p.project_name, p.budget,
+        p.project_type, p.asset_status, p.is_group_asset,
         COUNT(*) AS request_count, COALESCE(SUM(q.total_amount),0) AS spent
       FROM requests q JOIN projects p ON p.project_id = q.project_id
       WHERE ${SPENT}${clause}
@@ -314,6 +339,30 @@ r.get('/approval-load', (req, res) => {
   });
 });
 
+/** v9 §25 — รายการที่จ่ายเงินให้ทีมงานของเราเอง (พบหลังได้ชื่อ-สกุลจริง) */
+r.get('/staff-payments', (req, res) => {
+  const { clause, args } = scope(req);
+  const rows = db.prepare(`SELECT q.request_id, q.request_date, q.total_amount, q.self_paid,
+      q.payee_name_raw, q.staff_user_id, su.display_name AS staff_name, su.role AS staff_role,
+      u.display_name AS requester_name, p.project_name, b.building_name,
+      (SELECT GROUP_CONCAT(DISTINCT l.cost_type) FROM request_lines l WHERE l.request_id = q.request_id) AS cost_types,
+      v.vendor_name
+    FROM requests q
+    JOIN users u ON u.user_id = q.requester_id
+    JOIN projects p ON p.project_id = q.project_id
+    JOIN buildings b ON b.building_id = q.building_id
+    LEFT JOIN users su ON su.user_id = q.staff_user_id
+    LEFT JOIN vendors v ON v.vendor_id = q.vendor_id
+    WHERE q.paid_to_staff = 1${clause}
+    ORDER BY q.total_amount DESC`).all(...args);
+  res.json({
+    rows,
+    total: round2(rows.reduce((s2, x) => s2 + x.total_amount, 0)),
+    self_paid_total: round2(rows.filter((x) => x.self_paid).reduce((s2, x) => s2 + x.total_amount, 0)),
+    note: 'ระบบเดิมมองชื่อคนไทยเป็นทีมช่างภายนอกจึงจัดเป็นค่าแรง — ต้องระบุประเภทที่แท้จริงก่อนใช้ตัวเลขค่าแรง',
+  });
+});
+
 /** ตัวชี้วัดความสำเร็จตัวเดียว (สเปก §10): % ใบเบิกที่ผ่านระบบ ไม่ใช่ผ่านไลน์ */
 r.get('/adoption', (_req, res) => {
   const cutover = getSetting('cutover_date') || '2026-09-01';
@@ -365,6 +414,12 @@ const EXPORTABLE = {
   reversals: 'SELECT * FROM reversals ORDER BY reversal_id',
   vendor_credits: 'SELECT * FROM vendor_credits ORDER BY credit_id',
   audit_log: 'SELECT * FROM audit_log ORDER BY log_id',
+  employees: 'SELECT * FROM employees ORDER BY emp_id',
+  cost_curve: 'SELECT * FROM cost_curve ORDER BY floors, area_sqm',
+  building_aliases: 'SELECT * FROM building_aliases ORDER BY building_id',
+  rental_units: 'SELECT * FROM rental_units ORDER BY unit_id',
+  land_leases: 'SELECT * FROM land_leases ORDER BY location_code',
+  location_pl: 'SELECT * FROM location_pl ORDER BY location_code',
 };
 
 const csvCell = (v) => {

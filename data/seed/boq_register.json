@@ -48,5 +48,15 @@
   "boq_value": 1072650.69,
   "author": "AI จากข้อมูลจ่ายจริง",
   "status": "ยังไม่จบ · ขาดงานกระจก ประมาณ 125,672"
+ },
+ {
+  "boq_id": "BOQ-006",
+  "title": "AIA · D-AAA",
+  "version": "v1 (as-built)",
+  "received_date": "25/8/2026",
+  "source_file": "BOQ_AAA_AIA_B006.xlsx",
+  "boq_value": 1076018.4,
+  "author": "AI จากข้อมูลจ่ายจริง",
+  "status": "สร้างจากต้นทุนจริง · ขาดงานฐานรากช่วงต้น"
  }
 ]

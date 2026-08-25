@@ -4,23 +4,26 @@ import { el, clear, baht, thaiDate, toast, modal, flagList, confirmDialog } from
 import { state, navigate, reload } from '../app.js';
 
 export async function render() {
-  const data = await api.get('/api/requests' + qs({ status: 'รออนุมัติ', per_page: 200 }));
+  const [data, access] = await Promise.all([
+    api.get('/api/requests' + qs({ status: 'รออนุมัติ', per_page: 200 })),
+    api.get('/api/project-access').catch(() => ({ requests: [] })),
+  ]);
   const root = el('div');
   const picked = new Set();
 
   const clean = data.requests.filter((r) => !r.flags.length && r.requester_id !== state.user.user_id);
   const flagged = data.requests.filter((r) => r.flags.length || r.requester_id === state.user.user_id);
 
-  const bar = el('div', { class: 'sticky-total hidden' });
+  const bar = el('div', { class: 'batch hidden' });
   const paintBar = () => {
     const sum = data.requests.filter((r) => picked.has(r.request_id))
       .reduce((s, r) => s + r.total_amount, 0);
     bar.classList.toggle('hidden', picked.size === 0);
     clear(bar).append(
       el('div', { class: 'spread mb' },
-        el('span', { text: `เลือก ${picked.size} ใบ` }),
-        el('span', { class: 'mono', text: `${baht(sum)} บาท` })),
-      el('button', { class: 'btn primary block', onclick: bulkApprove }, 'อนุมัติที่เลือก'));
+        el('span', {}, 'เลือกแล้ว ', el('b', { text: String(picked.size) }), ' ใบ'),
+        el('span', {}, el('b', { text: baht(sum, 0) }), ' บาท')),
+      el('button', { class: 'btn primary block', onclick: bulkApprove }, 'อนุมัติที่เลือก →'));
   };
 
   async function bulkApprove() {
@@ -38,7 +41,10 @@ export async function render() {
   }
 
   function row(r, selectable) {
-    const box = el('div', { class: 'item', onclick: () => navigate(`requests/${r.request_id}`) });
+    const box = el('div', {
+      class: `item ${selectable ? '' : 'alert'}`,
+      onclick: () => navigate(`requests/${r.request_id}`),
+    });
     const check = selectable
       ? el('input', {
         type: 'checkbox', class: 'pick',
@@ -53,9 +59,10 @@ export async function render() {
       el('div', { class: 'line1' },
         check,
         el('span', { class: 'id', text: r.request_id }),
-        el('span', { class: 'amt mono', text: baht(r.total_amount) })),
-      el('div', { class: 'line2 truncate' },
-        `${r.requester_name} · ${r.building_name} · ${r.vendor_name || '—'} · ${thaiDate(r.request_date)}`),
+        el('span', { class: 'amt', text: baht(r.total_amount, 0) })),
+      el('div', { class: 'line2 truncate', text: `${r.vendor_name || r.payee_name_raw || '—'}` }),
+      el('div', { class: 'line3 truncate' },
+        `${r.requester_name} · ${r.building_name} · ${thaiDate(r.request_date)}`),
       r.requester_id === state.user.user_id
         ? el('div', { class: 'flag' }, el('b', { text: 'W7 ' }), 'ใบของผู้อนุมัติเอง — จะถูกนับแยกในรายงาน')
         : null,
@@ -91,11 +98,37 @@ export async function render() {
   }
 
   root.append(
-    el('div', { class: 'card tight spread' },
-      el('div', {}, el('div', { class: 'muted tiny', text: 'รออนุมัติ' }),
-        el('div', { style: 'font-weight:700', text: `${data.total_count} ใบ` })),
-      el('div', { class: 'right' }, el('div', { class: 'muted tiny', text: 'รวมเป็นเงิน' }),
-        el('div', { class: 'mono', style: 'font-weight:700', text: `${baht(data.total_amount)} บาท` }))));
+    el('div', { class: 'eyebrow', text: 'ทุกโครงการ' }),
+    el('h1', { text: `รออนุมัติ ${data.total_count} ใบ · ${baht(data.total_amount, 0)}` }));
+
+  // คำขอสิทธิ์ชั่วคราว (v9 §21) — กดอนุมัติได้ในคลิกเดียว
+  const pendingAccess = (access.requests || []).filter((a) => a.status === 'รออนุมัติ');
+  if (pendingAccess.length)
+    root.append(
+      el('div', { class: 'rule-head', text: `คำขอสิทธิ์เข้าโครงการ · ${pendingAccess.length} คำขอ` }),
+      el('div', { class: 'list mb' }, pendingAccess.map((a) => el('div', { class: 'item warn' },
+        el('div', { class: 'line1' },
+          el('span', { class: 'id', text: `${a.display_name} (${a.user_id})` }),
+          el('span', { class: 'amt', text: a.project_id })),
+        el('div', { class: 'line2', text: a.reason }),
+        el('div', { class: 'line3', text: `${a.project_name} · ถึง ${a.expires_at || '—'}` }),
+        el('div', { class: 'row mt' },
+          el('button', {
+            class: 'btn primary sm grow',
+            onclick: () => decideAccess(a.access_id, true),
+          }, 'ให้สิทธิ์'),
+          el('button', {
+            class: 'btn sm grow',
+            onclick: () => decideAccess(a.access_id, false),
+          }, 'ไม่ให้'))))));
+
+  async function decideAccess(id, approve) {
+    try {
+      await api.post(`/api/project-access/${id}/decide`, { approve });
+      toast(approve ? 'ให้สิทธิ์แล้ว' : 'ปฏิเสธแล้ว', 'ok');
+      reload();
+    } catch (err) { toast(err.message, 'error'); }
+  }
 
   if (!data.requests.length) {
     root.append(el('div', { class: 'empty', text: 'ไม่มีใบรออนุมัติ' }));
@@ -104,12 +137,12 @@ export async function render() {
 
   if (clean.length) {
     root.append(
-      el('h2', { class: 'mt', text: `ไม่มีธงเตือน — เลือกหลายใบพร้อมกันได้ (${clean.length})` }),
+      el('div', { class: 'rule-head', text: `ไม่มีธง — ติ๊กรวมแล้วกดครั้งเดียว · ${clean.length} ใบ` }),
       el('div', { class: 'list' }, clean.map((r) => row(r, true))));
   }
   if (flagged.length) {
     root.append(
-      el('h2', { class: 'mt', text: `ติดธงเตือน — ต้องกดทีละใบ (${flagged.length})` }),
+      el('div', { class: 'rule-head', text: `ติดธง — ต้องเปิดอ่านและกดทีละใบ · ${flagged.length} ใบ` }),
       el('div', { class: 'list' }, flagged.map((r) => row(r, false))));
   }
   root.append(bar);

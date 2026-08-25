@@ -105,10 +105,19 @@ export function can(user, cap) {
 export const seesAllProjects = (user) =>
   ['CEO', 'COO', 'FINANCE', 'ACCOUNT', 'VIEWER'].includes(user?.role);
 
+/**
+ * สิทธิ์ถาวรจาก 21_DIM_USER_ACCESS (กฎ 3%) + สิทธิ์ชั่วคราวที่ COO อนุมัติและยังไม่หมดอายุ
+ * @returns {string[]|null} null = เห็นทุกโครงการ
+ */
 export function allowedProjectIds(user) {
-  if (seesAllProjects(user)) return null; // null = ไม่จำกัด
-  return db.prepare('SELECT project_id FROM user_projects WHERE user_id = ?')
-           .all(user.user_id).map((r) => r.project_id);
+  if (seesAllProjects(user)) return null;
+  const rows = db.prepare(`
+    SELECT project_id FROM user_projects WHERE user_id = ?
+    UNION
+    SELECT project_id FROM project_access_requests
+     WHERE user_id = ? AND status = 'อนุมัติแล้ว'
+       AND (expires_at IS NULL OR expires_at >= date('now'))`).all(user.user_id, user.user_id);
+  return rows.map((r) => r.project_id);
 }
 
 // ---------------------------------------------------------------- middleware

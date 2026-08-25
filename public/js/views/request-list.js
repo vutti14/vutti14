@@ -1,6 +1,6 @@
 /** รายการใบเบิก + ตัวกรอง — และเป็นทางเข้าหน้ารายละเอียด */
 import { api, qs } from '../api.js';
-import { el, clear, select, baht, thaiDate, statusPill } from '../ui.js';
+import { el, clear, select, baht, thaiDate, statusPill, itemTone } from '../ui.js';
 import { state, navigate } from '../app.js';
 import { renderDetail } from './request-detail.js';
 
@@ -90,19 +90,19 @@ export async function render({ params }) {
 }
 
 function requestItem(r) {
-  const imported = r.value_source === 'นำเข้าย้อนหลัง';
   return el('div', {
-    class: `item ${imported ? 'imported' : ''}`,
+    class: `item ${itemTone(r, { forUser: state.user.user_id })}`,
     onclick: () => navigate(`requests/${r.request_id}`),
   },
     el('div', { class: 'line1' },
       el('span', { class: 'id', text: r.request_id }),
-      r.flags?.length ? el('span', { title: r.flags.map((f) => f.label).join(' · '), text: '⚠️' }) : null,
+      r.flags?.length ? el('span', { title: r.flags.map((f) => f.label).join(' · '), text: '⚑' }) : null,
       statusPill(r.status),
-      el('span', { class: 'amt mono', text: baht(r.total_amount) })),
-    el('div', { class: 'line2 truncate' },
-      `${thaiDate(r.request_date)} · ${r.requester_name} · ${r.building_name} · ${r.vendor_name || r.note || '—'}`),
-    r.confidence && ['C', 'D'].includes(r.confidence)
-      ? el('div', { class: `line2 conf-${r.confidence}`, text: 'ข้อมูลนำเข้า ระดับความเชื่อถือ ' + r.confidence })
-      : null);
+      el('span', { class: 'amt', text: baht(r.total_amount) })),
+    el('div', { class: 'line2 truncate', text: `${r.vendor_name || r.payee_name_raw || r.note || '—'}` }),
+    el('div', { class: 'line3 truncate' },
+      `${thaiDate(r.request_date)} · ${r.requester_name} · ${r.building_name}`,
+      r.confidence && ['C', 'C2', 'D'].includes(r.confidence)
+        ? el('span', { class: `conf-${r.confidence}`, text: ` · นำเข้า ระดับ ${r.confidence} (ประมาณ)` })
+        : null));
 }

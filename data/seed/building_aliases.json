@@ -1,0 +1,417 @@
+[
+ {
+  "building_id": "B001",
+  "alias": "คุณต๋อย(ใหม่)",
+  "alias_kind": "ชื่อที่ใช้หน้างาน"
+ },
+ {
+  "building_id": "B002",
+  "alias": "V5 ใหม่",
+  "alias_kind": "ชื่อที่ใช้หน้างาน"
+ },
+ {
+  "building_id": "B003",
+  "alias": "SL1",
+  "alias_kind": "ชื่อที่ใช้หน้างาน"
+ },
+ {
+  "building_id": "B004",
+  "alias": "R6",
+  "alias_kind": "ชื่อที่ใช้หน้างาน"
+ },
+ {
+  "building_id": "B005",
+  "alias": "R7",
+  "alias_kind": "ชื่อที่ใช้หน้างาน"
+ },
+ {
+  "building_id": "B006",
+  "alias": "AIA",
+  "alias_kind": "ชื่อที่ใช้หน้างาน"
+ },
+ {
+  "building_id": "B007",
+  "alias": "R1 หลังแรก",
+  "alias_kind": "ชื่อที่ใช้หน้างาน"
+ },
+ {
+  "building_id": "B008",
+  "alias": "พื้นที่ส่วนกลาง",
+  "alias_kind": "ชื่อที่ใช้หน้างาน"
+ },
+ {
+  "building_id": "B009",
+  "alias": "goldy K8 หลังที่1",
+  "alias_kind": "ชื่อที่ใช้หน้างาน"
+ },
+ {
+  "building_id": "B010",
+  "alias": "พื้นที่ส่วนกลางราชพฤกษ์",
+  "alias_kind": "ชื่อที่ใช้หน้างาน"
+ },
+ {
+  "building_id": "B011",
+  "alias": "K8 กาญจนาภิเษก",
+  "alias_kind": "ชื่อที่ใช้หน้างาน"
+ },
+ {
+  "building_id": "B012",
+  "alias": "V2",
+  "alias_kind": "ชื่อที่ใช้หน้างาน"
+ },
+ {
+  "building_id": "B013",
+  "alias": "R8",
+  "alias_kind": "ชื่อที่ใช้หน้างาน"
+ },
+ {
+  "building_id": "B014",
+  "alias": "PEB600SQM",
+  "alias_kind": "ชื่อที่ใช้หน้างาน"
+ },
+ {
+  "building_id": "B015",
+  "alias": "สระว่ายน้ำบ้านคุณณัฐ",
+  "alias_kind": "ชื่อที่ใช้หน้างาน"
+ },
+ {
+  "building_id": "B016",
+  "alias": "SL2",
+  "alias_kind": "ชื่อที่ใช้หน้างาน"
+ },
+ {
+  "building_id": "B017",
+  "alias": "อาคาร W",
+  "alias_kind": "ชื่อที่ใช้หน้างาน"
+ },
+ {
+  "building_id": "B018",
+  "alias": "R5",
+  "alias_kind": "ชื่อที่ใช้หน้างาน"
+ },
+ {
+  "building_id": "B019",
+  "alias": "V1",
+  "alias_kind": "ชื่อที่ใช้หน้างาน"
+ },
+ {
+  "building_id": "B020",
+  "alias": "cozy",
+  "alias_kind": "ชื่อที่ใช้หน้างาน"
+ },
+ {
+  "building_id": "B021",
+  "alias": "URM",
+  "alias_kind": "ชื่อที่ใช้หน้างาน"
+ },
+ {
+  "building_id": "B022",
+  "alias": "เทพกุญชร22 M1",
+  "alias_kind": "ชื่อที่ใช้หน้างาน"
+ },
+ {
+  "building_id": "B023",
+  "alias": "V4 คุณโต้",
+  "alias_kind": "ชื่อที่ใช้หน้างาน"
+ },
+ {
+  "building_id": "B024",
+  "alias": "Facility Area",
+  "alias_kind": "ชื่อที่ใช้หน้างาน"
+ },
+ {
+  "building_id": "B025",
+  "alias": "BOX",
+  "alias_kind": "ชื่อที่ใช้หน้างาน"
+ },
+ {
+  "building_id": "B026",
+  "alias": "ส่วนกลางโครงการซาโตชิ",
+  "alias_kind": "ชื่อที่ใช้หน้างาน"
+ },
+ {
+  "building_id": "B027",
+  "alias": "BNC",
+  "alias_kind": "ชื่อที่ใช้หน้างาน"
+ },
+ {
+  "building_id": "B028",
+  "alias": "R9",
+  "alias_kind": "ชื่อที่ใช้หน้างาน"
+ },
+ {
+  "building_id": "B029",
+  "alias": "ไม่พบอาคาร",
+  "alias_kind": "ชื่อที่ใช้หน้างาน"
+ },
+ {
+  "building_id": "B030",
+  "alias": "บ้านพี่อาร์ต",
+  "alias_kind": "ชื่อที่ใช้หน้างาน"
+ },
+ {
+  "building_id": "B031",
+  "alias": "WH1",
+  "alias_kind": "ชื่อที่ใช้หน้างาน"
+ },
+ {
+  "building_id": "B032",
+  "alias": "ไม่พบอาคาร",
+  "alias_kind": "ชื่อที่ใช้หน้างาน"
+ },
+ {
+  "building_id": "B033",
+  "alias": "PAT",
+  "alias_kind": "ชื่อที่ใช้หน้างาน"
+ },
+ {
+  "building_id": "B034",
+  "alias": "SA4",
+  "alias_kind": "ชื่อที่ใช้หน้างาน"
+ },
+ {
+  "building_id": "B035",
+  "alias": "R3",
+  "alias_kind": "ชื่อที่ใช้หน้างาน"
+ },
+ {
+  "building_id": "B036",
+  "alias": "goldy K8 หลังที่2",
+  "alias_kind": "ชื่อที่ใช้หน้างาน"
+ },
+ {
+  "building_id": "B037",
+  "alias": "SA3",
+  "alias_kind": "ชื่อที่ใช้หน้างาน"
+ },
+ {
+  "building_id": "B038",
+  "alias": "คุณกิต2",
+  "alias_kind": "ชื่อที่ใช้หน้างาน"
+ },
+ {
+  "building_id": "B039",
+  "alias": "V1",
+  "alias_kind": "ชื่อที่ใช้หน้างาน"
+ },
+ {
+  "building_id": "B040",
+  "alias": "GD2",
+  "alias_kind": "ชื่อที่ใช้หน้างาน"
+ },
+ {
+  "building_id": "B041",
+  "alias": "พื้นที่ส่วนกลาง",
+  "alias_kind": "ชื่อที่ใช้หน้างาน"
+ },
+ {
+  "building_id": "B042",
+  "alias": "COZ",
+  "alias_kind": "ชื่อที่ใช้หน้างาน"
+ },
+ {
+  "building_id": "B043",
+  "alias": "เทพกุญชร22 M2",
+  "alias_kind": "ชื่อที่ใช้หน้างาน"
+ },
+ {
+  "building_id": "B044",
+  "alias": "13/97",
+  "alias_kind": "ชื่อที่ใช้หน้างาน"
+ },
+ {
+  "building_id": "B045",
+  "alias": "ไม่พบอาคาร",
+  "alias_kind": "ชื่อที่ใช้หน้างาน"
+ },
+ {
+  "building_id": "B046",
+  "alias": "V2",
+  "alias_kind": "ชื่อที่ใช้หน้างาน"
+ },
+ {
+  "building_id": "B047",
+  "alias": "ไม่พบอาคาร",
+  "alias_kind": "ชื่อที่ใช้หน้างาน"
+ },
+ {
+  "building_id": "B048",
+  "alias": "s1 คุณแบงค์",
+  "alias_kind": "ชื่อที่ใช้หน้างาน"
+ },
+ {
+  "building_id": "B049",
+  "alias": "45/6",
+  "alias_kind": "ชื่อที่ใช้หน้างาน"
+ },
+ {
+  "building_id": "B050",
+  "alias": "R2",
+  "alias_kind": "ชื่อที่ใช้หน้างาน"
+ },
+ {
+  "building_id": "B051",
+  "alias": "R1",
+  "alias_kind": "ชื่อที่ใช้หน้างาน"
+ },
+ {
+  "building_id": "B052",
+  "alias": "K07",
+  "alias_kind": "ชื่อที่ใช้หน้างาน"
+ },
+ {
+  "building_id": "B053",
+  "alias": "พื้นที่ส่วนกลางราชพฤกษ์",
+  "alias_kind": "ชื่อที่ใช้หน้างาน"
+ },
+ {
+  "building_id": "B054",
+  "alias": "S4",
+  "alias_kind": "ชื่อที่ใช้หน้างาน"
+ },
+ {
+  "building_id": "B055",
+  "alias": "R4",
+  "alias_kind": "ชื่อที่ใช้หน้างาน"
+ },
+ {
+  "building_id": "B056",
+  "alias": "SA5",
+  "alias_kind": "ชื่อที่ใช้หน้างาน"
+ },
+ {
+  "building_id": "B057",
+  "alias": "R4",
+  "alias_kind": "ชื่อที่ใช้หน้างาน"
+ },
+ {
+  "building_id": "B058",
+  "alias": "T22",
+  "alias_kind": "ชื่อที่ใช้หน้างาน"
+ },
+ {
+  "building_id": "B059",
+  "alias": "สระว่ายน้ำบ้านคุณณัฐ",
+  "alias_kind": "ชื่อที่ใช้หน้างาน"
+ },
+ {
+  "building_id": "B060",
+  "alias": "BNE",
+  "alias_kind": "ชื่อที่ใช้หน้างาน"
+ },
+ {
+  "building_id": "B061",
+  "alias": "JWN",
+  "alias_kind": "ชื่อที่ใช้หน้างาน"
+ },
+ {
+  "building_id": "B062",
+  "alias": "Facility Area",
+  "alias_kind": "ชื่อที่ใช้หน้างาน"
+ },
+ {
+  "building_id": "B062",
+  "alias": "FAC",
+  "alias_kind": "รหัสเดิม"
+ },
+ {
+  "building_id": "B063",
+  "alias": "45/5",
+  "alias_kind": "ชื่อที่ใช้หน้างาน"
+ },
+ {
+  "building_id": "B063",
+  "alias": "K05",
+  "alias_kind": "รหัสเดิม"
+ },
+ {
+  "building_id": "B064",
+  "alias": "GD1",
+  "alias_kind": "ชื่อที่ใช้หน้างาน"
+ },
+ {
+  "building_id": "B064",
+  "alias": "GD1",
+  "alias_kind": "รหัสเดิม"
+ },
+ {
+  "building_id": "B065",
+  "alias": "R2",
+  "alias_kind": "ชื่อที่ใช้หน้างาน"
+ },
+ {
+  "building_id": "B065",
+  "alias": "XR2",
+  "alias_kind": "รหัสเดิม"
+ },
+ {
+  "building_id": "B066",
+  "alias": "45/4",
+  "alias_kind": "ชื่อที่ใช้หน้างาน"
+ },
+ {
+  "building_id": "B066",
+  "alias": "K04",
+  "alias_kind": "รหัสเดิม"
+ },
+ {
+  "building_id": "B067",
+  "alias": "45/8",
+  "alias_kind": "ชื่อที่ใช้หน้างาน"
+ },
+ {
+  "building_id": "B067",
+  "alias": "K08",
+  "alias_kind": "รหัสเดิม"
+ },
+ {
+  "building_id": "B068",
+  "alias": "BOX",
+  "alias_kind": "ชื่อที่ใช้หน้างาน"
+ },
+ {
+  "building_id": "B068",
+  "alias": "BOX",
+  "alias_kind": "รหัสเดิม"
+ },
+ {
+  "building_id": "B069",
+  "alias": "โรงงานบางปะอิน",
+  "alias_kind": "ชื่อที่ใช้หน้างาน"
+ },
+ {
+  "building_id": "B069",
+  "alias": "X02",
+  "alias_kind": "รหัสเดิม"
+ },
+ {
+  "building_id": "B070",
+  "alias": "GD1",
+  "alias_kind": "ชื่อที่ใช้หน้างาน"
+ },
+ {
+  "building_id": "B070",
+  "alias": "GD1",
+  "alias_kind": "รหัสเดิม"
+ },
+ {
+  "building_id": "B071",
+  "alias": "Facility Area",
+  "alias_kind": "ชื่อที่ใช้หน้างาน"
+ },
+ {
+  "building_id": "B071",
+  "alias": "FAC",
+  "alias_kind": "รหัสเดิม"
+ },
+ {
+  "building_id": "B072",
+  "alias": "S3",
+  "alias_kind": "ชื่อที่ใช้หน้างาน"
+ },
+ {
+  "building_id": "B072",
+  "alias": "XS3",
+  "alias_kind": "รหัสเดิม"
+ }
+]

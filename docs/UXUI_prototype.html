@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="th"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>RABBiZ Build — ต้นแบบหน้าจอระบบเบิกจ่าย</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#17222E; --ink2:#25344A; --paper:#ECEDE7; --slip:#FDFDFB;
+  --steel:#7C8A99; --line:#C9CDC6; --tape:#F5B301; --rust:#A8442A; --moss:#4A6741;
+  --sans:'IBM Plex Sans Thai','Noto Sans Thai',system-ui,sans-serif;
+  --mono:'IBM Plex Mono','SF Mono',ui-monospace,monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--paper);color:var(--ink);font-family:var(--sans);
+  background-image:repeating-linear-gradient(0deg,transparent,transparent 27px,rgba(23,34,46,.045) 27px,rgba(23,34,46,.045) 28px),
+                   repeating-linear-gradient(90deg,transparent,transparent 27px,rgba(23,34,46,.045) 27px,rgba(23,34,46,.045) 28px);}
+.wrap{max-width:1180px;margin:0 auto;padding:0 24px 90px}
+
+/* ---------- header ---------- */
+header{padding:52px 0 26px}
+.eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:var(--steel)}
+h1{font-size:clamp(30px,4.6vw,46px);line-height:1.1;font-weight:700;letter-spacing:-.6px;margin:12px 0 12px}
+h1 mark{background:none;color:var(--ink);box-shadow:inset 0 -.32em 0 var(--tape)}
+.lede{color:var(--ink2);max-width:60ch;line-height:1.7;font-size:15px}
+.meta{display:flex;gap:26px;flex-wrap:wrap;margin-top:22px;padding-top:18px;border-top:2px solid var(--ink)}
+.meta div{font-size:12px;color:var(--steel);line-height:1.5}
+.meta b{display:block;font-family:var(--mono);font-size:19px;color:var(--ink);font-weight:600}
+
+/* ---------- tabs ---------- */
+nav.rail{position:sticky;top:0;z-index:30;background:var(--paper);
+  display:flex;gap:2px;flex-wrap:wrap;padding:14px 0 12px;border-bottom:1px solid var(--line);margin-bottom:30px}
+nav.rail button{font-family:var(--mono);font-size:11.5px;letter-spacing:.06em;padding:9px 13px;
+  border:1px solid var(--line);background:var(--slip);color:var(--ink2);cursor:pointer;border-radius:0;
+  transition:.14s}
+nav.rail button:hover{border-color:var(--ink)}
+nav.rail button[aria-selected=true]{background:var(--ink);color:var(--slip);border-color:var(--ink)}
+nav.rail button:focus-visible{outline:2px solid var(--tape);outline-offset:2px}
+
+/* ---------- stage ---------- */
+.stage{display:grid;grid-template-columns:392px 1fr;gap:44px;align-items:start}
+@media(max-width:900px){.stage{grid-template-columns:1fr}}
+
+/* ---------- phone ---------- */
+.phone{width:392px;border:2px solid var(--ink);background:var(--slip);position:relative;
+  box-shadow:8px 8px 0 rgba(23,34,46,.13)}
+.pbar{background:var(--ink);color:var(--slip);font-family:var(--mono);font-size:10.5px;
+  display:flex;justify-content:space-between;padding:7px 13px;letter-spacing:.06em}
+.phead{padding:14px 16px 12px;border-bottom:1px solid var(--line)}
+.phead .who{font-family:var(--mono);font-size:10.5px;color:var(--steel);letter-spacing:.12em;text-transform:uppercase}
+.phead h2{font-size:19px;font-weight:600;margin-top:3px;letter-spacing:-.2px}
+.pbody{padding:14px 16px 78px;min-height:530px;max-height:610px;overflow-y:auto}
+.pfoot{position:absolute;left:0;right:0;bottom:0;background:var(--slip);border-top:1px solid var(--line);
+  padding:11px 14px;display:flex;gap:9px}
+.btn{flex:1;font-family:var(--sans);font-size:14px;font-weight:600;padding:13px;border:1.5px solid var(--ink);
+  background:var(--slip);color:var(--ink);cursor:pointer}
+.btn.go{background:var(--tape);border-color:var(--ink)}
+.btn:focus-visible{outline:2px solid var(--rust);outline-offset:2px}
+
+/* ---------- code strip (signature) ---------- */
+.strip{background:var(--ink);padding:11px 13px}
+.strip .lbl{font-family:var(--mono);font-size:9.5px;color:var(--steel);letter-spacing:.18em;text-transform:uppercase}
+.strip .code{font-family:var(--mono);font-size:26px;font-weight:600;color:var(--tape);letter-spacing:.11em;
+  margin-top:3px;display:flex;gap:2px}
+.strip .code span{transition:color .2s}
+.strip .code span.off{color:#3C4A5C}
+.strip .seg{font-family:var(--mono);font-size:9px;color:var(--steel);display:flex;gap:2px;margin-top:5px;letter-spacing:.05em}
+.strip .seg i{font-style:normal;text-align:center}
+
+/* ---------- form ---------- */
+.fld{margin-bottom:14px}
+.fld label{display:block;font-size:12px;color:var(--steel);margin-bottom:5px;font-weight:500}
+.sel{width:100%;padding:12px 11px;border:1px solid var(--line);background:var(--slip);font-family:var(--sans);
+  font-size:14.5px;color:var(--ink);cursor:pointer;appearance:none;
+  background-image:linear-gradient(45deg,transparent 50%,var(--ink) 50%),linear-gradient(135deg,var(--ink) 50%,transparent 50%);
+  background-position:calc(100% - 17px) 19px,calc(100% - 12px) 19px;background-size:5px 5px;background-repeat:no-repeat}
+.sel:focus{outline:2px solid var(--tape);outline-offset:-1px}
+.trio{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+.trio button{padding:15px 4px;border:1.5px solid var(--line);background:var(--slip);font-family:var(--sans);
+  font-size:15px;font-weight:600;cursor:pointer;color:var(--ink2)}
+.trio button[aria-pressed=true]{background:var(--ink);color:var(--tape);border-color:var(--ink)}
+.trio button:focus-visible{outline:2px solid var(--tape);outline-offset:2px}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+.vatbar{display:flex;gap:6px;margin-bottom:6px}
+.vatbar button{flex:1;padding:9px;font-size:13px;font-family:var(--sans);border:1px solid var(--line);
+  background:var(--slip);cursor:pointer}
+.vatbar button[aria-pressed=true]{background:var(--ink2);color:var(--slip);border-color:var(--ink2)}
+.sum{border-top:2px solid var(--ink);margin-top:16px;padding-top:11px;font-family:var(--mono);font-size:13px}
+.sum div{display:flex;justify-content:space-between;padding:3px 0;color:var(--ink2)}
+.sum div.tot{font-size:18px;font-weight:600;color:var(--ink);border-top:1px solid var(--line);margin-top:6px;padding-top:8px}
+
+/* ---------- list ---------- */
+.slipcard{border:1px solid var(--line);background:var(--slip);padding:12px;margin-bottom:9px;position:relative}
+.slipcard.flag{border-left:4px solid var(--rust)}
+.slipcard.ok{border-left:4px solid var(--moss)}
+.sc-top{display:flex;justify-content:space-between;align-items:baseline;gap:8px}
+.sc-id{font-family:var(--mono);font-size:11px;color:var(--steel)}
+.sc-amt{font-family:var(--mono);font-size:16px;font-weight:600}
+.sc-mid{font-size:14px;font-weight:500;margin-top:4px}
+.sc-sub{font-size:12px;color:var(--steel);margin-top:2px}
+.tag{display:inline-block;font-size:11px;padding:2px 7px;margin-top:7px;font-weight:500}
+.tag.r{background:#F6E3DD;color:var(--rust)}
+.tag.g{background:#E3EADF;color:var(--moss)}
+.tag.y{background:#FBEFCE;color:#7A5B00}
+.chk{position:absolute;right:11px;bottom:11px;width:22px;height:22px;border:1.5px solid var(--ink);
+  background:var(--slip);cursor:pointer}
+.chk[aria-checked=true]{background:var(--ink)}
+.chk[aria-checked=true]::after{content:'✓';color:var(--tape);display:block;text-align:center;line-height:19px;font-size:14px}
+.batch{position:sticky;bottom:0;background:var(--ink);color:var(--slip);padding:11px 13px;
+  font-family:var(--mono);font-size:12.5px;display:flex;justify-content:space-between;align-items:center;margin-top:10px}
+.batch b{color:var(--tape)}
+
+/* ---------- doc grid ---------- */
+.docrow{border:1px solid var(--line);background:var(--slip);padding:11px;margin-bottom:8px}
+.docgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:5px;margin-top:9px}
+.docgrid div{border:1px solid var(--line);padding:7px 5px;text-align:center;font-size:11px;line-height:1.35;cursor:pointer}
+.docgrid div.done{background:#E3EADF;border-color:var(--moss);color:var(--moss);font-weight:600}
+.docgrid div.late{background:#F6E3DD;border-color:var(--rust);color:var(--rust);font-weight:600}
+
+/* ---------- dashboard ---------- */
+.kpis{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--line);border:1px solid var(--line)}
+.kpis div{background:var(--slip);padding:13px 11px}
+.kpis b{display:block;font-family:var(--mono);font-size:21px;font-weight:600;letter-spacing:-.5px}
+.kpis span{font-size:11.5px;color:var(--steel);line-height:1.4;display:block;margin-top:3px}
+.kpis div.alert b{color:var(--rust)}
+.bars{margin-top:16px}
+.bars li{list-style:none;margin-bottom:11px}
+.bl{display:flex;justify-content:space-between;font-size:13px;margin-bottom:4px}
+.bl b{font-family:var(--mono);font-weight:600}
+.bt{height:8px;background:#DEE0DA}
+.bt i{display:block;height:100%;background:var(--ink)}
+.bt i.tape{background:var(--tape)}
+.bt i.rust{background:var(--rust)}
+
+/* ---------- notes column ---------- */
+.notes h3{font-family:var(--mono);font-size:11.5px;letter-spacing:.16em;text-transform:uppercase;
+  padding-bottom:8px;border-bottom:2px solid var(--ink);margin-bottom:16px}
+.notes .q{font-size:20px;font-weight:600;line-height:1.35;margin-bottom:14px;letter-spacing:-.2px}
+.notes p{font-size:14.5px;line-height:1.75;color:var(--ink2);margin-bottom:13px;max-width:56ch}
+.notes .rule{border-left:3px solid var(--tape);padding:3px 0 3px 14px;margin:16px 0;font-size:14px;line-height:1.7}
+.notes .rule b{display:block;font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--steel);margin-bottom:4px}
+.notes .warn{border-left-color:var(--rust)}
+.dl{border-top:1px solid var(--line);padding-top:12px;margin-top:18px}
+.dl div{display:flex;gap:14px;font-size:13.5px;padding:6px 0;line-height:1.6}
+.dl div span:first-child{font-family:var(--mono);font-size:11px;color:var(--steel);min-width:78px;padding-top:3px}
+
+/* ---------- ERD ---------- */
+.erd{background:var(--slip);border:1px solid var(--line);padding:22px;overflow-x:auto}
+.erd pre{font-family:var(--mono);font-size:12.5px;line-height:1.75;color:var(--ink2);white-space:pre}
+footer{margin-top:56px;padding-top:20px;border-top:2px solid var(--ink);font-size:13px;color:var(--steel);line-height:1.75}
+[hidden]{display:none!important}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}}
+</style></head><body><div class="wrap">
+
+<header>
+  <div class="eyebrow">RABBiZ Build · ต้นแบบหน้าจอ · ฝั่งรายจ่ายเท่านั้น</div>
+  <h1>ใบเบิกที่<mark>กรอกเสร็จใน 40 วินาที</mark><br>บนมือถือ กลางไซต์งาน</h1>
+  <p class="lede">ออกแบบจากฐานข้อมูลกลาง v9 — รายการจริง 1,449 ใบ · 15.15 ล้านบาท · 16 โครงการ · 72 อาคาร · ผู้ขาย 48 ราย
+  ทุกตัวเลขและทุกชื่อในหน้าจอนี้มาจากข้อมูลจริง ไม่ได้สมมติขึ้น</p>
+  <div class="meta">
+    <div><b>6</b>หน้าจอ</div>
+    <div><b>2</b>ช่องที่ต้องกด<br>ก่อนถึงยอดเงิน</div>
+    <div><b>40 วิ</b>เป้าหมายเวลากรอก</div>
+    <div><b>0</b>ช่องที่ต้องพิมพ์รหัสเอง</div>
+  </div>
+</header>
+
+<nav class="rail" role="tablist">
+  <button role="tab" aria-selected="true" data-s="s1">01 · งานของฉัน</button>
+  <button role="tab" aria-selected="false" data-s="s2">02 · สร้างใบเบิก</button>
+  <button role="tab" aria-selected="false" data-s="s3">03 · อนุมัติ</button>
+  <button role="tab" aria-selected="false" data-s="s4">04 · จ่ายเงิน</button>
+  <button role="tab" aria-selected="false" data-s="s5">05 · ตามเอกสาร</button>
+  <button role="tab" aria-selected="false" data-s="s6">06 · ภาพรวม CEO</button>
+  <button role="tab" aria-selected="false" data-s="s7">07 · ความสัมพันธ์ข้อมูล</button>
+</nav>
+
+<!-- ================= S1 ================= -->
+<section class="stage" data-p="s1">
+  <div class="phone">
+    <div class="pbar"><span>09:14</span><span>แม็ก · PM</span></div>
+    <div class="phead"><div class="who">ไทยรามัญ · อ่อนนุช · แรปบิทบ็อก</div><h2>งานของฉัน</h2></div>
+    <div class="pbody">
+      <div class="slipcard ok"><div class="sc-top"><span class="sc-id">REQ-2609-0044</span><span class="sc-amt">20,600</span></div>
+        <div class="sc-mid">ชัยเจริญ · เหล็กข้ออ้อย DB12</div>
+        <div class="sc-sub">R6 · ไทยรามัญ · 03 งานโครงสร้าง</div><span class="tag g">อนุมัติแล้ว · รอจ่าย</span></div>
+      <div class="slipcard"><div class="sc-top"><span class="sc-id">REQ-2609-0041</span><span class="sc-amt">7,500</span></div>
+        <div class="sc-mid">เคเค เครนกรุ๊ป · ค่าเช่าเครน 1 วัน</div>
+        <div class="sc-sub">R7 · ไทยรามัญ · 03 งานโครงสร้าง</div><span class="tag y">รออนุมัติ · 2 ชม.</span></div>
+      <div class="slipcard flag"><div class="sc-top"><span class="sc-id">REQ-2609-0038</span><span class="sc-amt">1,530</span></div>
+        <div class="sc-mid">ชัยทวีค้าวัสดุ · ใบตัดเหล็ก</div>
+        <div class="sc-sub">R8 · ไทยรามัญ · 99 ดำเนินการไซต์</div><span class="tag r">จ่ายแล้ว · ยังไม่ยืนยันว่าของมา</span></div>
+      <div class="slipcard"><div class="sc-top"><span class="sc-id">REQ-2609-0033</span><span class="sc-amt">104,760</span></div>
+        <div class="sc-mid">ทีมช่างตัง · งานผิวอาคาร</div>
+        <div class="sc-sub">R6 · ไทยรามัญ · 04 สถาปัตย์ · ค่าแรง</div><span class="tag g">ปิดรายการแล้ว</span></div>
+    </div>
+    <div class="pfoot"><button class="btn go">+ สร้างใบเบิกใหม่</button></div>
+  </div>
+  <div class="notes">
+    <h3>หน้าแรกตอบคำถามเดียว</h3>
+    <div class="q">“ใบที่ผมส่งไป ตอนนี้อยู่ตรงไหน”</div>
+    <p>PM ไม่ได้เปิดแอปมาเพื่อดูรายงาน เขาเปิดมาเพื่อ (ก) ส่งใบใหม่ (ข) เช็คว่าใบเก่าไปถึงไหนแล้ว หน้าแรกจึงมีแค่สองอย่างนี้ ไม่มีกราฟ ไม่มีสรุปยอด</p>
+    <p>เห็นเฉพาะโครงการของตัวเอง — แม็กเห็น 3 จาก 16 โครงการ เพราะประวัติ 6 เดือนบอกว่าเขาเบิกอยู่แค่ 3 ที่ คิดเป็น 97.5% ของเงินที่เขาเบิกทั้งหมด</p>
+    <div class="rule"><b>สีขอบซ้ายคือสถานะ</b>เขียว = เดินหน้าปกติ · ไม่มีสี = รอคนอื่น · แดง = ต้องการอะไรบางอย่างจากคุณ</div>
+    <p>ใบสีแดงในตัวอย่างคือใบที่จ่ายเงินไปแล้วแต่ยังไม่มีใครยืนยันว่าของมาถึง — เป็นความเสี่ยงที่แท้จริงของการโอนก่อนรับของ และเป็นตัวเลขที่บริษัทไม่เคยเห็นมาก่อน</p>
+    <div class="dl">
+      <div><span>ไม่มีในหน้านี้</span><span>ยอดรวมของโครงการ · กราฟ · รายการของคนอื่น · ปุ่มค้นหา — เพราะรายการของ PM คนเดียวไม่เคยเกิน 20 ใบต่อเดือน</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= S2 ================= -->
+<section class="stage" data-p="s2" hidden>
+  <div class="phone">
+    <div class="pbar"><span>09:15</span><span>แม็ก · PM</span></div>
+    <div class="strip">
+      <div class="lbl">รหัสอ้างอิง — ระบบประกอบให้เอง</div>
+      <div class="code" id="code"></div>
+      <div class="seg"><i style="width:22px">ผู้เบิก</i><i style="width:66px">โครงการ</i><i style="width:66px">อาคาร</i><i style="width:66px">หมวดงาน</i></div>
+    </div>
+    <div class="pbody">
+      <div class="fld"><label>โครงการ</label>
+        <select class="sel" id="f-proj"><option value="">— เลือก —</option><option value="RMT" selected>ไทยรามัญ</option><option value="ONN">อ่อนนุช-ลาดกระบัง</option><option value="RBX">แรปบิทบ็อก</option></select></div>
+      <div class="fld"><label>อาคาร</label>
+        <select class="sel" id="f-bld"><option value="">— เลือก —</option><option value="XR6">R6 · แบบ D-RCH</option><option value="XR7">R7 · แบบ D-RCH</option><option value="XR8">R8 · แบบ D-RCH</option><option value="COM">ส่วนกลางโครงการ</option></select></div>
+      <div class="fld"><label>ผู้ขาย / ทีมช่าง</label>
+        <select class="sel" id="f-ven"><option value="">— เลือก —</option><option>ชัยเจริญ</option><option>บางกอกไทยสตีล</option><option>เจริญมั่นคอนกรีต</option><option>ทีมช่างตัง</option><option>+ สร้างผู้ขายรายใหม่</option></select></div>
+      <div class="fld"><label>ภาษีมูลค่าเพิ่ม</label>
+        <div class="vatbar"><button aria-pressed="true" onclick="vat(this,1)">มี VAT</button><button aria-pressed="false" onclick="vat(this,0)">ไม่มี VAT</button></div>
+        <div class="vatbar" id="vmode"><button aria-pressed="true" onclick="vat(this,1)">แยก VAT</button><button aria-pressed="false" onclick="vat(this,0)">รวม VAT แล้ว</button></div></div>
+      <div class="fld"><label>หมวดงาน</label>
+        <select class="sel" id="f-code"><option value="">— เลือก —</option><option value="STE">03 · เหล็กโครงสร้าง</option><option value="CON">03 · คอนกรีต</option><option value="ROF">05 · หลังคา</option><option value="WAL">04 · ก่อผนัง</option></select></div>
+      <div class="fld"><label>เงินก้อนนี้เป็นอะไร</label>
+        <div class="trio"><button aria-pressed="true" onclick="trio(this)">ค่าของ</button><button aria-pressed="false" onclick="trio(this)">ค่าแรง</button><button aria-pressed="false" onclick="trio(this)">ค่าเช่า</button></div></div>
+      <div class="fld"><label>รายการ</label>
+        <select class="sel"><option>ST-0042 · เหล็กข้ออ้อย DB12 · เส้น</option><option>ST-0041 · เหล็กเส้นกลม RB9 · เส้น</option></select></div>
+      <div class="row2">
+        <div class="fld"><label>จำนวน</label><select class="sel"><option>100 เส้น</option></select></div>
+        <div class="fld"><label>ราคา/หน่วย</label><select class="sel"><option>206.00</option></select></div>
+      </div>
+      <div class="sum">
+        <div><span>ยอดก่อน VAT</span><span>20,600.00</span></div>
+        <div><span>VAT 7%</span><span>1,442.00</span></div>
+        <div><span>หัก ณ ที่จ่าย</span><span>0.00</span></div>
+        <div class="tot"><span>จ่ายสุทธิ</span><span>22,042.00</span></div>
+      </div>
+    </div>
+    <div class="pfoot"><button class="btn">บันทึกร่าง</button><button class="btn go">ส่งขออนุมัติ</button></div>
+  </div>
+  <div class="notes">
+    <h3>หน้าจอที่ทั้งระบบขึ้นอยู่กับมัน</h3>
+    <div class="q">แถบรหัสด้านบนคือหัวใจของการออกแบบนี้</div>
+    <p>ทีมงานคุ้นกับรหัส 10 ตัวอยู่แล้ว — <span style="font-family:var(--mono)">M·RMT·XR6·STE</span> แต่เดิมต้องพิมพ์เอง และพิมพ์ผิดโดยไม่มีใครรู้ (รหัส WAl แทน WAL ทำให้เงิน 37,444 บาทหายจากรายงานไปเงียบ ๆ)</p>
+    <p>ตอนนี้รหัสประกอบตัวเองทีละช่องขณะที่เลือก ช่องที่ยังไม่เลือกเป็นจุดสีจาง <b>คนไม่ได้พิมพ์รหัสอีกต่อไป แต่ยังเห็นรหัสเดิมที่คุ้นเคย</b> — ลองกดเปลี่ยนช่องดูได้</p>
+    <div class="rule"><b>ทำไมเป็นปุ่มใหญ่ 3 ปุ่ม</b>ค่าของ / ค่าแรง / ค่าเช่า คือช่องที่แก้ปัญหาใหญ่ที่สุดของทั้งระบบ วันนี้ค่าแรงในบัญชีอยู่ที่ 8.4% ทั้งที่ความจริงคือ 26–28% ถ้าทำเป็น dropdown ที่ต้องกดสองครั้ง ทุกคนจะปล่อยค่าตั้งต้น แล้วเราจะกลับไปที่เดิม</div>
+    <div class="rule warn"><b>VAT ถามก่อน แล้วค่อยถามวิธี</b>มี/ไม่มี → ถ้ามี ค่าตั้งต้นคือแยก VAT · ระบบเก็บสามค่าเสมอ (ก่อน VAT · VAT · รวม) ไม่ว่าคนกรอกแบบไหน บัญชีจึงไม่ต้องคำนวณเองอีก</div>
+    <div class="dl">
+      <div><span>จำค่าเดิม</span><span>โครงการและอาคารตั้งค่าเป็นค่าที่คนนั้นใช้ล่าสุด — PM ที่ประจำไซต์เดียวแทบไม่ต้องแตะสองช่องนี้เลย</span></div>
+      <div><span>ผู้ขายรายใหม่</span><span>สร้างได้จากหน้านี้เลย ไม่ต้องออกไปหน้าอื่น ไม่ต้องรอใครอนุมัติก่อน แต่จะติดธงให้ COO เห็นตอนอนุมัติ</span></div>
+      <div><span>ปุ่มอยู่ล่างสุด</span><span>ในระยะที่นิ้วโป้งเอื้อมถึงขณะถือมือถือมือเดียว</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= S3 ================= -->
+<section class="stage" data-p="s3" hidden>
+  <div class="phone">
+    <div class="pbar"><span>17:40</span><span>กร · COO</span></div>
+    <div class="phead"><div class="who">ทุกโครงการ</div><h2>รออนุมัติ 12 ใบ · 847,320</h2></div>
+    <div class="pbody">
+      <div class="slipcard flag"><div class="sc-top"><span class="sc-id">REQ-2609-0047</span><span class="sc-amt">231,336</span></div>
+        <div class="sc-mid">ชัยเจริญ · เหล็กข้ออ้อย DB12</div><div class="sc-sub">แม็ก · R6 ไทยรามัญ</div>
+        <span class="tag r">ราคาสูงกว่าที่เคยซื้อ 18%</span> <span class="tag r">เกินงบหมวดโครงสร้าง</span></div>
+      <div class="slipcard flag"><div class="sc-top"><span class="sc-id">REQ-2609-0046</span><span class="sc-amt">45,000</span></div>
+        <div class="sc-mid">วัฒนาซัพพลาย · วัสดุงานระบบ</div><div class="sc-sub">เบน · V5 ราชพฤกษ์</div>
+        <span class="tag r">ผู้ขายรายใหม่ · เบนเป็นคนสร้าง</span></div>
+      <div class="slipcard"><div class="sc-top"><span class="sc-id">REQ-2609-0045</span><span class="sc-amt">40,220</span><span class="chk" role="checkbox" aria-checked="true" onclick="tog(this)"></span></div>
+        <div class="sc-mid">ทีมช่างเขียด · ค่าแรงก่อ-ฉาบ</div><div class="sc-sub">พี่เอฟ · AIA ราชพฤกษ์ · หัก 3% แล้ว</div></div>
+      <div class="slipcard"><div class="sc-top"><span class="sc-id">REQ-2609-0044</span><span class="sc-amt">20,600</span><span class="chk" role="checkbox" aria-checked="true" onclick="tog(this)"></span></div>
+        <div class="sc-mid">ชัยเจริญ · เหล็กข้ออ้อย DB12</div><div class="sc-sub">แม็ก · R6 ไทยรามัญ</div></div>
+      <div class="slipcard"><div class="sc-top"><span class="sc-id">REQ-2609-0043</span><span class="sc-amt">7,500</span><span class="chk" role="checkbox" aria-checked="false" onclick="tog(this)"></span></div>
+        <div class="sc-mid">เคเค เครนกรุ๊ป · เช่าเครน 1 วัน</div><div class="sc-sub">แม็ก · R7 ไทยรามัญ · หัก 5%</div></div>
+      <div class="batch"><span>เลือกแล้ว <b id="nsel">2</b> ใบ · <b id="vsel">60,820</b> บาท</span><span>อนุมัติทั้งหมด →</span></div>
+    </div>
+    <div class="pfoot"><button class="btn">ไม่อนุมัติ</button><button class="btn go">อนุมัติที่เลือก</button></div>
+  </div>
+  <div class="notes">
+    <h3>ออกแบบรอบความจริงข้อเดียว</h3>
+    <div class="q">คุณกรอนุมัติทุกบาท เดือนละราว 240 ใบ</div>
+    <p>ข้อมูลจริงบอกว่า 58% ของใบเป็นเงินแค่ 10.1% ถ้าให้กดทีละใบทั้งหมด ภายในสองเดือนการอนุมัติจะกลายเป็นการกดผ่าน ซึ่งอันตรายกว่าไม่มีคนตรวจ เพราะทุกคนคิดว่ามีคนตรวจอยู่</p>
+    <div class="rule"><b>กติกาการเลือกหลายใบ</b>ใบที่ไม่มีธง — ติ๊กรวมแล้วกดครั้งเดียว · ใบที่มีธง — ไม่มีช่องติ๊ก ต้องเปิดอ่านและกดทีละใบ ความสนใจจึงไปอยู่ที่ใบที่ควรได้รับมันจริง ๆ</div>
+    <p>ธงทั้งห้าแบบมาจากสิ่งที่เราเจอในข้อมูลจริง ไม่ใช่กฎที่คิดขึ้นลอย ๆ: ราคาสูงกว่าที่เคยซื้อเกิน 10% · ผู้ขายรายใหม่ · ผู้ขายค้างเอกสารเกิน 3 ใบ · ยอดซ้ำกับใบอื่นในอาคารเดียวกัน · เกินงบหมวด</p>
+    <div class="rule warn"><b>ตรวจซ้ำที่ระดับอาคาร ไม่ใช่ระดับโครงการ</b>เพราะกลุ่มขึ้นอาคารทีละคู่ ค่าใช้จ่ายหารสองเท่ากันเป็นเรื่องปกติ ถ้าตั้งกฎผิดระดับ ระบบจะเตือนผิด 65% ของเวลา แล้วภายในเดือนเดียวจะไม่มีใครสนใจการเตือนอีกเลย</div>
+    <div class="dl">
+      <div><span>บนไลน์</span><span>ใบเดี่ยวส่งเป็นการ์ดพร้อมปุ่มอนุมัติ กดจบในไลน์ · ชุดหลายใบเปิดเว็บ เพราะต้องเห็นภาพรวมก่อนกด</span></div>
+      <div><span>ใบของตัวเอง</span><span>คุณกรเบิกเอง 33% ของใบทั้งบริษัท ระบบจะขึ้นป้ายว่าเป็นใบของผู้อนุมัติเอง และนับแยกในรายงาน</span></div>
+      <div><span>วัดผล</span><span>ระบบจับเวลาตั้งแต่ส่งจนอนุมัติ และ % ที่อนุมัติภายใน 60 วินาที — ตัวเลขนี้จะบอกเองว่าถึงเวลามอบอำนาจหรือยัง</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= S4 ================= -->
+<section class="stage" data-p="s4" hidden>
+  <div class="phone">
+    <div class="pbar"><span>09:02</span><span>ตั้ม · การเงิน</span></div>
+    <div class="phead"><div class="who">อนุมัติแล้ว รอจ่าย</div><h2>8 ใบ · 412,900</h2></div>
+    <div class="pbody">
+      <div class="slipcard"><div class="sc-top"><span class="sc-id">REQ-2609-0044</span><span class="sc-amt">22,042</span></div>
+        <div class="sc-mid">ชัยเจริญ</div>
+        <div class="sc-sub" style="font-family:var(--mono);margin-top:6px">กสิกรไทย · xxx-x-x4821-x</div>
+        <div class="sc-sub" style="margin-top:8px;padding:8px;background:#FBEFCE;line-height:1.5">
+          พิมพ์ในช่องบันทึกช่วยจำของแอปธนาคาร<br><b style="font-family:var(--mono);font-size:13px">REQ-2609-0044</b></div>
+        <div class="docgrid" style="grid-template-columns:1fr 1fr">
+          <div>แนบสลิป</div><div class="done">บันทึกการจ่าย</div></div></div>
+      <div class="slipcard"><div class="sc-top"><span class="sc-id">REQ-2609-0045</span><span class="sc-amt">39,013</span></div>
+        <div class="sc-mid">ทีมช่างเขียด</div>
+        <div class="sc-sub" style="font-family:var(--mono);margin-top:6px">ออมสิน · xxx-x-x0123-x</div>
+        <div class="sc-sub" style="margin-top:6px">ยอดเต็ม 40,220 − หัก ณ ที่จ่าย 3% = 1,207</div>
+        <div class="docgrid" style="grid-template-columns:1fr 1fr"><div>แนบสลิป</div><div>บันทึกการจ่าย</div></div></div>
+    </div>
+    <div class="pfoot"><button class="btn go">บันทึกการจ่าย</button></div>
+  </div>
+  <div class="notes">
+    <h3>หน้าที่เดียว จ่ายให้ถูกบัญชี ถูกยอด</h3>
+    <div class="q">หนึ่งใบเบิก = หนึ่งการจ่าย = หนึ่งสลิป</div>
+    <p>ตั้มยืนยันว่าโอนทีละใบ ไม่รวมก้อน — โครงสร้างข้อมูลจึงเรียบง่ายที่สุดเท่าที่จะเป็นได้ และกระทบยอดกับ statement ธนาคารได้ตรง ๆ ทีละบรรทัดโดยไม่ต้องมีตารางเชื่อมกลาง</p>
+    <div class="rule"><b>กล่องสีเหลืองคือสิ่งที่คุ้มที่สุดในหน้านี้</b>ให้ตั้มพิมพ์เลข REQ ในช่องบันทึกช่วยจำของแอปธนาคาร แทนคำอธิบายงาน — ไม่ได้ทำงานเพิ่มเลย แค่เปลี่ยนสิ่งที่พิมพ์ แล้วสลิปทุกใบจะจับคู่กับใบเบิกได้ตลอดไป</div>
+    <p>หัก ณ ที่จ่ายคำนวณให้อัตโนมัติจากประเภทของผู้รับเงินและจากยอดที่ติดป้ายว่าเป็นค่าแรงหรือค่าเช่าเท่านั้น — ค่าของไม่ถูกหัก ซึ่งเป็นสิ่งที่ระบบเดิมทำไม่ได้เพราะไม่รู้ว่าก้อนไหนเป็นอะไร</p>
+    <div class="rule warn"><b>สิ่งที่จ่ายแล้วห้ามแก้</b>ยอดในใบที่จ่ายแล้วแก้ไม่ได้ตลอดกาล ถ้าจ่ายผิดหรือของคืน ต้องออกใบกลับรายการที่อ้างใบเดิม สองใบอยู่คู่กันตลอดไป — ไม่งั้นบัญชีจะถูกเขียนใหม่เงียบ ๆ ได้</div>
+  </div>
+</section>
+
+<!-- ================= S5 ================= -->
+<section class="stage" data-p="s5" hidden>
+  <div class="phone">
+    <div class="pbar"><span>14:22</span><span>พี่หน่อย · บัญชี</span></div>
+    <div class="phead"><div class="who">เรียงตามยอดเงิน ไม่ใช่จำนวนใบ</div><h2>เอกสารค้าง</h2></div>
+    <div class="pbody">
+      <div class="kpis" style="margin-bottom:14px">
+        <div class="alert"><b>186,420</b><span>ภาษีซื้อที่ยังขอคืนไม่ได้<br>47 ใบ</span></div>
+        <div class="alert"><b>94,200</b><span>จ่ายแล้วของยังไม่มา<br>12 ใบ</span></div>
+      </div>
+      <div class="docrow"><div class="sc-top"><span class="sc-id">REQ-2608-0031 · ชัยเจริญ</span><span class="sc-amt">231,336</span></div>
+        <div class="sc-sub">จ่าย 19 ส.ค. · ค้าง 37 วัน</div>
+        <div class="docgrid"><div class="done">ของมาแล้ว</div><div class="done">ใบเสร็จ</div><div class="late">ใบกำกับภาษี</div></div></div>
+      <div class="docrow"><div class="sc-top"><span class="sc-id">REQ-2608-0028 · ทีมช่างตัง</span><span class="sc-amt">104,760</span></div>
+        <div class="sc-sub">จ่าย 6 ก.ค. · ค้าง 81 วัน</div>
+        <div class="docgrid"><div class="done">ใบสำคัญรับเงิน</div><div class="done">หัก 3% แล้ว</div><div class="late">หนังสือรับรอง</div></div></div>
+      <div class="docrow"><div class="sc-top"><span class="sc-id">REQ-2609-0012 · บางกอกไทยสตีล</span><span class="sc-amt">55,521</span></div>
+        <div class="sc-sub">จ่าย 12 ก.ย. · ค้าง 13 วัน</div>
+        <div class="docgrid"><div class="late">ของมาแล้ว</div><div>ใบเสร็จ</div><div>ใบกำกับภาษี</div></div></div>
+    </div>
+    <div class="pfoot"><button class="btn">ส่งเตือนผู้ขาย</button><button class="btn go">บันทึกเอกสาร</button></div>
+  </div>
+  <div class="notes">
+    <h3>สภาพจริงของบริษัทนี้</h3>
+    <div class="q">โอนก่อน → ของตามมา → ใบเสร็จตามมา → ใบกำกับภาษีมาช้าที่สุด</div>
+    <p>ระบบเดิมมีช่องเดียวว่าเอกสารครบหรือไม่ครบ ซึ่งใช้กับความจริงแบบนี้ไม่ได้เลย จึงแยกเป็นสามช่องอิสระ แต่ละช่องมีสถานะและวันที่ของตัวเอง</p>
+    <div class="rule"><b>ช่อง “ของมาแล้ว” คือช่องที่ไม่มีใครนึกถึง</b>จ่ายเงินไปก่อนแล้วของไม่มา คือความเสี่ยงที่แท้จริงของการโอนก่อนรับของ ถ้าไม่มีช่องนี้ ไม่มีใครรู้ว่าตอนนี้มีเงินจ่ายออกไปแล้วกี่บาทที่ยังไม่ได้ของ</div>
+    <div class="rule warn"><b>เก็บสองวันที่ แยกกัน</b>วันที่จ่ายเงิน กับ วันที่บนใบกำกับภาษี ภาษีซื้อใช้ตามเดือนของใบกำกับ ไม่ใช่เดือนที่จ่ายเงิน — ถ้าเก็บวันเดียว บัญชีจะยื่น ภ.พ.30 ผิดเดือนทั้งปี</div>
+    <p>หัวหน้าจอแสดงเป็นยอดเงิน ไม่ใช่จำนวนใบ เพราะ “ค้าง 47 ใบ” ไม่ทำให้ใครขยับ แต่ “ภาษีซื้อที่ยังขอคืนไม่ได้ 186,420 บาท” ทำให้คนวิ่งตาม</p>
+    <div class="dl"><div><span>กฎอัตโนมัติ</span><span>ผู้ขายที่ค้างเอกสารเกิน 3 ใบ จะติดธงขึ้นให้ COO เห็นตอนอนุมัติใบถัดไปของผู้ขายรายนั้น</span></div></div>
+  </div>
+</section>
+
+<!-- ================= S6 ================= -->
+<section class="stage" data-p="s6" hidden>
+  <div class="phone">
+    <div class="pbar"><span>21:05</span><span>อาร์ต · CEO</span></div>
+    <div class="phead"><div class="who">กันยายน 2569 · ฝั่งรายจ่าย</div><h2>ภาพรวม</h2></div>
+    <div class="pbody">
+      <div class="kpis">
+        <div><b>2.48<span style="font-size:12px"> ลบ.</span></b><span>เงินออกเดือนนี้<br>−3% จากเดือนก่อน</span></div>
+        <div><b>12</b><span>รออนุมัติ<br>เฉลี่ย 4.2 ชม.</span></div>
+        <div class="alert"><b>94,200</b><span>จ่ายแล้วของยังไม่มา</span></div>
+        <div class="alert"><b>186,420</b><span>ภาษีซื้อขอคืนไม่ได้</span></div>
+      </div>
+      <ul class="bars" style="margin-top:18px">
+        <li><div class="bl"><span>ค่าของ</span><b>61.4%</b></div><div class="bt"><i style="width:61.4%"></i></div></li>
+        <li><div class="bl"><span>ค่าแรง</span><b>26.4%</b></div><div class="bt"><i class="tape" style="width:26.4%"></i></div></li>
+        <li><div class="bl"><span>ค่าเช่า</span><b>3.5%</b></div><div class="bt"><i style="width:3.5%"></i></div></li>
+        <li><div class="bl"><span>ยังไม่แยก</span><b>8.7%</b></div><div class="bt"><i class="rust" style="width:8.7%"></i></div></li>
+      </ul>
+      <div style="margin-top:20px;border-top:2px solid var(--ink);padding-top:12px">
+        <div style="font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;color:var(--steel);text-transform:uppercase;margin-bottom:10px">ต้นทุนต่อ ตร.ม. · เทียบเฉพาะแบบเดียวกัน</div>
+        <ul class="bars">
+          <li><div class="bl"><span>D-RCH · ชั้นเดียว 300 ตร.ม.</span><b>3,388 / 3,253</b></div><div class="bt"><i style="width:54%"></i></div></li>
+          <li><div class="bl"><span>D-TOY · ชั้นเดียว 390 ตร.ม.</span><b>3,855</b></div><div class="bt"><i style="width:61%"></i></div></li>
+          <li><div class="bl"><span>D-SATM · 2 ชั้น 240 ตร.ม.</span><b>4,993</b></div><div class="bt"><i class="tape" style="width:79%"></i></div></li>
+          <li><div class="bl"><span>D-AAA · 2 ชั้น 190 ตร.ม.</span><b>5,663</b></div><div class="bt"><i class="tape" style="width:90%"></i></div></li>
+        </ul>
+      </div>
+    </div>
+    <div class="pfoot"><button class="btn">รายโครงการ</button><button class="btn">รายผู้ขาย</button></div>
+  </div>
+  <div class="notes">
+    <h3>สี่ตัวเลข ไม่ใช่สี่สิบ</h3>
+    <div class="q">CEO เปิดดูตอนสี่ทุ่ม ไม่ได้มาวิเคราะห์</div>
+    <p>หน้านี้ตอบสี่คำถาม: เดือนนี้ใช้ไปเท่าไหร่ · มีอะไรค้างที่โต๊ะใคร · มีเงินจมอยู่ตรงไหน · และอาคารที่กำลังสร้างแพงกว่าที่เคยสร้างไหม</p>
+    <div class="rule"><b>แถบ ของ/แรง/เช่า คือมาตรวัดสุขภาพของข้อมูล</b>ตัวเลขอ้างอิงจาก BOQ จริงสองใบคือ ของ 70.6% · แรง 27.8% ถ้าค่าแรงในระบบต่ำกว่านี้มาก แปลว่าคนกรอกกำลังรวมของกับแรงไว้ก้อนเดียวอีกแล้ว แถบสีสนิมคือส่วนที่ยังไม่แยก เป้าหมายคือทำให้เป็นศูนย์</div>
+    <div class="rule warn"><b>เทียบต้นทุนได้เฉพาะแบบอาคารเดียวกัน</b>ระบบจัดกลุ่มตามรหัสแบบให้อัตโนมัติและไม่ยอมให้เทียบข้ามแบบ เพราะอาคารชั้นเดียว 300 ตร.ม. กับสองชั้น 190 ตร.ม. ต่างกันโดยธรรมชาติ ไม่ใช่เพราะใครทำงานแพงกว่า</div>
+    <p>สิ่งที่ไม่อยู่ในหน้านี้: กำไร รายได้ ค่าเช่า ROI — ฝั่งรายรับแยกระบบตามที่ตกลง คนที่ดูฝั่งจ่ายกับคนที่ดูฝั่งรับไม่จำเป็นต้องเห็นของกันและกันในตอนนี้</p>
+  </div>
+</section>
+
+<!-- ================= S7 ================= -->
+<section data-p="s7" hidden>
+  <div class="notes" style="max-width:none">
+    <h3>ความสัมพันธ์ของข้อมูล — ฝั่งรายจ่าย</h3>
+    <div class="q" style="max-width:60ch">ทุกหน้าจอข้างต้นวางอยู่บนความสัมพันธ์ชุดนี้ ถ้าเส้นใดเส้นหนึ่งขาด หน้าจอนั้นจะทำงานไม่ได้</div>
+  </div>
+  <div class="erd" style="margin-top:22px"><pre>
+   ตารางอ้างอิง                            ตารางรายการ
+   ─────────────                           ─────────────
+
+   users ────────────────────────┐
+     A K S N M F B J T I         │ ผู้ขอ / ผู้อนุมัติ / ผู้จ่าย
+     ↑ สิทธิ์รายโครงการ          │
+     └── user_access ──┐         ↓
+                       │    ┌─────────────┐        ┌──────────┐
+   projects ───────────┼───►│  requests   │───1:1─►│ payments │──► สลิป
+     16 รหัส           │    │  ใบเบิก     │        └────┬─────┘
+     ├─ project_type   │    └──────┬──────┘             │
+     │  ทรัพย์สินกลุ่ม │           │ 1:หลาย             │ 1:หลาย
+     │  งานรับเหมา     │           ▼                    ▼
+     │  ส่วนตัว        │    ┌─────────────┐      ┌────────────┐
+     ▼                 │    │request_lines│      │ documents  │
+   buildings ──────────┘    └──┬───┬───┬──┘      │ ของมาแล้ว  │
+     72 อาคาร                  │   │   │         │ ใบเสร็จ    │
+     ├─ design_code ──► designs│   │   │         │ ใบกำกับภาษี│
+     │   9 แบบ                 │   │   │         └────────────┘
+     ├─ พื้นที่ ตร.ม.          │   │   └──► cost_types  ของ/แรง/เช่า/โสหุ้ย
+     ├─ is_building            │   └──────► cost_codes  หมวดงาน 29 รหัส
+     └─ วันเริ่ม/จบ (คำนวณ)    └──────────► items ──► item_prices ──► ธงราคาแพง
+                                             264 รหัส
+   vendors ──────────────────────► requests
+     ├─ %หัก ณ ที่จ่าย ──► คำนวณจากยอด cost_type = แรง / เช่า เท่านั้น
+     ├─ สถานะเอกสาร ────► ธงเตือนตอนอนุมัติ
+     └─ เครดิตค้าง ─────► เด้งเตือนตอนสร้างใบใหม่กับผู้ขายรายนั้น
+
+   reversals ──► อ้างถึง requests เดิม   (ห้ามลบ ห้ามแก้ยอด)
+   audit_log ──► ทุกการแก้ไขหลังอนุมัติ
+   rates ──────► 20 อัตราต่อหน่วย ใช้ตั้งงบอาคารใหม่
+   boq ────────► 6 ใบ · เทียบแผนกับจ่ายจริง
+  </pre></div>
+  <div class="stage" style="margin-top:30px">
+    <div class="notes">
+      <h3>เส้นที่สำคัญที่สุดสามเส้น</h3>
+      <div class="rule"><b>request_lines → cost_types</b>เส้นนี้คือเส้นที่ทั้งระบบถูกสร้างขึ้นมาเพื่อมัน ถ้าขาด ภาษีหัก ณ ที่จ่ายคำนวณไม่ได้ · เทียบค่าแรงข้ามอาคารไม่ได้ · และเราจะกลับไปที่ค่าแรง 8.4% เหมือนเดิม</div>
+      <div class="rule"><b>buildings → designs</b>เส้นนี้ทำให้เทียบต้นทุนได้อย่างมีความหมาย อาคารชื่อซ้ำกันข้ามโครงการได้ แต่ถ้าแบบเดียวกันต้องเทียบกันได้ — R6 กับ R7 ต่างกันแค่ 4.2% คือหลักฐานว่าข้อมูลชุดนี้เชื่อถือได้</div>
+      <div class="rule warn"><b>vendors → %หัก ณ ที่จ่าย</b>อัตราผูกกับผู้รับเงิน ไม่ใช่ผูกกับใบ และหักจากยอดที่เป็นค่าแรงหรือค่าเช่าเท่านั้น ค่าของไม่ถูกหัก — จุดนี้พลาดง่ายที่สุดและแก้ทีหลังยากที่สุด</div>
+    </div>
+    <div class="notes">
+      <h3>สิ่งที่ตั้งใจไม่เชื่อมในเวอร์ชันนี้</h3>
+      <p>ยูนิตให้เช่า 68 ยูนิต · ผู้ให้เช่า 13 ราย · สัญญาเช่าที่ดิน 9 ทำเล · ค่าเช่ารับ 3.4 ล้านบาทต่อเดือน — ข้อมูลทั้งหมดนี้อยู่ในฐานข้อมูลกลางแล้ว แต่ไม่ถูกดึงเข้าหน้าจอชุดนี้</p>
+      <p>เหตุผลไม่ใช่ทางเทคนิค แต่เป็นเรื่องคน คนที่ดูฝั่งจ่ายกับคนที่ดูฝั่งรับเป็นคนละกลุ่ม และการเปิดทั้งสองฝั่งพร้อมกันตั้งแต่วันแรกจะทำให้ไม่มีใครดูแลไหวทั้งสองฝั่ง</p>
+      <div class="rule"><b>สะพานที่วางไว้แล้ว</b>ตาราง buildings มีช่องผูกกับยูนิตเช่ารออยู่ วันที่ฝั่งรายรับพร้อม แค่เติมค่าในช่องนั้น ไม่ต้องรื้อโครงสร้างใด ๆ</div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  ต้นแบบนี้แสดงเฉพาะฝั่งรายจ่ายตามที่ตกลง · ข้อมูลทั้งหมดมาจาก RABBiZ_ฐานข้อมูลกลาง_v9<br>
+  หน้าจอเป็นภาพจำลองเพื่อตัดสินใจเรื่องประสบการณ์ใช้งาน ยังไม่ใช่ระบบที่ทำงานได้จริง · ปุ่มที่กดได้: แถบรหัสในหน้า 02 และช่องติ๊กในหน้า 03
+</footer>
+</div>
+
+<script>
+const tabs=[...document.querySelectorAll('nav.rail button')];
+tabs.forEach(b=>b.onclick=()=>{
+  tabs.forEach(x=>x.setAttribute('aria-selected',x===b));
+  document.querySelectorAll('[data-p]').forEach(s=>s.hidden=s.dataset.p!==b.dataset.s);
+  window.scrollTo({top:220,behavior:'smooth'});
+});
+/* code strip */
+const F={proj:'',bld:'',code:''},PERSON='M';
+function draw(){
+  const parts=[PERSON,(F.proj||'···'),(F.bld||'···'),(F.code||'···')];
+  const el=document.getElementById('code'); el.innerHTML='';
+  parts.forEach((p,i)=>{
+    [...p].forEach(ch=>{
+      const s=document.createElement('span');
+      s.textContent=ch; if(ch==='·')s.className='off'; el.appendChild(s);
+    });
+    if(i<3){const d=document.createElement('span');d.textContent='·';d.className='off';el.appendChild(d);}
+  });
+}
+['f-proj','f-bld','f-code'].forEach(id=>{
+  const e=document.getElementById(id);
+  if(!e)return;
+  const k=id.split('-')[1]==='proj'?'proj':id.split('-')[1]==='bld'?'bld':'code';
+  e.addEventListener('change',()=>{F[k]=e.value;draw();});
+  F[k]=e.value;
+});
+draw();
+function trio(b){[...b.parentNode.children].forEach(x=>x.setAttribute('aria-pressed',x===b));}
+function vat(b,on){[...b.parentNode.children].forEach(x=>x.setAttribute('aria-pressed',x===b));
+  const m=document.getElementById('vmode'); if(b.parentNode.id!=='vmode'&&m)m.style.display=on?'flex':'none';}
+const AMT={'REQ-2609-0045':40220,'REQ-2609-0044':20600,'REQ-2609-0043':7500};
+function tog(el){
+  el.setAttribute('aria-checked',el.getAttribute('aria-checked')!=='true');
+  let n=0,v=0;
+  document.querySelectorAll('.chk[aria-checked=true]').forEach(c=>{
+    n++; const id=c.closest('.slipcard').querySelector('.sc-id').textContent.trim(); v+=AMT[id]||0;});
+  document.getElementById('nsel').textContent=n;
+  document.getElementById('vsel').textContent=v.toLocaleString();
+}
+</script></body></html>

@@ -1,8 +1,8 @@
 [
  {
   "user_id": "A",
-  "display_name": "พี่อาร์ต",
-  "full_name": "",
+  "display_name": "อาร์ต",
+  "full_name": "นายวุทธิพัฒน์ วิศาลศักดิ์",
   "title": "CEO",
   "role": "CEO",
   "username": "rabbizgroup001@gmail.com",
@@ -14,7 +14,7 @@
  {
   "user_id": "K",
   "display_name": "กร",
-  "full_name": "",
+  "full_name": "นายศุภกร เจิมจรุง",
   "title": "COO",
   "role": "COO",
   "username": "rabbizgroup004@gmail.com",
@@ -26,7 +26,7 @@
  {
   "user_id": "S",
   "display_name": "ตั้ม",
-  "full_name": "ศุภลักษณ์ พันธัย",
+  "full_name": "นายศุภลักษณ์ พันธัย",
   "title": "การเงิน",
   "role": "FINANCE",
   "username": "rabbizgroup003@gmail.com",
@@ -38,7 +38,7 @@
  {
   "user_id": "N",
   "display_name": "พี่หน่อย",
-  "full_name": "",
+  "full_name": "นางสาวสิริกร ชัยยะ",
   "title": "บัญชี",
   "role": "ACCOUNT",
   "username": "rabbizgroup002@gmail.com",
@@ -50,7 +50,7 @@
  {
   "user_id": "M",
   "display_name": "แม็ก",
-  "full_name": "",
+  "full_name": "นายกฤษณะ ทีมีศรี",
   "title": "PM",
   "role": "PM",
   "username": "rabbizgroup011@gmail.com",
@@ -62,7 +62,7 @@
  {
   "user_id": "F",
   "display_name": "พี่เอฟ",
-  "full_name": "",
+  "full_name": "นายสรัญรุตม์ รอบคอบ",
   "title": "PM",
   "role": "PM",
   "username": "rabbizgroup010@gmail.com",
@@ -74,19 +74,19 @@
  {
   "user_id": "O",
   "display_name": "คุณหนึ่ง",
-  "full_name": "",
+  "full_name": "(ยังไม่ระบุชื่อ-สกุล)",
   "title": "PM",
   "role": "PM",
   "username": "rabbizgroup013@gmail.com",
   "phone": "0876916111",
   "require_2fa": 0,
-  "status": "ใช้งาน",
-  "note": ""
+  "status": "ระงับ",
+  "note": "ลาออกแล้ว — ปิดสิทธิ์ทั้งหมด เก็บประวัติการเบิกไว้"
  },
  {
   "user_id": "B",
   "display_name": "เบน",
-  "full_name": "",
+  "full_name": "นายจิรายุทธ์ จิรานุวัฒน์",
   "title": "PM",
   "role": "PM",
   "username": "rabbizgroup012@gmail.com",
@@ -97,10 +97,10 @@
  },
  {
   "user_id": "J",
-  "display_name": "เจ",
-  "full_name": "",
-  "title": "ช่างซ่อมบำรุง",
-  "role": "SERVICE",
+  "display_name": "จตุพร",
+  "full_name": "นายจตุพร ศรีนอก",
+  "title": "PM",
+  "role": "PM",
   "username": "rabbizgroup014@gmail.com",
   "phone": "0969360980",
   "require_2fa": 0,
@@ -111,13 +111,13 @@
   "user_id": "T",
   "display_name": "เต้",
   "full_name": "",
-  "title": "ช่างซ่อมบำรุง",
-  "role": "SERVICE",
-  "username": "te.pending@rabbiz.local",
+  "title": "PM",
+  "role": "PM",
+  "username": "t.pending@rabbiz.local",
   "phone": "",
   "require_2fa": 0,
   "status": "ระงับ",
-  "note": "ยังไม่มีอีเมล/เบอร์โทรในฐาน v8 — CEO ต้องกรอกและเปิดใช้งานก่อน"
+  "note": "ยังไม่มีอีเมล/เบอร์โทรในฐาน v9 — CEO ต้องกรอกและเปิดใช้งานก่อน"
  },
  {
   "user_id": "I",
@@ -125,10 +125,10 @@
   "full_name": "",
   "title": "ผู้ดูข้อมูล",
   "role": "VIEWER",
-  "username": "im.pending@rabbiz.local",
+  "username": "i.pending@rabbiz.local",
   "phone": "",
   "require_2fa": 0,
   "status": "ระงับ",
-  "note": "ยังไม่มีอีเมล/เบอร์โทรในฐาน v8 — CEO ต้องกรอกและเปิดใช้งานก่อน"
+  "note": "ยังไม่มีอีเมล/เบอร์โทรในฐาน v9 — CEO ต้องกรอกและเปิดใช้งานก่อน"
  }
 ]

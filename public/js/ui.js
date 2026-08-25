@@ -82,6 +82,20 @@ export const STATUS_STYLE = {
 export const statusPill = (status) =>
   el('span', { class: `pill ${STATUS_STYLE[status] || ''}`, text: status });
 
+/**
+ * สีขอบซ้ายของการ์ด (ตามต้นแบบ):
+ * เขียว = เดินหน้าปกติ · ไม่มีสี = รอคนอื่น · เหลือง = รอคุณ · แดง = ต้องการอะไรบางอย่างจากคุณ
+ */
+export function itemTone(r, { forUser = null } = {}) {
+  if (r.value_source === 'นำเข้าย้อนหลัง') return 'imported';
+  if (['ยกเลิก', 'ไม่อนุมัติ'].includes(r.status)) return 'alert';
+  if (r.status === 'จ่ายแล้ว' && r.goods_received === 0) return 'alert';
+  if (r.status === 'ร่าง') return forUser && r.requester_id === forUser ? 'warn' : '';
+  if (r.flags?.length) return 'warn';
+  if (['อนุมัติแล้ว', 'ปิดรายการ'].includes(r.status)) return 'ok';
+  return '';
+}
+
 // ---------------------------------------------------------------- แจ้งเตือน
 let toastTimer;
 export function toast(message, kind = '') {
@@ -177,6 +191,13 @@ export function table(columns, rows, { empty = 'ไม่มีข้อมู�
           const v = c.render ? c.render(row) : row[c.key];
           return el('td', { class: c.num ? 'num' : '' }, v instanceof Node ? v : String(v ?? '—'));
         }))))));
+}
+
+/** ตารางเอกสารสามช่องแบบต้นแบบ */
+export function docGrid(cells) {
+  return el('div', { class: 'docgrid' }, cells.map((c) =>
+    el('div', { class: c.state || '', onclick: c.onclick },
+      c.label, c.hint ? el('small', { text: c.hint }) : null)));
 }
 
 export const flagList = (flags = []) =>

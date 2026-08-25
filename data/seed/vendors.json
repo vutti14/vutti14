@@ -12,8 +12,9 @@
   "vat_registered": 0,
   "wht_percent": 0,
   "doc_status": "รอตรวจเอกสาร",
-  "created_by": null,
-  "verified_by": null,
+  "is_own_staff": 0,
+  "staff_user_id": null,
+  "match_note": "ผู้ขาย/ผู้รับเหมา (มีในสมุดราคาแล้ว)",
   "status": "ใช้งาน"
  },
  {
@@ -29,8 +30,9 @@
   "vat_registered": 0,
   "wht_percent": 0,
   "doc_status": "รอตรวจเอกสาร",
-  "created_by": null,
-  "verified_by": null,
+  "is_own_staff": 0,
+  "staff_user_id": null,
+  "match_note": "",
   "status": "ใช้งาน"
  },
  {
@@ -46,8 +48,9 @@
   "vat_registered": 0,
   "wht_percent": 0,
   "doc_status": "รอตรวจเอกสาร",
-  "created_by": null,
-  "verified_by": null,
+  "is_own_staff": 0,
+  "staff_user_id": null,
+  "match_note": "ผู้ขาย/ผู้รับเหมา (มีในสมุดราคาแล้ว)",
   "status": "ใช้งาน"
  },
  {
@@ -63,8 +66,9 @@
   "vat_registered": 0,
   "wht_percent": 0,
   "doc_status": "รอตรวจเอกสาร",
-  "created_by": null,
-  "verified_by": null,
+  "is_own_staff": 0,
+  "staff_user_id": null,
+  "match_note": "ผู้ขาย/ผู้รับเหมา (มีในสมุดราคาแล้ว)",
   "status": "ใช้งาน"
  },
  {
@@ -80,8 +84,9 @@
   "vat_registered": 0,
   "wht_percent": 0,
   "doc_status": "รอตรวจเอกสาร",
-  "created_by": null,
-  "verified_by": null,
+  "is_own_staff": 0,
+  "staff_user_id": null,
+  "match_note": "",
   "status": "ใช้งาน"
  },
  {
@@ -97,8 +102,9 @@
   "vat_registered": 0,
   "wht_percent": 0,
   "doc_status": "รอตรวจเอกสาร",
-  "created_by": null,
-  "verified_by": null,
+  "is_own_staff": 0,
+  "staff_user_id": null,
+  "match_note": "",
   "status": "ใช้งาน"
  },
  {
@@ -114,8 +120,9 @@
   "vat_registered": 0,
   "wht_percent": 0,
   "doc_status": "รอตรวจเอกสาร",
-  "created_by": null,
-  "verified_by": null,
+  "is_own_staff": 0,
+  "staff_user_id": null,
+  "match_note": "ผู้ขาย/ผู้รับเหมา (มีในสมุดราคาแล้ว)",
   "status": "ใช้งาน"
  },
  {
@@ -131,8 +138,9 @@
   "vat_registered": 0,
   "wht_percent": 0,
   "doc_status": "รอตรวจเอกสาร",
-  "created_by": null,
-  "verified_by": null,
+  "is_own_staff": 0,
+  "staff_user_id": null,
+  "match_note": "ผู้ขาย/ผู้รับเหมา (มีในสมุดราคาแล้ว)",
   "status": "ใช้งาน"
  },
  {
@@ -148,8 +156,9 @@
   "vat_registered": 0,
   "wht_percent": 0,
   "doc_status": "รอตรวจเอกสาร",
-  "created_by": null,
-  "verified_by": null,
+  "is_own_staff": 0,
+  "staff_user_id": null,
+  "match_note": "",
   "status": "ใช้งาน"
  },
  {
@@ -165,8 +174,9 @@
   "vat_registered": 0,
   "wht_percent": 0,
   "doc_status": "รอตรวจเอกสาร",
-  "created_by": null,
-  "verified_by": null,
+  "is_own_staff": 0,
+  "staff_user_id": null,
+  "match_note": "",
   "status": "ใช้งาน"
  },
  {
@@ -182,8 +192,9 @@
   "vat_registered": 0,
   "wht_percent": 0,
   "doc_status": "รอตรวจเอกสาร",
-  "created_by": null,
-  "verified_by": null,
+  "is_own_staff": 0,
+  "staff_user_id": null,
+  "match_note": "ร้านค้า/บริษัท — ยังไม่มีในสมุดราคา",
   "status": "ใช้งาน"
  },
  {
@@ -199,8 +210,9 @@
   "vat_registered": 0,
   "wht_percent": 0,
   "doc_status": "รอตรวจเอกสาร",
-  "created_by": null,
-  "verified_by": null,
+  "is_own_staff": 0,
+  "staff_user_id": null,
+  "match_note": "",
   "status": "ใช้งาน"
  },
  {
@@ -216,8 +228,9 @@
   "vat_registered": 0,
   "wht_percent": 0,
   "doc_status": "รอตรวจเอกสาร",
-  "created_by": null,
-  "verified_by": null,
+  "is_own_staff": 0,
+  "staff_user_id": null,
+  "match_note": "",
   "status": "ใช้งาน"
  },
  {
@@ -233,8 +246,9 @@
   "vat_registered": 0,
   "wht_percent": 0,
   "doc_status": "รอตรวจเอกสาร",
-  "created_by": null,
-  "verified_by": null,
+  "is_own_staff": 0,
+  "staff_user_id": null,
+  "match_note": "ร้านค้า/บริษัท — ยังไม่มีในสมุดราคา",
   "status": "ใช้งาน"
  },
  {
@@ -250,8 +264,9 @@
   "vat_registered": 0,
   "wht_percent": 0,
   "doc_status": "รอตรวจเอกสาร",
-  "created_by": null,
-  "verified_by": null,
+  "is_own_staff": 0,
+  "staff_user_id": null,
+  "match_note": "",
   "status": "ใช้งาน"
  },
  {
@@ -267,8 +282,9 @@
   "vat_registered": 0,
   "wht_percent": 0,
   "doc_status": "รอตรวจเอกสาร",
-  "created_by": null,
-  "verified_by": null,
+  "is_own_staff": 0,
+  "staff_user_id": null,
+  "match_note": "",
   "status": "ใช้งาน"
  },
  {
@@ -284,8 +300,9 @@
   "vat_registered": 0,
   "wht_percent": 0,
   "doc_status": "รอตรวจเอกสาร",
-  "created_by": null,
-  "verified_by": null,
+  "is_own_staff": 0,
+  "staff_user_id": null,
+  "match_note": "ผู้ขาย/ผู้รับเหมา (มีในสมุดราคาแล้ว)",
   "status": "ใช้งาน"
  },
  {
@@ -301,8 +318,9 @@
   "vat_registered": 0,
   "wht_percent": 0,
   "doc_status": "รอตรวจเอกสาร",
-  "created_by": null,
-  "verified_by": null,
+  "is_own_staff": 0,
+  "staff_user_id": null,
+  "match_note": "",
   "status": "ใช้งาน"
  },
  {
@@ -318,8 +336,9 @@
   "vat_registered": 0,
   "wht_percent": 0,
   "doc_status": "รอตรวจเอกสาร",
-  "created_by": null,
-  "verified_by": null,
+  "is_own_staff": 0,
+  "staff_user_id": null,
+  "match_note": "ร้านค้า/บริษัท — ยังไม่มีในสมุดราคา",
   "status": "ใช้งาน"
  },
  {
@@ -335,8 +354,9 @@
   "vat_registered": 0,
   "wht_percent": 0,
   "doc_status": "รอตรวจเอกสาร",
-  "created_by": null,
-  "verified_by": null,
+  "is_own_staff": 0,
+  "staff_user_id": null,
+  "match_note": "ผู้ขาย/ผู้รับเหมา (มีในสมุดราคาแล้ว)",
   "status": "ใช้งาน"
  },
  {
@@ -352,8 +372,9 @@
   "vat_registered": 0,
   "wht_percent": 0,
   "doc_status": "รอตรวจเอกสาร",
-  "created_by": null,
-  "verified_by": null,
+  "is_own_staff": 0,
+  "staff_user_id": null,
+  "match_note": "ร้านค้า/บริษัท — ยังไม่มีในสมุดราคา",
   "status": "ใช้งาน"
  },
  {
@@ -369,8 +390,9 @@
   "vat_registered": 0,
   "wht_percent": 0,
   "doc_status": "รอตรวจเอกสาร",
-  "created_by": null,
-  "verified_by": null,
+  "is_own_staff": 0,
+  "staff_user_id": null,
+  "match_note": "",
   "status": "ใช้งาน"
  },
  {
@@ -379,15 +401,16 @@
   "vendor_type": "ร้านค้า/บริษัท",
   "category": "อลูมิเนียม ประตูหน้าต่าง",
   "phone": "",
-  "entity_type": "นิติบุคคล",
+  "entity_type": "บุคคลธรรมดา",
   "tax_id": "",
   "bank_account": "",
   "payment_terms": "",
   "vat_registered": 0,
-  "wht_percent": 0,
+  "wht_percent": 3,
   "doc_status": "รอตรวจเอกสาร",
-  "created_by": null,
-  "verified_by": null,
+  "is_own_staff": 0,
+  "staff_user_id": null,
+  "match_note": "น่าจะเป็นทีมช่างบุคคลธรรมดา — ยังไม่มีในสมุดราคา",
   "status": "ใช้งาน"
  },
  {
@@ -403,8 +426,9 @@
   "vat_registered": 0,
   "wht_percent": 0,
   "doc_status": "รอตรวจเอกสาร",
-  "created_by": null,
-  "verified_by": null,
+  "is_own_staff": 0,
+  "staff_user_id": null,
+  "match_note": "ร้านค้า/บริษัท — ยังไม่มีในสมุดราคา",
   "status": "ใช้งาน"
  },
  {
@@ -420,8 +444,9 @@
   "vat_registered": 0,
   "wht_percent": 0,
   "doc_status": "รอตรวจเอกสาร",
-  "created_by": null,
-  "verified_by": null,
+  "is_own_staff": 0,
+  "staff_user_id": null,
+  "match_note": "ร้านค้า/บริษัท — ยังไม่มีในสมุดราคา",
   "status": "ใช้งาน"
  },
  {
@@ -437,8 +462,9 @@
   "vat_registered": 0,
   "wht_percent": 0,
   "doc_status": "รอตรวจเอกสาร",
-  "created_by": null,
-  "verified_by": null,
+  "is_own_staff": 0,
+  "staff_user_id": null,
+  "match_note": "ร้านค้า/บริษัท — ยังไม่มีในสมุดราคา",
   "status": "ใช้งาน"
  },
  {
@@ -454,8 +480,9 @@
   "vat_registered": 0,
   "wht_percent": 0,
   "doc_status": "รอตรวจเอกสาร",
-  "created_by": null,
-  "verified_by": null,
+  "is_own_staff": 0,
+  "staff_user_id": null,
+  "match_note": "",
   "status": "ใช้งาน"
  },
  {
@@ -471,8 +498,9 @@
   "vat_registered": 0,
   "wht_percent": 0,
   "doc_status": "รอตรวจเอกสาร",
-  "created_by": null,
-  "verified_by": null,
+  "is_own_staff": 0,
+  "staff_user_id": null,
+  "match_note": "",
   "status": "ใช้งาน"
  },
  {
@@ -488,8 +516,9 @@
   "vat_registered": 0,
   "wht_percent": 0,
   "doc_status": "รอตรวจเอกสาร",
-  "created_by": null,
-  "verified_by": null,
+  "is_own_staff": 0,
+  "staff_user_id": null,
+  "match_note": "",
   "status": "ใช้งาน"
  },
  {
@@ -505,8 +534,9 @@
   "vat_registered": 0,
   "wht_percent": 0,
   "doc_status": "รอตรวจเอกสาร",
-  "created_by": null,
-  "verified_by": null,
+  "is_own_staff": 0,
+  "staff_user_id": null,
+  "match_note": "",
   "status": "ใช้งาน"
  },
  {
@@ -522,8 +552,9 @@
   "vat_registered": 0,
   "wht_percent": 0,
   "doc_status": "รอตรวจเอกสาร",
-  "created_by": null,
-  "verified_by": null,
+  "is_own_staff": 0,
+  "staff_user_id": null,
+  "match_note": "",
   "status": "ใช้งาน"
  },
  {
@@ -539,8 +570,9 @@
   "vat_registered": 0,
   "wht_percent": 0,
   "doc_status": "รอตรวจเอกสาร",
-  "created_by": null,
-  "verified_by": null,
+  "is_own_staff": 0,
+  "staff_user_id": null,
+  "match_note": "",
   "status": "ใช้งาน"
  },
  {
@@ -556,8 +588,9 @@
   "vat_registered": 0,
   "wht_percent": 0,
   "doc_status": "รอตรวจเอกสาร",
-  "created_by": null,
-  "verified_by": null,
+  "is_own_staff": 0,
+  "staff_user_id": null,
+  "match_note": "",
   "status": "ใช้งาน"
  },
  {
@@ -573,8 +606,9 @@
   "vat_registered": 0,
   "wht_percent": 0,
   "doc_status": "รอตรวจเอกสาร",
-  "created_by": null,
-  "verified_by": null,
+  "is_own_staff": 0,
+  "staff_user_id": null,
+  "match_note": "",
   "status": "ใช้งาน"
  },
  {
@@ -590,8 +624,9 @@
   "vat_registered": 0,
   "wht_percent": 0,
   "doc_status": "รอตรวจเอกสาร",
-  "created_by": null,
-  "verified_by": null,
+  "is_own_staff": 0,
+  "staff_user_id": null,
+  "match_note": "",
   "status": "ใช้งาน"
  },
  {
@@ -607,8 +642,9 @@
   "vat_registered": 0,
   "wht_percent": 0,
   "doc_status": "รอตรวจเอกสาร",
-  "created_by": null,
-  "verified_by": null,
+  "is_own_staff": 0,
+  "staff_user_id": null,
+  "match_note": "",
   "status": "ใช้งาน"
  },
  {
@@ -624,8 +660,9 @@
   "vat_registered": 0,
   "wht_percent": 0,
   "doc_status": "รอตรวจเอกสาร",
-  "created_by": null,
-  "verified_by": null,
+  "is_own_staff": 0,
+  "staff_user_id": null,
+  "match_note": "",
   "status": "ใช้งาน"
  },
  {
@@ -641,8 +678,9 @@
   "vat_registered": 0,
   "wht_percent": 0,
   "doc_status": "รอตรวจเอกสาร",
-  "created_by": null,
-  "verified_by": null,
+  "is_own_staff": 0,
+  "staff_user_id": null,
+  "match_note": "",
   "status": "ใช้งาน"
  },
  {
@@ -658,8 +696,9 @@
   "vat_registered": 0,
   "wht_percent": 0,
   "doc_status": "รอตรวจเอกสาร",
-  "created_by": null,
-  "verified_by": null,
+  "is_own_staff": 0,
+  "staff_user_id": null,
+  "match_note": "",
   "status": "ใช้งาน"
  },
  {
@@ -675,8 +714,9 @@
   "vat_registered": 0,
   "wht_percent": 0,
   "doc_status": "รอตรวจเอกสาร",
-  "created_by": null,
-  "verified_by": null,
+  "is_own_staff": 0,
+  "staff_user_id": null,
+  "match_note": "",
   "status": "ใช้งาน"
  },
  {
@@ -692,8 +732,9 @@
   "vat_registered": 0,
   "wht_percent": 0,
   "doc_status": "รอตรวจเอกสาร",
-  "created_by": null,
-  "verified_by": null,
+  "is_own_staff": 0,
+  "staff_user_id": null,
+  "match_note": "",
   "status": "ใช้งาน"
  },
  {
@@ -709,8 +750,9 @@
   "vat_registered": 0,
   "wht_percent": 0,
   "doc_status": "รอตรวจเอกสาร",
-  "created_by": null,
-  "verified_by": null,
+  "is_own_staff": 0,
+  "staff_user_id": null,
+  "match_note": "",
   "status": "ใช้งาน"
  },
  {
@@ -726,8 +768,9 @@
   "vat_registered": 0,
   "wht_percent": 0,
   "doc_status": "รอตรวจเอกสาร",
-  "created_by": null,
-  "verified_by": null,
+  "is_own_staff": 0,
+  "staff_user_id": null,
+  "match_note": "",
   "status": "ใช้งาน"
  },
  {
@@ -743,8 +786,9 @@
   "vat_registered": 0,
   "wht_percent": 0,
   "doc_status": "รอตรวจเอกสาร",
-  "created_by": null,
-  "verified_by": null,
+  "is_own_staff": 0,
+  "staff_user_id": null,
+  "match_note": "",
   "status": "ใช้งาน"
  },
  {
@@ -760,8 +804,9 @@
   "vat_registered": 0,
   "wht_percent": 0,
   "doc_status": "รอตรวจเอกสาร",
-  "created_by": null,
-  "verified_by": null,
+  "is_own_staff": 0,
+  "staff_user_id": null,
+  "match_note": "",
   "status": "ใช้งาน"
  },
  {
@@ -777,8 +822,9 @@
   "vat_registered": 0,
   "wht_percent": 0,
   "doc_status": "รอตรวจเอกสาร",
-  "created_by": null,
-  "verified_by": null,
+  "is_own_staff": 0,
+  "staff_user_id": null,
+  "match_note": "",
   "status": "ใช้งาน"
  },
  {
@@ -794,8 +840,9 @@
   "vat_registered": 0,
   "wht_percent": 0,
   "doc_status": "รอตรวจเอกสาร",
-  "created_by": null,
-  "verified_by": null,
+  "is_own_staff": 0,
+  "staff_user_id": null,
+  "match_note": "หน่วยงานรัฐ",
   "status": "ใช้งาน"
  },
  {
@@ -811,8 +858,9 @@
   "vat_registered": 0,
   "wht_percent": 3,
   "doc_status": "รอตรวจเอกสาร",
-  "created_by": null,
-  "verified_by": null,
+  "is_own_staff": 1,
+  "staff_user_id": "J",
+  "match_note": "พนักงานของเรา — จตุพร (J)",
   "status": "ใช้งาน"
  },
  {
@@ -828,8 +876,9 @@
   "vat_registered": 0,
   "wht_percent": 3,
   "doc_status": "รอตรวจเอกสาร",
-  "created_by": null,
-  "verified_by": null,
+  "is_own_staff": 0,
+  "staff_user_id": null,
+  "match_note": "น่าจะเป็นทีมช่างบุคคลธรรมดา — ยังไม่มีในสมุดราคา",
   "status": "ใช้งาน"
  },
  {
@@ -845,8 +894,9 @@
   "vat_registered": 0,
   "wht_percent": 3,
   "doc_status": "รอตรวจเอกสาร",
-  "created_by": null,
-  "verified_by": null,
+  "is_own_staff": 0,
+  "staff_user_id": null,
+  "match_note": "น่าจะเป็นทีมช่างบุคคลธรรมดา — ยังไม่มีในสมุดราคา",
   "status": "ใช้งาน"
  },
  {
@@ -862,8 +912,9 @@
   "vat_registered": 0,
   "wht_percent": 3,
   "doc_status": "รอตรวจเอกสาร",
-  "created_by": null,
-  "verified_by": null,
+  "is_own_staff": 0,
+  "staff_user_id": null,
+  "match_note": "น่าจะเป็นทีมช่างบุคคลธรรมดา — ยังไม่มีในสมุดราคา",
   "status": "ใช้งาน"
  },
  {
@@ -879,8 +930,9 @@
   "vat_registered": 0,
   "wht_percent": 3,
   "doc_status": "รอตรวจเอกสาร",
-  "created_by": null,
-  "verified_by": null,
+  "is_own_staff": 0,
+  "staff_user_id": null,
+  "match_note": "น่าจะเป็นทีมช่างบุคคลธรรมดา — ยังไม่มีในสมุดราคา",
   "status": "ใช้งาน"
  },
  {
@@ -896,8 +948,9 @@
   "vat_registered": 0,
   "wht_percent": 3,
   "doc_status": "รอตรวจเอกสาร",
-  "created_by": null,
-  "verified_by": null,
+  "is_own_staff": 0,
+  "staff_user_id": null,
+  "match_note": "น่าจะเป็นทีมช่างบุคคลธรรมดา — ยังไม่มีในสมุดราคา",
   "status": "ใช้งาน"
  },
  {
@@ -913,8 +966,9 @@
   "vat_registered": 0,
   "wht_percent": 3,
   "doc_status": "รอตรวจเอกสาร",
-  "created_by": null,
-  "verified_by": null,
+  "is_own_staff": 0,
+  "staff_user_id": null,
+  "match_note": "น่าจะเป็นทีมช่างบุคคลธรรมดา — ยังไม่มีในสมุดราคา",
   "status": "ใช้งาน"
  },
  {
@@ -930,8 +984,9 @@
   "vat_registered": 0,
   "wht_percent": 3,
   "doc_status": "รอตรวจเอกสาร",
-  "created_by": null,
-  "verified_by": null,
+  "is_own_staff": 0,
+  "staff_user_id": null,
+  "match_note": "น่าจะเป็นทีมช่างบุคคลธรรมดา — ยังไม่มีในสมุดราคา",
   "status": "ใช้งาน"
  },
  {
@@ -947,8 +1002,9 @@
   "vat_registered": 0,
   "wht_percent": 3,
   "doc_status": "รอตรวจเอกสาร",
-  "created_by": null,
-  "verified_by": null,
+  "is_own_staff": 0,
+  "staff_user_id": null,
+  "match_note": "",
   "status": "ใช้งาน"
  },
  {
@@ -964,8 +1020,9 @@
   "vat_registered": 0,
   "wht_percent": 3,
   "doc_status": "รอตรวจเอกสาร",
-  "created_by": null,
-  "verified_by": null,
+  "is_own_staff": 0,
+  "staff_user_id": null,
+  "match_note": "ผู้ขาย/ผู้รับเหมา (มีในสมุดราคาแล้ว)",
   "status": "ใช้งาน"
  },
  {
@@ -981,8 +1038,9 @@
   "vat_registered": 0,
   "wht_percent": 3,
   "doc_status": "รอตรวจเอกสาร",
-  "created_by": null,
-  "verified_by": null,
+  "is_own_staff": 0,
+  "staff_user_id": null,
+  "match_note": "",
   "status": "ใช้งาน"
  },
  {
@@ -998,8 +1056,9 @@
   "vat_registered": 0,
   "wht_percent": 3,
   "doc_status": "รอตรวจเอกสาร",
-  "created_by": null,
-  "verified_by": null,
+  "is_own_staff": 0,
+  "staff_user_id": null,
+  "match_note": "ผู้ขาย/ผู้รับเหมา (มีในสมุดราคาแล้ว)",
   "status": "ใช้งาน"
  },
  {
@@ -1015,8 +1074,9 @@
   "vat_registered": 0,
   "wht_percent": 3,
   "doc_status": "รอตรวจเอกสาร",
-  "created_by": null,
-  "verified_by": null,
+  "is_own_staff": 0,
+  "staff_user_id": null,
+  "match_note": "",
   "status": "ใช้งาน"
  },
  {
@@ -1032,8 +1092,9 @@
   "vat_registered": 0,
   "wht_percent": 3,
   "doc_status": "รอตรวจเอกสาร",
-  "created_by": null,
-  "verified_by": null,
+  "is_own_staff": 0,
+  "staff_user_id": null,
+  "match_note": "น่าจะเป็นทีมช่างบุคคลธรรมดา — ยังไม่มีในสมุดราคา",
   "status": "ใช้งาน"
  },
  {
@@ -1049,8 +1110,9 @@
   "vat_registered": 0,
   "wht_percent": 3,
   "doc_status": "รอตรวจเอกสาร",
-  "created_by": null,
-  "verified_by": null,
+  "is_own_staff": 0,
+  "staff_user_id": null,
+  "match_note": "น่าจะเป็นทีมช่างบุคคลธรรมดา — ยังไม่มีในสมุดราคา",
   "status": "ใช้งาน"
  },
  {
@@ -1066,8 +1128,9 @@
   "vat_registered": 0,
   "wht_percent": 3,
   "doc_status": "รอตรวจเอกสาร",
-  "created_by": null,
-  "verified_by": null,
+  "is_own_staff": 1,
+  "staff_user_id": "I",
+  "match_note": "พนักงานของเรา — อิม (I)",
   "status": "ใช้งาน"
  },
  {
@@ -1083,8 +1146,9 @@
   "vat_registered": 0,
   "wht_percent": 3,
   "doc_status": "รอตรวจเอกสาร",
-  "created_by": null,
-  "verified_by": null,
+  "is_own_staff": 0,
+  "staff_user_id": null,
+  "match_note": "น่าจะเป็นทีมช่างบุคคลธรรมดา — ยังไม่มีในสมุดราคา",
   "status": "ใช้งาน"
  },
  {
@@ -1100,8 +1164,9 @@
   "vat_registered": 0,
   "wht_percent": 3,
   "doc_status": "รอตรวจเอกสาร",
-  "created_by": null,
-  "verified_by": null,
+  "is_own_staff": 0,
+  "staff_user_id": null,
+  "match_note": "ผู้ขาย/ผู้รับเหมา (มีในสมุดราคาแล้ว)",
   "status": "ใช้งาน"
  },
  {
@@ -1117,8 +1182,9 @@
   "vat_registered": 0,
   "wht_percent": 3,
   "doc_status": "รอตรวจเอกสาร",
-  "created_by": null,
-  "verified_by": null,
+  "is_own_staff": 0,
+  "staff_user_id": null,
+  "match_note": "น่าจะเป็นทีมช่างบุคคลธรรมดา — ยังไม่มีในสมุดราคา",
   "status": "ใช้งาน"
  },
  {
@@ -1134,8 +1200,9 @@
   "vat_registered": 0,
   "wht_percent": 3,
   "doc_status": "รอตรวจเอกสาร",
-  "created_by": null,
-  "verified_by": null,
+  "is_own_staff": 0,
+  "staff_user_id": null,
+  "match_note": "",
   "status": "ใช้งาน"
  },
  {
@@ -1151,8 +1218,9 @@
   "vat_registered": 0,
   "wht_percent": 3,
   "doc_status": "รอตรวจเอกสาร",
-  "created_by": null,
-  "verified_by": null,
+  "is_own_staff": 0,
+  "staff_user_id": null,
+  "match_note": "",
   "status": "ใช้งาน"
  },
  {
@@ -1168,8 +1236,9 @@
   "vat_registered": 0,
   "wht_percent": 3,
   "doc_status": "รอตรวจเอกสาร",
-  "created_by": null,
-  "verified_by": null,
+  "is_own_staff": 0,
+  "staff_user_id": null,
+  "match_note": "",
   "status": "ใช้งาน"
  },
  {
@@ -1178,15 +1247,16 @@
   "vendor_type": "พนักงานสำรองจ่าย",
   "category": "รับโอนหลายโครงการ ยอดย่อย",
   "phone": "",
-  "entity_type": "นิติบุคคล",
+  "entity_type": "บุคคลธรรมดา",
   "tax_id": "",
   "bank_account": "",
   "payment_terms": "",
   "vat_registered": 0,
-  "wht_percent": 0,
+  "wht_percent": 3,
   "doc_status": "รอตรวจเอกสาร",
-  "created_by": null,
-  "verified_by": null,
+  "is_own_staff": 1,
+  "staff_user_id": "K",
+  "match_note": "พนักงานของเรา — กร (K)",
   "status": "ใช้งาน"
  },
  {
@@ -1195,15 +1265,16 @@
   "vendor_type": "พนักงานสำรองจ่าย",
   "category": "รับโอนหลายโครงการ ยอดย่อย",
   "phone": "",
-  "entity_type": "นิติบุคคล",
+  "entity_type": "บุคคลธรรมดา",
   "tax_id": "",
   "bank_account": "",
   "payment_terms": "",
   "vat_registered": 0,
-  "wht_percent": 0,
+  "wht_percent": 3,
   "doc_status": "รอตรวจเอกสาร",
-  "created_by": null,
-  "verified_by": null,
+  "is_own_staff": 1,
+  "staff_user_id": "M",
+  "match_note": "พนักงานของเรา — แม็ก (M)",
   "status": "ใช้งาน"
  },
  {
@@ -1212,15 +1283,16 @@
   "vendor_type": "พนักงานสำรองจ่าย",
   "category": "รับโอนหลายโครงการ ยอดย่อย",
   "phone": "",
-  "entity_type": "นิติบุคคล",
+  "entity_type": "บุคคลธรรมดา",
   "tax_id": "",
   "bank_account": "",
   "payment_terms": "",
   "vat_registered": 0,
-  "wht_percent": 0,
+  "wht_percent": 3,
   "doc_status": "รอตรวจเอกสาร",
-  "created_by": null,
-  "verified_by": null,
+  "is_own_staff": 1,
+  "staff_user_id": "T",
+  "match_note": "พนักงานของเรา — เต้ (T)",
   "status": "ใช้งาน"
  },
  {
@@ -1229,15 +1301,16 @@
   "vendor_type": "พนักงานสำรองจ่าย",
   "category": "รับโอนหลายโครงการ ยอดย่อย",
   "phone": "",
-  "entity_type": "นิติบุคคล",
+  "entity_type": "บุคคลธรรมดา",
   "tax_id": "",
   "bank_account": "",
   "payment_terms": "",
   "vat_registered": 0,
-  "wht_percent": 0,
+  "wht_percent": 3,
   "doc_status": "รอตรวจเอกสาร",
-  "created_by": null,
-  "verified_by": null,
+  "is_own_staff": 1,
+  "staff_user_id": "B",
+  "match_note": "พนักงานของเรา — เบน (B)",
   "status": "ใช้งาน"
  },
  {
@@ -1246,15 +1319,16 @@
   "vendor_type": "พนักงานสำรองจ่าย",
   "category": "รับโอนหลายโครงการ ยอดย่อย",
   "phone": "",
-  "entity_type": "นิติบุคคล",
+  "entity_type": "บุคคลธรรมดา",
   "tax_id": "",
   "bank_account": "",
   "payment_terms": "",
   "vat_registered": 0,
-  "wht_percent": 0,
+  "wht_percent": 3,
   "doc_status": "รอตรวจเอกสาร",
-  "created_by": null,
-  "verified_by": null,
+  "is_own_staff": 1,
+  "staff_user_id": "F",
+  "match_note": "พนักงานของเรา — พี่เอฟ (F)",
   "status": "ใช้งาน"
  },
  {
@@ -1263,15 +1337,16 @@
   "vendor_type": "พนักงานสำรองจ่าย",
   "category": "การเงิน — สำรองจ่าย (ตั้ม)",
   "phone": "",
-  "entity_type": "นิติบุคคล",
+  "entity_type": "บุคคลธรรมดา",
   "tax_id": "",
   "bank_account": "",
   "payment_terms": "",
   "vat_registered": 0,
-  "wht_percent": 0,
+  "wht_percent": 3,
   "doc_status": "รอตรวจเอกสาร",
-  "created_by": null,
-  "verified_by": null,
+  "is_own_staff": 1,
+  "staff_user_id": "S",
+  "match_note": "พนักงานของเรา — ตั้ม (S)",
   "status": "ใช้งาน"
  },
  {
@@ -1287,8 +1362,9 @@
   "vat_registered": 0,
   "wht_percent": 0,
   "doc_status": "รอตรวจเอกสาร",
-  "created_by": null,
-  "verified_by": null,
+  "is_own_staff": 0,
+  "staff_user_id": null,
+  "match_note": "",
   "status": "ใช้งาน"
  },
  {
@@ -1304,8 +1380,9 @@
   "vat_registered": 0,
   "wht_percent": 0,
   "doc_status": "รอตรวจเอกสาร",
-  "created_by": null,
-  "verified_by": null,
+  "is_own_staff": 0,
+  "staff_user_id": null,
+  "match_note": "",
   "status": "ใช้งาน"
  },
  {
@@ -1321,8 +1398,9 @@
   "vat_registered": 0,
   "wht_percent": 3,
   "doc_status": "รอตรวจเอกสาร",
-  "created_by": null,
-  "verified_by": null,
+  "is_own_staff": 0,
+  "staff_user_id": null,
+  "match_note": "",
   "status": "ใช้งาน"
  }
 ]

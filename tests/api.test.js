@@ -41,12 +41,16 @@ async function api(method, url, body, who = 'default') {
   return { status: res.status, body: json };
 }
 
+/** เข้าสู่ระบบแบบรันซ้ำได้: ครั้งแรกใช้เบอร์โทร ครั้งต่อไปใช้รหัสที่ตั้งไว้แล้ว */
 async function login(username, password, who) {
-  const out = await api('POST', '/api/auth/login', { username, password }, who);
+  const changed = `Test-${who}-2569`;
+  let out = await api('POST', '/api/auth/login', { username, password }, who);
+  if (out.status !== 200)
+    out = await api('POST', '/api/auth/login', { username, password: changed }, who);
   assert.equal(out.status, 200, `เข้าสู่ระบบ ${username} ไม่สำเร็จ: ${JSON.stringify(out.body)}`);
   if (out.body.must_change_password) {
     const ch = await api('POST', '/api/auth/change-password',
-      { current_password: password, new_password: `Test-${who}-2569` }, who);
+      { current_password: password, new_password: changed }, who);
     assert.equal(ch.status, 200, JSON.stringify(ch.body));
   }
   return out.body;
@@ -76,6 +80,96 @@ test('นำเข้าข้อมูลย้อนหลังครบ 1,44
   const imported = body.totals.find((t) => t.value_source === 'นำเข้าย้อนหลัง');
   assert.equal(imported.n, 1449);
   assert.equal(imported.amount, 15153287.91);
+});
+
+test('v9 — แยกทรัพย์สินกลุ่มออกจากงานอื่นได้ตรงตามชีต 29', async () => {
+  const { body } = await api('GET', '/api/reports/dashboard', undefined, 'ceo');
+  const asset = body.asset_split.find((x) => x.is_group_asset);
+  const other = body.asset_split.find((x) => !x.is_group_asset);
+  assert.equal(asset.amount, 14188598.38);
+  assert.equal(other.amount, 964689.53);
+
+  const onlyAsset = await api('GET', '/api/reports/by-project?group_asset=1', undefined, 'ceo');
+  assert.ok(onlyAsset.body.rows.every((x) => x.is_group_asset === 1));
+  assert.ok(onlyAsset.body.rows.some((x) => x.project_type === 'ทรัพย์สินกลุ่ม'));
+});
+
+test('v9 — พบการจ่ายเงินให้ทีมงานของเราเอง 53 ใบ', async () => {
+  const { body } = await api('GET', '/api/reports/staff-payments', undefined, 'ceo');
+  assert.equal(body.rows.length, 53);
+  assert.equal(body.total, 165729.51);
+  assert.ok(body.rows.some((x) => x.self_paid === 1), 'ต้องมีใบที่เบิกเองจ่ายตัวเอง');
+});
+
+test('v9 W10 — เลือกผู้ขายที่เป็นทีมงานของเราเองต้องติดธง', async () => {
+  await login('rabbizgroup004@gmail.com', '0964040444', 'coo');
+  const vendors = await api('GET', '/api/vendors', undefined, 'coo');
+  const staff = vendors.body.vendors.find((v) => v.is_own_staff);
+  assert.ok(staff, 'ต้องมีผู้ขายที่ถูกทำเครื่องหมายว่าเป็นทีมงานของเราเอง');
+  const res = await api('POST', '/api/requests', {
+    project_id: 'RMT', building_id: 'B004', vendor_id: staff.vendor_id, has_vat: 'ไม่มี',
+    lines: [{ cost_code: 'WAL', cost_type: 'แรง', qty: 1, unit_price: 1500 }],
+  }, 'coo');
+  assert.equal(res.status, 201, JSON.stringify(res.body));
+  assert.ok(res.body.flags.some((f) => f.code === 'W10'), JSON.stringify(res.body.flags));
+});
+
+test('v9 — สิทธิ์รายโครงการมาจากตาราง user_access ไม่ใช่การเดา', async () => {
+  await login('rabbizgroup011@gmail.com', '0934538117', 'pm');
+  const { body } = await api('GET', '/api/bootstrap', undefined, 'pm');
+  const ids = body.projects.map((p) => p.project_id).sort();
+  // แม็ก: ไทยรามัญ · อ่อนนุช · แรปบิทบ็อก · สำนักงาน (ตามชีต 21_DIM_USER_ACCESS)
+  assert.deepEqual(ids, ['OFF', 'ONN', 'RBX', 'RMT']);
+});
+
+test('v9 — ขอสิทธิ์ชั่วคราวแล้ว COO อนุมัติ ทำให้เบิกโครงการนั้นได้', async () => {
+  const before = await api('GET', '/api/bootstrap', undefined, 'pm');
+  const target = before.body.other_projects.find((p) => p.project_id === 'RAC');
+  assert.ok(target, 'แม็กยังไม่ควรมีสิทธิ์ในราชพฤกษ์');
+
+  const blocked = await api('POST', '/api/requests', {
+    project_id: 'RAC', building_id: 'B002', vendor_id: 'V003', has_vat: 'ไม่มี',
+    lines: [{ cost_code: 'CON', cost_type: 'ของ', qty: 1, unit_price: 500 }],
+  }, 'pm');
+  assert.equal(blocked.status, 403);
+
+  const asked = await api('POST', '/api/project-access',
+    { project_id: 'RAC', reason: 'ไปช่วยงานเทพื้น V5', days: 7 }, 'pm');
+  assert.equal(asked.status, 201, JSON.stringify(asked.body));
+
+  const denied = await api('POST', `/api/project-access/${asked.body.access_id}/decide`,
+    { approve: true }, 'pm');
+  assert.equal(denied.status, 403, 'PM อนุมัติสิทธิ์ให้ตัวเองไม่ได้');
+
+  const ok = await api('POST', `/api/project-access/${asked.body.access_id}/decide`,
+    { approve: true }, 'coo');
+  assert.equal(ok.status, 200, JSON.stringify(ok.body));
+
+  const after = await api('POST', '/api/requests', {
+    project_id: 'RAC', building_id: 'B002', vendor_id: 'V003', has_vat: 'ไม่มี',
+    lines: [{ cost_code: 'CON', cost_type: 'ของ', qty: 1, unit_price: 500 }],
+  }, 'pm');
+  assert.equal(after.status, 201, JSON.stringify(after.body));
+});
+
+test('v9 — ค้นชื่อพ้องก่อนสร้างอาคาร และตั้งงบจากเส้นโค้งต้นทุน', async () => {
+  const found = await api('GET', '/api/building-search?q=R6', undefined, 'coo');
+  assert.ok(found.body.matches.some((m) => m.building_id === 'B004'));
+
+  const dup = await api('POST', '/api/buildings',
+    { project_id: 'RMT', building_name: 'R6' }, 'coo');
+  assert.equal(dup.status, 409);
+  assert.equal(dup.body.code, 'DUPLICATE_BUILDING');
+
+  const curve = await api('GET', '/api/cost-curve?floors=1&area_sqm=300&design_code=D-RCH', undefined, 'coo');
+  assert.ok(curve.body.estimate.exact_design);
+  assert.ok(curve.body.estimate.estimate > 900000 && curve.body.estimate.estimate < 1100000);
+
+  const created = await api('POST', '/api/buildings', {
+    project_id: 'RMT', building_name: 'R99 ทดสอบ', floors: 1, area_sqm: 300, design_code: 'D-RCH',
+  }, 'coo');
+  assert.equal(created.status, 201, JSON.stringify(created.body));
+  assert.ok(created.body.building.budget > 0, 'ต้องตั้งงบให้อัตโนมัติจากเส้นโค้งต้นทุน');
 });
 
 test('PM เห็นเฉพาะโครงการที่รับผิดชอบ', async () => {

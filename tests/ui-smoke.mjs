@@ -63,7 +63,7 @@ if (await page.$('.modal')) {
   });
 }
 
-const routes = ['dashboard', 'new', 'approve', 'pay', 'docs', 'requests', 'vendors', 'finance', 'admin'];
+const routes = ['my', 'dashboard', 'new', 'approve', 'pay', 'docs', 'requests', 'vendors', 'finance', 'admin'];
 for (const r of routes) {
   await step(`10-${r}`, async () => {
     await page.goto(`${BASE}/#/${r}`, { waitUntil: 'networkidle' });

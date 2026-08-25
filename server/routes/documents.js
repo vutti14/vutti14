@@ -84,7 +84,9 @@ r.get('/documents/pending', (req, res) => {
     ORDER BY q.total_amount DESC
     LIMIT ? OFFSET ?`).all(...args, limit, (Math.max(Number(page) || 1, 1) - 1) * limit);
 
-  const withAge = rows.map((x) => ({ ...x, ...docAgeLevel(x.payment_date) }))
+  const docsOf = db.prepare(
+    'SELECT doc_type, received, doc_date FROM documents WHERE request_id = ? ORDER BY document_id');
+  const withAge = rows.map((x) => ({ ...x, ...docAgeLevel(x.payment_date), docs: docsOf.all(x.request_id) }))
     .filter((x) => !min_age || (x.days ?? 0) >= Number(min_age));
 
   res.json({

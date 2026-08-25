@@ -4,7 +4,8 @@ import { el, clear, toast, modal, field, card } from './ui.js';
 /** สถานะรวมของแอป — โหลดครั้งเดียวตอนเข้าระบบ แล้วแชร์ให้ทุกหน้าจอ */
 export const state = {
   user: null, caps: {}, settings: {},
-  projects: [], buildings: [], designs: [],
+  projects: [], other_projects: [], pending_access: [],
+  buildings: [], designs: [],
   costCodes: [], costCodesAll: [], costTypes: [], vendors: [], items: [], users: [],
 };
 
@@ -20,6 +21,8 @@ export async function refreshBootstrap() {
   state.caps = data.caps;
   state.settings = data.settings;
   state.projects = data.projects;
+  state.other_projects = data.other_projects || [];
+  state.pending_access = data.pending_access || [];
   state.buildings = data.buildings;
   state.designs = data.designs;
   state.costCodes = data.cost_codes;
@@ -32,16 +35,22 @@ export async function refreshBootstrap() {
 
 // ---------------------------------------------------------------- เส้นทางหน้าจอ
 const ROUTES = [
-  { path: 'dashboard', icon: '📊', label: 'ภาพรวม', load: () => import('./views/dashboard.js'), cap: () => true },
+  { path: 'my', icon: '📌', label: 'งานของฉัน', load: () => import('./views/my-work.js'), cap: (c) => c.create_request },
   { path: 'new', icon: '➕', label: 'เบิกเงิน', load: () => import('./views/request-form.js'), cap: (c) => c.create_request },
   { path: 'approve', icon: '✅', label: 'อนุมัติ', load: () => import('./views/approve.js'), cap: (c) => c.approve },
   { path: 'pay', icon: '💸', label: 'จ่ายเงิน', load: () => import('./views/pay.js'), cap: (c) => c.pay },
   { path: 'docs', icon: '📄', label: 'เอกสาร', load: () => import('./views/documents.js'), cap: (c) => c.documents },
   { path: 'requests', icon: '📋', label: 'ใบเบิก', load: () => import('./views/request-list.js'), cap: () => true },
+  { path: 'dashboard', icon: '📊', label: 'ภาพรวม', load: () => import('./views/dashboard.js'), cap: () => true },
   { path: 'vendors', icon: '🏪', label: 'ผู้ขาย', load: () => import('./views/vendors.js'), cap: () => true },
   { path: 'finance', icon: '🏦', label: 'การเงิน', load: () => import('./views/finance.js'), cap: (c) => c.funding || c.petty_cash || c.reversal },
   { path: 'admin', icon: '⚙️', label: 'ตั้งค่า', load: () => import('./views/admin.js'), cap: (c) => c.admin },
 ];
+
+/** หน้าแรกต่างกันตามบทบาท: PM เปิดมาที่งานของตัวเอง · ผู้บริหารเปิดมาที่ภาพรวม */
+const homeRoute = () =>
+  visibleRoutes().find((r) => r.path === (state.caps.create_request && !state.caps.approve ? 'my' : 'dashboard'))
+  || visibleRoutes()[0];
 
 export const navigate = (hash) => { window.location.hash = hash.startsWith('#') ? hash : '#/' + hash; };
 
@@ -52,7 +61,7 @@ function visibleRoutes() {
 function shell() {
   const app = clear(document.getElementById('app'));
   const topbar = el('div', { class: 'topbar' },
-    el('h1', { text: 'RABBiZBuild' }),
+    el('h1', { text: 'RABBiZ Build' }),
     el('span', { class: 'who', text: `${state.user.display_name} · ${state.user.role}` }),
     el('button', { onclick: logout }, 'ออก'));
 
@@ -67,12 +76,13 @@ function shell() {
 }
 
 async function render() {
-  const raw = (window.location.hash || '#/dashboard').replace(/^#\/?/, '');
+  // ตัด query string ออกก่อนหาเส้นทาง — บางหน้าใช้ #/my?history=1 เก็บสถานะตัวกรอง
+  const raw = (window.location.hash || '').replace(/^#\/?/, '').split('?')[0];
   const [path, ...rest] = raw.split('/');
-  const route = ROUTES.find((r) => r.path === path) || ROUTES[0];
+  const route = ROUTES.find((r) => r.path === path) || homeRoute();
 
   if (!route.cap(state.caps)) {
-    const fallback = visibleRoutes()[0];
+    const fallback = homeRoute();
     if (fallback && fallback.path !== path) return navigate(fallback.path);
   }
 
@@ -139,8 +149,8 @@ function loginScreen(message) {
     submit);
 
   app.append(el('main', { style: 'max-width:420px;margin:8vh auto;padding:0 1rem' },
-    el('h1', { class: 'center', text: 'RABBiZBuild' }),
-    el('p', { class: 'center muted small', text: 'ระบบเบิกจ่ายงานก่อสร้าง' }),
+    el('div', { class: 'eyebrow center', text: 'RABBiZ Build · ฝั่งรายจ่าย' }),
+    el('h1', { class: 'center', text: 'ระบบเบิกจ่ายงานก่อสร้าง' }),
     card(note, form)));
   username.focus();
 }
