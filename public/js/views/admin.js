@@ -7,6 +7,7 @@ const TABS = [
   { key: 'users', label: 'ผู้ใช้และสิทธิ์' },
   { key: 'codes', label: 'ผัง Expense Code' },
   { key: 'settings', label: 'สวิตช์ระบบ' },
+  { key: 'line', label: 'ไลน์' },
   { key: 'reference', label: 'ข้อมูลอ้างอิง v9' },
   { key: 'access', label: 'คำขอสิทธิ์' },
   { key: 'export', label: 'ส่งออกข้อมูล' },
@@ -42,7 +43,7 @@ export async function render() {
   async function load() {
     clear(box).append(el('div', { class: 'loading', text: 'กำลังโหลด…' }));
     const view = {
-      users: usersView, codes: codesView, settings: settingsView,
+      users: usersView, codes: codesView, settings: settingsView, line: lineView,
       reference: referenceView, access: accessView, export: exportView, health: healthView,
     }[active];
     clear(box).append(await view());
@@ -250,6 +251,69 @@ async function settingsView() {
         } catch (err) { toast(err.message, 'error'); }
       },
     }, 'บันทึก'));
+}
+
+// ---------------------------------------------------------------- ไลน์ (สเปก §8 S2)
+const OUTBOX_PILL = {
+  'ส่งแล้ว': 'green',
+  'รอส่ง': 'amber',
+  'ส่งไม่สำเร็จ': 'red',
+  'ยังไม่ได้ตั้งค่า': 'amber',
+};
+
+async function lineView() {
+  const d = await api.get('/api/admin/line');
+  const wrap = el('div');
+
+  wrap.append(el('div', { class: `banner ${d.configured ? '' : 'warn'}` },
+    el('b', { text: d.configured ? 'ผูก LINE channel แล้ว' : 'ยังไม่ได้ผูก LINE channel' }),
+    d.configured
+      ? 'การ์ดขออนุมัติถูกส่งเข้าไลน์ของผู้อนุมัติที่ผูกบัญชีไว้แล้ว'
+      : 'ตั้ง LINE_CHANNEL_ACCESS_TOKEN, LINE_CHANNEL_SECRET และ APP_BASE_URL แล้วรีสตาร์ตเซิร์ฟเวอร์ — '
+        + 'ข้อความที่ควรส่งระหว่างนี้ถูกเก็บไว้ในคิวด้านล่างและกดส่งย้อนหลังได้'));
+
+  wrap.append(el('div', { class: 'card' },
+    el('div', { class: 'rule-head', text: 'ตั้งค่าที่ฝั่ง LINE Developers' }),
+    el('p', { class: 'small', text: 'Webhook URL ที่ต้องกรอกในคอนโซล:' }),
+    el('div', { class: 'card tight mono', style: 'word-break:break-all', text: d.webhook_url }),
+    el('p', { class: 'tiny muted', text: 'เปิด "Use webhook" และปิด "Auto-reply messages" ไม่งั้นข้อความตอบกลับจะซ้อนกัน' })));
+
+  wrap.append(el('div', { class: 'card' },
+    el('div', { class: 'rule-head', text: `ผูกบัญชีไลน์แล้ว ${d.linked_users.length} คน` }),
+    table([
+      { label: 'รหัส', key: 'user_id' },
+      { label: 'ชื่อ', key: 'display_name' },
+      { label: 'บทบาท', key: 'role' },
+    ], d.linked_users, { empty: 'ยังไม่มีใครผูกบัญชีไลน์ — กดปุ่ม “ไลน์” บนแถบบนเพื่อผูกของตัวเอง' })));
+
+  const flushBtn = el('button', {
+    class: 'btn primary',
+    disabled: !d.configured,
+    onclick: async () => {
+      flushBtn.disabled = true;
+      try {
+        const out = await api.post('/api/admin/line/flush');
+        toast(`ส่งสำเร็จ ${out.sent} · ไม่สำเร็จ ${out.failed}`, out.failed ? 'error' : 'ok');
+        reload();
+      } catch (err) { toast(err.message, 'error'); flushBtn.disabled = false; }
+    },
+  }, 'ส่งข้อความที่ค้างอีกครั้ง');
+
+  wrap.append(el('div', { class: 'card' },
+    el('div', { class: 'rule-head', text: 'คิวข้อความ' }),
+    el('div', { class: 'row wrap' }, d.counts.map((c) =>
+      el('span', { class: `pill ${OUTBOX_PILL[c.status] || ''}`, text: `${c.status} ${c.n}` }))),
+    el('div', { class: 'mt' }, flushBtn),
+    el('div', { class: 'mt' }, table([
+      { label: 'เรื่อง', key: 'kind' },
+      { label: 'ถึง', render: (x) => x.display_name || x.line_user_id || '—' },
+      { label: 'ใบเบิก', key: 'request_id' },
+      { label: 'สถานะ', render: (x) => el('span', { class: `pill ${OUTBOX_PILL[x.status] || ''}`, text: x.status }) },
+      { label: 'เมื่อ', key: 'created_at' },
+      { label: 'ข้อผิดพลาด', key: 'error' },
+    ], d.outbox, { empty: 'ยังไม่มีข้อความที่ต้องส่ง' }))));
+
+  return wrap;
 }
 
 // ---------------------------------------------------------------- ข้อมูลอ้างอิง v9

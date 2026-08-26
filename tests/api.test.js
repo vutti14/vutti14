@@ -517,6 +517,39 @@ test('PM เข้าถึงใบเบิกนอกโครงการ�
   }
 });
 
+test('ยังไม่ได้ตั้งค่าไลน์ — ระบบทำงานได้ตามปกติและบอกสถานะตรง ๆ', async () => {
+  const status = await api('GET', '/api/auth/line/status', undefined, 'coo');
+  assert.equal(status.body.configured, false);
+  assert.equal(status.body.linked, false);
+
+  const admin = await api('GET', '/api/admin/line', undefined, 'ceo');
+  assert.equal(admin.status, 200, JSON.stringify(admin.body));
+  assert.equal(admin.body.configured, false);
+  assert.equal(admin.body.linked_users.length, 0);
+
+  // กดส่งคิวตอนยังไม่ได้ตั้งค่าต้องบอกให้ไปตั้งค่าก่อน ไม่ใช่เงียบหาย
+  const flush = await api('POST', '/api/admin/line/flush', {}, 'ceo');
+  assert.equal(flush.status, 400);
+
+  // ยังขอรหัสผูกบัญชีล่วงหน้าได้ พร้อมบอกว่าระบบยังไม่ได้ตั้งค่า
+  const code = await api('POST', '/api/auth/line/link-code', {}, 'coo');
+  assert.match(code.body.code, /^[A-Z2-9]{6}$/);
+  assert.equal(code.body.configured, false);
+});
+
+test('QR ของ 2FA ออกมาเป็น SVG ที่ฝังในหน้าได้เลย', async () => {
+  const setup2fa = await api('POST', '/api/auth/2fa/setup', {}, 'coo');
+  assert.equal(setup2fa.status, 200, JSON.stringify(setup2fa.body));
+  assert.match(setup2fa.body.qr_svg, /^<svg /);
+  assert.match(setup2fa.body.qr_svg, /<path d="M/, 'ต้องมีรูป QR มาพร้อมรหัสลับ ไม่ใช่กรอบเปล่า');
+  assert.match(setup2fa.body.uri, /^otpauth:\/\/totp\//);
+
+  const svg = await fetch(`${BASE}/api/auth/2fa/qr.svg`, { headers: { Cookie: cookies.get('coo') } });
+  assert.equal(svg.status, 200);
+  assert.match(svg.headers.get('content-type'), /image\/svg\+xml/);
+  assert.match(await svg.text(), /^<svg /);
+});
+
 test('ข้อมูลนำเข้าย้อนหลังกรองแยกออกจากข้อมูลใหม่ได้', async () => {
   const imported = await api('GET', '/api/requests?value_source=นำเข้าย้อนหลัง&per_page=1', undefined, 'ceo');
   const fresh = await api('GET', '/api/requests?value_source=ข้อเท็จจริง&per_page=1', undefined, 'ceo');

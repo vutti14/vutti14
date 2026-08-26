@@ -10,11 +10,15 @@ import documentRoutes from './routes/documents.js';
 import financeRoutes from './routes/finance.js';
 import reportRoutes from './routes/reports.js';
 import adminRoutes from './routes/admin.js';
+import lineRoutes from './routes/line.js';
 
 migrate();
 
 const app = express();
 const PORT = process.env.PORT || 3000;
+
+// Webhook ของไลน์ต้องอ่าน body ดิบก่อน parser ตัวอื่น เพราะลายเซ็นคำนวณจากไบต์ที่ส่งมาจริง
+app.use('/api/line', express.raw({ type: '*/*', limit: '1mb' }), lineRoutes);
 
 app.use(express.json({ limit: '2mb' }));
 app.use(express.urlencoded({ extended: true }));

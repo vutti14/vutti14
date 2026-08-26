@@ -116,6 +116,21 @@ main { flex: 1; padding: .9rem .9rem 5.6rem; max-width: 1180px; width: 100%; mar
 .small { font-size: .82rem; }
 .tiny { font-size: .72rem; }
 .mono { font-family: var(--mono); font-variant-numeric: tabular-nums; }
+.huge { font-size: 1.6rem; font-weight: 700; }
+
+/* QR — ฝังเป็น SVG ในหน้าเลย ไม่มีไฟล์ภายนอกให้โหลดพลาด */
+.qr {
+  display: flex;
+  justify-content: center;
+  margin: .75rem 0;
+}
+.qr svg {
+  width: min(240px, 60vw);
+  height: auto;
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  background: #fff;
+}
 .right { text-align: right; }
 .center { text-align: center; }
 .truncate { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
