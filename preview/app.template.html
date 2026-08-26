@@ -56,7 +56,36 @@ h2 { font-size:1.05rem; font-weight:600; }
 .num { font-variant-numeric:tabular-nums; }
 
 /* ---------------------------------------------------------------- โครงหน้า */
-#app { min-height:100vh; display:flex; flex-direction:column; }
+/* จอกว้าง: คำอธิบายอยู่ซ้าย ตัวแอปวางเป็นโทรศัพท์บนโต๊ะทางขวาและตรึงไว้
+   จอแคบ: ตัวแอปเต็มจอ คำอธิบายย้ายไปอยู่ในหน้าเลือกคนแทน */
+.desk { display:grid; grid-template-columns:minmax(0,1fr); gap:1.5rem;
+  max-width:1180px; margin:0 auto; }
+.intro, .guide { display:none; }
+.stage { min-width:0; }
+/* position:relative — กรอบอ้างอิงของแผ่นรายละเอียดและข้อความแจ้งเตือน
+   ถ้าไม่มี ทั้งสองอย่างจะไปเกาะขอบหน้าต่างแทนที่จะอยู่ในโทรศัพท์ */
+.phone { position:relative; display:flex; flex-direction:column;
+  height:100dvh; background:var(--paper); }
+
+@media (min-width:980px) {
+  .desk {
+    grid-template-columns:23rem minmax(0,1fr);
+    grid-template-areas:'intro stage' 'guide stage';
+    align-content:start; column-gap:2.6rem; row-gap:1.6rem;
+    padding:2.6rem 1.8rem 3rem;
+  }
+  .intro { grid-area:intro; display:block; min-width:0; }
+  .guide { grid-area:guide; display:block; min-width:0; }
+  .stage { grid-area:stage; display:flex; justify-content:center;
+    position:sticky; top:2.6rem; }
+  .phone {
+    width:100%; max-width:25rem; height:min(52rem,84vh);
+    border:11px solid var(--ink); border-radius:30px; overflow:hidden;
+    box-shadow:0 26px 54px -22px rgba(23,34,46,.55);
+  }
+}
+
+#app { flex:1; min-height:0; overflow-y:auto; display:flex; flex-direction:column; }
 .topbar {
   position:sticky; top:0; z-index:30; display:flex; align-items:center; gap:.6rem;
   padding:.5rem .9rem; background:#17222E; color:#FDFDFB;
@@ -69,9 +98,9 @@ h2 { font-size:1.05rem; font-weight:600; }
   padding:.32rem .6rem; font-size:.7rem; font-family:var(--mono); white-space:nowrap;
 }
 .topbar button:hover { border-color:#F5B301; color:#F5B301; }
-main { flex:1; width:100%; max-width:1180px; margin:0 auto; padding:.9rem .9rem 5.8rem; }
+main { flex:1; width:100%; padding:.9rem .9rem 1.6rem; }
 .navbar {
-  position:fixed; left:0; right:0; bottom:0; z-index:30; display:flex;
+  position:sticky; bottom:0; z-index:30; display:flex; flex:none;
   background:var(--slip); border-top:2px solid var(--ink);
   padding-bottom:env(safe-area-inset-bottom); overflow-x:auto; scrollbar-width:none;
 }
@@ -99,6 +128,7 @@ main { flex:1; width:100%; max-width:1180px; margin:0 auto; padding:.9rem .9rem 
 .muted { color:var(--steel); }
 .small { font-size:.82rem; }
 .tiny { font-size:.72rem; }
+.mono { font-family:var(--mono); font-variant-numeric:tabular-nums; }
 .truncate { white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
 .stack { display:flex; flex-direction:column; gap:.5rem; }
 .row { display:flex; gap:.5rem; align-items:center; }
@@ -213,6 +243,40 @@ th { font-family:var(--mono); font-size:.62rem; letter-spacing:.08em;
 td.n,th.n { text-align:right; font-family:var(--mono); font-variant-numeric:tabular-nums; }
 .scrollx { overflow-x:auto; }
 
+/* แผงคำอธิบายฝั่งซ้ายบนจอกว้าง */
+.intro h1 { font-size:clamp(1.5rem,1.1rem + 1.2vw,2rem); }
+.intro .lede { margin:0 0 1rem; max-width:60ch; }
+.facts { display:grid; grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:.15rem .8rem; padding:.7rem .85rem; background:var(--slip); border:1px solid var(--line); }
+.facts b { display:block; font-family:var(--mono); font-size:1.15rem; font-weight:600;
+  font-variant-numeric:tabular-nums; letter-spacing:-.5px; }
+.facts span { font-size:.68rem; color:var(--steel); }
+
+.steps { list-style:none; margin:0; padding:0; display:grid; gap:.45rem; }
+.step {
+  display:flex; gap:.6rem; width:100%; text-align:left; font:inherit; color:inherit;
+  background:var(--slip); border:1px solid var(--line); border-left:3px solid var(--line);
+  padding:.55rem .65rem;
+}
+.step:hover { border-left-color:var(--tape); }
+.step[aria-current="true"] { border-left-color:var(--tape); background:var(--amber-soft); }
+.step .n { flex:none; width:1.5rem; height:1.5rem; display:grid; place-items:center;
+  background:var(--ink); color:var(--tape); font-family:var(--mono); font-size:.72rem; }
+.step .t { display:block; font-weight:600; font-size:.9rem; }
+.step .d { display:block; font-size:.76rem; color:var(--steel); }
+
+.note { border-top:1px solid var(--line); padding-top:.5rem; margin-top:.9rem; }
+.note summary { cursor:pointer; font-family:var(--mono); font-size:.7rem;
+  letter-spacing:.1em; text-transform:uppercase; color:var(--steel); }
+.note ul { margin:.5rem 0 0; padding-left:1.1rem; font-size:.82rem; }
+.note li { margin-bottom:.3rem; }
+.note li b { font-weight:600; }
+
+/* กล่องเทปเหลือง — คำสั่งที่ต้องทำตอนโอนเงินจริง */
+.tapebox { border-left:4px solid var(--tape); background:var(--amber-soft);
+  color:var(--amber-ink); padding:.6rem .7rem; font-size:.84rem; }
+.tapebox b { display:block; }
+
 /* หน้าเลือกบทบาท */
 .gate { max-width:34rem; margin:0 auto; padding:1.4rem .9rem 4rem; }
 .gate .who {
@@ -230,7 +294,7 @@ td.n,th.n { text-align:right; font-family:var(--mono); font-variant-numeric:tabu
 .gate .who .go { margin-left:auto; color:var(--steel); font-family:var(--mono); font-size:.8rem; }
 
 .sheet {
-  position:fixed; inset:0; z-index:60; background:rgba(23,34,46,.55);
+  position:absolute; inset:0; z-index:60; background:rgba(23,34,46,.55);
   display:flex; align-items:flex-end; justify-content:center;
 }
 .sheet .inner {
@@ -240,7 +304,7 @@ td.n,th.n { text-align:right; font-family:var(--mono); font-variant-numeric:tabu
 @media (min-width:640px) { .sheet { align-items:center; } .sheet .inner { border:3px solid var(--ink); } }
 
 .toast {
-  position:fixed; left:50%; transform:translateX(-50%); bottom:5rem; z-index:80;
+  position:absolute; left:50%; transform:translateX(-50%); bottom:4.6rem; z-index:80;
   background:var(--ink); color:var(--paper); padding:.55rem .9rem; font-size:.86rem;
   max-width:92vw; text-align:center;
 }
@@ -250,7 +314,47 @@ td.n,th.n { text-align:right; font-family:var(--mono); font-variant-numeric:tabu
 }
 </style>
 
-<div id="app"></div>
+<div class="desk">
+  <header class="intro">
+    <p class="eyebrow">RABBiZ Group · ระบบภายใน</p>
+    <h1>ระบบเบิกจ่ายงานก่อสร้าง</h1>
+    <p class="lede">ทุกวันนี้เบิกเงินหน้างานกันผ่านไลน์กับ Excel — นี่คือหน้าตาของระบบที่มาแทน
+      <strong>กดเล่นได้จริงทุกปุ่ม</strong> ข้อมูลข้างในเป็นของจริงจากฐานข้อมูล v9.1</p>
+    <div class="facts">
+      <div><b>1,449</b><span>ใบเบิกย้อนหลังจริง</span></div>
+      <div><b>15.15 ล.</b><span>บาท ตรงทุกสตางค์</span></div>
+      <div><b>17</b><span>โครงการ · 60 อาคาร</span></div>
+    </div>
+  </header>
+
+  <aside class="guide">
+    <p class="eyebrow" style="margin-bottom:.4rem">ลองตามลำดับนี้ — เงินหนึ่งก้อนเดินยังไง</p>
+    <ol class="steps" id="steps"></ol>
+
+    <details class="note">
+      <summary>ระบบแก้ปัญหาอะไร</summary>
+      <ul>
+        <li><b>เบิกผ่านไลน์แล้วหาย</b> — ใบเบิกมีสถานะชัดเจน ผู้ขอเห็นเองว่าใบอยู่ตรงไหน</li>
+        <li><b>พิมพ์รหัสเองแล้วผิด</b> — เคยพิมพ์ <span class="mono">WAl</span> แทน <span class="mono">WAL</span>
+            ทำให้เงิน 37,444 บาทหลุดจากรายงาน ระบบจึงไม่ให้พิมพ์รหัสเอง มีแต่ให้เลือก</li>
+        <li><b>ต้นทุนต่อตารางเมตรเทียบไม่ได้</b> — ทุกใบผูกกับอาคาร ไม่ใช่แค่โครงการ</li>
+        <li><b>ไม่รู้ว่าเงินหมดไปกับค่าอะไร</b> — ทุกบรรทัดต้องบอกว่าเป็นค่าของ ค่าแรง ค่าเช่า หรือโสหุ้ย</li>
+      </ul>
+    </details>
+
+    <details class="note">
+      <summary>สีขอบซ้ายของการ์ดแปลว่าอะไร</summary>
+      <ul>
+        <li><span class="sw" style="background:#4A6741"></span><b>เขียว</b> — เดินหน้าตามปกติ ไม่ต้องทำอะไร</li>
+        <li><span class="sw" style="background:#C9CDC6"></span><b>ไม่มีสี</b> — รอคนอื่น</li>
+        <li><span class="sw" style="background:#A8442A"></span><b>แดง</b> — ต้องการอะไรบางอย่างจากคุณ</li>
+        <li><span class="sw" style="background:#7C8A99"></span><b>เส้นประ</b> — รายการที่นำเข้าย้อนหลังจาก Excel เดิม</li>
+      </ul>
+    </details>
+  </aside>
+
+  <div class="stage"><div class="phone" id="phone"><div id="app"></div></div></div>
+</div>
 <script id="seed" type="application/json">/*__DATA__*/</script>
 <script>
 (() => {
@@ -312,10 +416,12 @@ function el(tag, attrs, ...kids) {
   }
   return n;
 }
+/** ทุกอย่างที่ลอยอยู่ต้องอยู่ในกรอบโทรศัพท์ ไม่ใช่กลางหน้าต่าง */
+const stage = () => document.getElementById('phone') || document.body;
 function toast(msg) {
-  document.querySelectorAll('.toast').forEach((t) => t.remove());
+  stage().querySelectorAll('.toast').forEach((t) => t.remove());
   const t = el('div', { class: 'toast', text: msg });
-  document.body.append(t);
+  stage().append(t);
   setTimeout(() => t.remove(), 2600);
 }
 function sheet(title, body, actions) {
@@ -326,7 +432,7 @@ function sheet(title, body, actions) {
         class: `btn ${a.kind || ''}`, style: 'flex:1',
         onclick: () => { if (a.run && a.run() === false) return; wrap.remove(); },
       }, a.label)))));
-  document.body.append(wrap);
+  stage().append(wrap);
   return wrap;
 }
 
@@ -476,7 +582,7 @@ function seedDemo() {
 function mount() {
   const app = document.getElementById('app');
   app.textContent = '';
-  if (!S.user) { app.append(gateScreen()); return; }
+  if (!S.user) { app.append(gateScreen()); paintSteps(); return; }
 
   app.append(
     el('header', { class: 'topbar' },
@@ -486,7 +592,8 @@ function mount() {
       el('button', { onclick: () => { S.user = null; mount(); } }, 'สลับคน')),
     el('main', {}, screen()),
     navbar());
-  window.scrollTo(0, 0);
+  paintSteps();
+  document.getElementById('app').scrollTop = 0;
 }
 
 function navbar() {
@@ -512,6 +619,43 @@ function countFor(tab) {
   return 0;
 }
 
+/** สี่ขั้นที่พาดูว่าเงินหนึ่งก้อนเดินจากหน้างานไปถึงบัญชียังไง — กดแล้วสวมบทบาทให้เลย */
+const STEPS = [
+  { who: 'M', tab: 'new',     t: 'เป็นแม็ก (PM) แล้วเบิกเงิน',
+    d: 'ลองกดส่งทั้งที่ยังกรอกไม่ครบ ดูว่าระบบบล็อกยังไง' },
+  { who: 'K', tab: 'approve', t: 'เป็นกร (COO) แล้วอนุมัติ',
+    d: 'ใบที่ผิดปกติจะติดธงเตือนไว้ให้เห็นก่อนกด' },
+  { who: 'S', tab: 'pay',     t: 'เป็นตั้ม (การเงิน) แล้วจ่ายเงิน',
+    d: 'ไม่แนบสลิปจ่ายไม่ได้ และเห็นยอดหลังหัก ณ ที่จ่ายว่าต้องโอนเท่าไร' },
+  { who: 'A', tab: 'dash',    t: 'เป็นอาร์ต (CEO) ดูภาพรวม',
+    d: 'เงินหมดไปกับค่าอะไร โครงการไหนกินเงินที่สุด ต้นทุนต่อตารางเมตรเท่าไร' },
+];
+const WIDE = window.matchMedia('(min-width: 980px)');
+
+function go(tab, who) {
+  S.user = U[who] || S.user;
+  S.tab = tab;
+  mount();
+}
+
+function stepList() {
+  const ol = el('ol', { class: 'steps' });
+  STEPS.forEach((st, i) => ol.append(el('li', {}, el('button', {
+    class: 'step', type: 'button',
+    'aria-current': String(S.user?.id === st.who && S.tab === st.tab),
+    onclick: () => go(st.tab, st.who),
+  },
+    el('span', { class: 'n', text: String(i + 1) }),
+    el('span', {}, el('span', { class: 't', text: st.t }), el('span', { class: 'd', text: st.d }))))));
+  return ol;
+}
+
+function paintSteps() {
+  const host = document.getElementById('steps');
+  if (!host) return;
+  host.replaceWith(Object.assign(stepList(), { id: 'steps' }));
+}
+
 function screen() {
   switch (S.tab) {
     case 'new': return newRequestScreen();
@@ -530,19 +674,25 @@ function gateScreen() {
   const order = ['CEO', 'COO', 'FINANCE', 'ACCOUNT', 'PM', 'VIEWER'];
   const list = USERS.slice().sort((a, b) => order.indexOf(a.role) - order.indexOf(b.role));
 
+  // จอกว้าง: เกริ่นนำกับขั้นตอนอยู่ในแผงซ้ายแล้ว ในโทรศัพท์จึงเหลือแค่ให้เลือกคน
+  const wide = WIDE.matches;
   const wrap = el('div', { class: 'gate' },
     el('div', { class: 'eyebrow', text: 'ตัวอย่างระบบ · ข้อมูลจริงจากฐานข้อมูล v9.1' }),
-    el('h1', { text: 'RABBiZ Build — ระบบเบิกจ่ายงานก่อสร้าง' }),
+    el('h1', { text: wide ? 'เลือกว่าจะดูในมุมของใคร' : 'RABBiZ Build — ระบบเบิกจ่ายงานก่อสร้าง' }),
     el('p', { class: 'small muted', style: 'max-width:34rem',
       text: 'กดชื่อคนหนึ่งคน แล้วหน้าจอจะเปลี่ยนเป็นมุมของคนนั้นทั้งหมด — เห็นเฉพาะโครงการที่เขารับผิดชอบ และกดได้เฉพาะสิ่งที่ตำแหน่งเขาทำได้ สลับกลับมาเปลี่ยนคนได้ตลอดเวลา' }),
 
-    el('div', { class: 'kpi mt' },
+    wide ? null : el('div', { class: 'kpi mt' },
       kpi(baht(IMPORTED.length), 'ใบเบิกที่นำเข้าแล้ว'),
       kpi('฿' + baht(total / 1e6, 2) + ' ล.', 'ยอดรวมที่บันทึกไว้'),
       kpi(baht(PROJECTS.length), 'โครงการ'),
       kpi(baht(BUILDINGS.filter((b) => b.real).length), 'อาคาร')),
 
-    el('div', { class: 'rule-head', text: 'เลือกคน' }),
+    wide ? null : el('div', {},
+      el('div', { class: 'rule-head', text: 'ลองตามลำดับนี้' }),
+      stepList()),
+
+    el('div', { class: 'rule-head', text: wide ? 'เลือกคน' : 'หรือเลือกคนเอง' }),
     el('div', { class: 'stack' }, list.map((u) => el('button', {
       class: 'who', onclick: () => { S.user = u; S.tab = firstTab(u); mount(); },
     },
@@ -671,9 +821,9 @@ function detailActions(r) {
     } });
   }
   if (r.status === 'อนุมัติแล้ว' && can('pay'))
-    acts.push({ label: `จ่าย ฿${baht(r.net)}`, kind: 'primary', run: () => {
-      patch(r.id, { status: 'จ่ายแล้ว', paid_date: today(), doc_received: false });
-      toast('บันทึกจ่ายเงินแล้ว'); done();
+    acts.push({ label: `ไปหน้าจ่ายเงิน`, kind: 'primary', run: () => {
+      // B7 บังคับแนบสลิป จึงต้องจ่ายจากหน้าจ่ายเงินที่มีช่องแนบไฟล์
+      S.tab = 'pay'; mount();
     } });
   if (r.status === 'จ่ายแล้ว' && !r.imported && can('docs'))
     acts.push({ label: r.doc_received ? 'ปิดรายการ' : 'ได้รับเอกสารแล้ว', kind: 'primary', run: () => {
@@ -956,10 +1106,16 @@ function queueScreen(kind) {
       kpi(baht(rs.length), 'ใบในคิว'),
       kpi('฿' + baht(sum), kind === 'approve' ? 'ยอดรวมที่รออนุมัติ' : 'ยอดที่ต้องโอนจริง')));
 
+  // §8 S4 — เลขใบเบิกในช่องบันทึกช่วยจำของแอปธนาคาร ทำให้สลิปจับคู่กับใบได้ตลอดไป
+  if (kind === 'pay')
+    root.append(el('div', { class: 'tapebox mt' },
+      el('b', { text: 'ในช่องบันทึกช่วยจำของแอปธนาคาร ให้พิมพ์เลขใบเบิก' }),
+      'พิมพ์เลข REQ แทนคำอธิบายงาน — ไม่ต้องทำงานเพิ่ม แต่สลิปจะจับคู่กับใบเบิกได้ตลอดไป'));
+
   if (!rs.length) {
     root.append(el('div', { class: 'empty mt', text: kind === 'approve'
-      ? 'ไม่มีใบรออนุมัติ — ลองสวมบทเป็น PM สร้างใบเบิกแล้วกลับมาดู'
-      : 'ไม่มีใบรอจ่าย — ต้องมีคนอนุมัติก่อน' }));
+      ? 'ไม่มีใบรออนุมัติ — ลองกดขั้นที่ 1 สวมบทเป็น PM สร้างใบเบิกก่อน'
+      : 'ไม่มีใบรอจ่าย — ลองกดขั้นที่ 2 สวมบทเป็น COO อนุมัติก่อน' }));
     return root;
   }
 
@@ -975,12 +1131,26 @@ function queueScreen(kind) {
           onclick: () => { patch(r.id, { status: 'อนุมัติแล้ว', decided_by: S.user.id }); toast(`อนุมัติ ${r.id}`); mount(); } }, 'อนุมัติ'),
         el('button', { class: 'btn danger', style: 'flex:1;min-height:42px;font-size:.85rem',
           onclick: () => { patch(r.id, { status: 'ไม่อนุมัติ', decided_by: S.user.id }); toast('ตีกลับแล้ว'); mount(); } }, 'ตีกลับ'));
-    } else {
-      quick.append(el('button', { class: 'btn primary', style: 'flex:1;min-height:42px;font-size:.85rem',
-        onclick: () => { patch(r.id, { status: 'จ่ายแล้ว', paid_date: today(), doc_received: false }); toast(`จ่าย ${r.id} แล้ว`); mount(); } },
-        `บันทึกจ่าย ฿${baht(r.net)}`));
+      return el('div', {}, card, quick);
     }
-    return el('div', {}, card, quick);
+    // B7 — จ่ายเงินโดยไม่แนบสลิปไม่ได้
+    const slip = el('input', { type: 'file', accept: 'image/*,.pdf',
+      onchange: () => { payBtn.disabled = !slip.files.length; } });
+    const payBtn = el('button', {
+      class: 'btn primary block mt', style: 'min-height:44px;font-size:.88rem', disabled: true,
+      onclick: () => {
+        if (!slip.files.length) { toast('ต้องแนบสลิปก่อนบันทึกการจ่าย (B7)'); return; }
+        patch(r.id, { status: 'จ่ายแล้ว', paid_date: today(), doc_received: false });
+        toast(`บันทึกการจ่าย ${r.id} แล้ว · ฿${baht(r.net)}`); mount();
+      },
+    }, `บันทึกจ่าย ฿${baht(r.net)}`);
+    return el('div', {}, card,
+      el('div', { class: 'card', style: 'border-top:0' },
+        r.wht > 0 ? el('div', { class: 'tiny muted',
+          text: `ยอดเต็ม ฿${baht(r.total, 2)} − หัก ณ ที่จ่าย ฿${baht(r.wht, 2)} = โอนจริง ฿${baht(r.net, 2)}` }) : null,
+        el('label', { class: 'f', style: 'margin:.4rem 0 0' },
+          el('span', { text: 'แนบสลิปการโอน · บังคับตามกฎ B7' }), slip),
+        payBtn));
   })));
   return root;
 }
@@ -1172,5 +1342,6 @@ function listScreen() {
 loadStore();
 seedDemo();
 mount();
+WIDE.addEventListener('change', mount);
 })();
 </script>
