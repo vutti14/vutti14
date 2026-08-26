@@ -1,0 +1,1176 @@
+<title>RABBiZ Build</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans+Thai:wght@400;500;600;700&display=swap">
+
+<style>
+/* ภาษาการออกแบบตามต้นแบบที่ผู้ใช้ส่งมา — กระดาษไข หมึกน้ำเงินเข้ม
+   เทปเหลือง = สิ่งที่ต้องกด · สนิมแดง = สิ่งที่ต้องการคุณ · เขียวมอส = เรียบร้อยแล้ว */
+:root {
+  --ink:#17222E; --ink2:#25344A; --paper:#ECEDE7; --slip:#FDFDFB;
+  --steel:#7C8A99; --line:#C9CDC6; --tape:#F5B301; --rust:#A8442A;
+  --rust-soft:#F6E3DD; --rust-ink:#8B331C; --moss:#4A6741; --moss-soft:#E3EADF;
+  --amber-soft:#FBEFCE; --amber-ink:#7A5B00; --grey-soft:#E4E6E0;
+  --grid:rgba(23,34,46,.045);
+  --t-ของ:#25344A; --t-แรง:#A8442A; --t-เช่า:#C08A00; --t-โสหุ้ย:#4A6741;
+  --sans:'IBM Plex Sans Thai','Noto Sans Thai','Leelawadee UI',Tahoma,system-ui,sans-serif;
+  --mono:'IBM Plex Mono','SF Mono',ui-monospace,monospace;
+}
+:root:not([data-theme="light"]) { color-scheme: light; }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --ink:#E9EAE4; --ink2:#B9C4D2; --paper:#141A20; --slip:#1D262F;
+    --steel:#8A97A5; --line:#33404D; --tape:#F7C13B; --rust:#E0765A;
+    --rust-soft:#3A2119; --rust-ink:#F0A78F; --moss:#8FBF80; --moss-soft:#1E2C1E;
+    --amber-soft:#33290E; --amber-ink:#F0CE7A; --grey-soft:#232C36;
+    --grid:rgba(233,234,228,.05);
+    --t-ของ:#9FB4CE; --t-แรง:#E0765A; --t-เช่า:#F7C13B; --t-โสหุ้ย:#8FBF80;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --ink:#E9EAE4; --ink2:#B9C4D2; --paper:#141A20; --slip:#1D262F;
+  --steel:#8A97A5; --line:#33404D; --tape:#F7C13B; --rust:#E0765A;
+  --rust-soft:#3A2119; --rust-ink:#F0A78F; --moss:#8FBF80; --moss-soft:#1E2C1E;
+  --amber-soft:#33290E; --amber-ink:#F0CE7A; --grey-soft:#232C36;
+  --grid:rgba(233,234,228,.05);
+  --t-ของ:#9FB4CE; --t-แรง:#E0765A; --t-เช่า:#F7C13B; --t-โสหุ้ย:#8FBF80;
+  color-scheme: dark;
+}
+
+* { box-sizing:border-box; }
+body {
+  margin:0; background:var(--paper); color:var(--ink);
+  font-family:var(--sans); font-size:16px; line-height:1.55;
+  -webkit-text-size-adjust:100%;
+  background-image:
+    repeating-linear-gradient(0deg,transparent,transparent 27px,var(--grid) 27px,var(--grid) 28px),
+    repeating-linear-gradient(90deg,transparent,transparent 27px,var(--grid) 27px,var(--grid) 28px);
+}
+button,input,select,textarea { font:inherit; color:inherit; }
+button { cursor:pointer; }
+h1,h2,h3 { margin:0 0 .5rem; line-height:1.25; letter-spacing:-.2px; text-wrap:balance; }
+h1 { font-size:1.3rem; font-weight:700; }
+h2 { font-size:1.05rem; font-weight:600; }
+:focus-visible { outline:2px solid var(--tape); outline-offset:2px; }
+.num { font-variant-numeric:tabular-nums; }
+
+/* ---------------------------------------------------------------- โครงหน้า */
+#app { min-height:100vh; display:flex; flex-direction:column; }
+.topbar {
+  position:sticky; top:0; z-index:30; display:flex; align-items:center; gap:.6rem;
+  padding:.5rem .9rem; background:#17222E; color:#FDFDFB;
+  font-family:var(--mono); font-size:.7rem; letter-spacing:.06em;
+}
+.topbar .brand { flex:1; font-family:var(--sans); font-size:.95rem; font-weight:700;
+  letter-spacing:-.3px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.topbar button {
+  background:transparent; border:1px solid rgba(253,253,251,.35); color:#FDFDFB;
+  padding:.32rem .6rem; font-size:.7rem; font-family:var(--mono); white-space:nowrap;
+}
+.topbar button:hover { border-color:#F5B301; color:#F5B301; }
+main { flex:1; width:100%; max-width:1180px; margin:0 auto; padding:.9rem .9rem 5.8rem; }
+.navbar {
+  position:fixed; left:0; right:0; bottom:0; z-index:30; display:flex;
+  background:var(--slip); border-top:2px solid var(--ink);
+  padding-bottom:env(safe-area-inset-bottom); overflow-x:auto; scrollbar-width:none;
+}
+.navbar::-webkit-scrollbar { display:none; }
+.navbar button {
+  flex:1 0 auto; min-width:4.8rem; background:none; border:0;
+  padding:.65rem .45rem .7rem; font-size:.68rem; color:var(--steel);
+  border-top:3px solid transparent; margin-top:-2px; white-space:nowrap;
+}
+.navbar button.on { color:var(--ink); border-top-color:var(--tape); font-weight:600; }
+.navbar button .dot {
+  display:inline-grid; place-items:center; vertical-align:.08rem; margin-left:.28rem;
+  min-width:1.05rem; height:1.05rem; padding:0 .22rem;
+  background:var(--rust); color:#FDFDFB; font-family:var(--mono); font-size:.58rem;
+}
+
+/* ---------------------------------------------------------------- ชิ้นส่วน */
+.eyebrow { font-family:var(--mono); font-size:.62rem; letter-spacing:.14em;
+  text-transform:uppercase; color:var(--steel); }
+.rule-head {
+  font-family:var(--mono); font-size:.66rem; letter-spacing:.12em; text-transform:uppercase;
+  color:var(--steel); border-bottom:1px solid var(--line);
+  padding-bottom:.25rem; margin:1.1rem 0 .55rem;
+}
+.muted { color:var(--steel); }
+.small { font-size:.82rem; }
+.tiny { font-size:.72rem; }
+.truncate { white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.stack { display:flex; flex-direction:column; gap:.5rem; }
+.row { display:flex; gap:.5rem; align-items:center; }
+.wrap { flex-wrap:wrap; }
+.spread { display:flex; justify-content:space-between; align-items:baseline; gap:.6rem; }
+.mt { margin-top:.75rem; }
+
+.card { background:var(--slip); border:1px solid var(--line); padding:.8rem; }
+.item {
+  background:var(--slip); border:1px solid var(--line); border-left:4px solid var(--steel);
+  padding:.6rem .7rem; display:block; width:100%; text-align:left; font:inherit; color:inherit;
+}
+.item:hover { border-color:var(--ink); }
+.item.ok { border-left-color:var(--moss); }
+.item.warn { border-left-color:var(--tape); }
+.item.alert { border-left-color:var(--rust); }
+.item.imported { border-left-style:dotted; border-left-color:var(--steel); }
+.item .line1 { display:flex; align-items:baseline; gap:.4rem; }
+.item .id { font-family:var(--mono); font-size:.72rem; color:var(--steel); }
+.item .amt { margin-left:auto; font-family:var(--mono); font-weight:600;
+  font-variant-numeric:tabular-nums; white-space:nowrap; }
+.item .line2 { font-size:.9rem; }
+.item .line3 { font-size:.74rem; color:var(--steel); font-family:var(--mono); }
+
+.pill {
+  display:inline-block; font-family:var(--mono); font-size:.65rem; letter-spacing:.04em;
+  padding:.12rem .42rem; background:var(--grey-soft); color:var(--ink);
+}
+.pill.blue { background:var(--ink2); color:var(--paper); }
+.pill.green { background:var(--moss-soft); color:var(--moss); }
+.pill.amber { background:var(--amber-soft); color:var(--amber-ink); }
+.pill.red { background:var(--rust-soft); color:var(--rust-ink); }
+.pill.demo { background:transparent; border:1px dashed var(--steel); color:var(--steel); }
+
+.btn {
+  border:1.5px solid var(--ink); background:var(--slip); color:var(--ink);
+  padding:.62rem .9rem; font-weight:600; font-size:.92rem; min-height:48px;
+}
+.btn:hover { background:var(--grey-soft); }
+.btn.primary { background:var(--tape); border-color:var(--ink); color:#17222E; }
+.btn.primary:hover { filter:brightness(1.06); }
+.btn.danger { border-color:var(--rust); color:var(--rust); background:transparent; }
+.btn.ghost { border-color:var(--line); color:var(--steel); font-weight:400; min-height:40px; }
+.btn.block { display:block; width:100%; }
+.btn:disabled { opacity:.45; cursor:not-allowed; }
+
+label.f { display:block; margin-bottom:.6rem; }
+label.f > span { display:block; font-family:var(--mono); font-size:.64rem;
+  letter-spacing:.1em; text-transform:uppercase; color:var(--steel); margin-bottom:.2rem; }
+input[type=text],input[type=number],input[type=date],select,textarea {
+  width:100%; background:var(--slip); border:1px solid var(--line); color:var(--ink);
+  padding:.58rem .55rem; min-height:46px;
+}
+input:focus,select:focus,textarea:focus { border-color:var(--ink); outline:none;
+  box-shadow:inset 0 -2px 0 var(--tape); }
+
+/* แถบรหัสอ้างอิงเดิม 10 หลัก — ระบบสร้างให้ ไม่ให้คนพิมพ์ */
+.strip { background:#17222E; padding:.7rem .8rem; margin-bottom:.75rem; }
+.strip .lbl { font-family:var(--mono); font-size:.58rem; letter-spacing:.14em;
+  text-transform:uppercase; color:#7C8A99; }
+.strip .code { font-family:var(--mono); font-size:1.55rem; font-weight:600; color:#F5B301;
+  letter-spacing:.14em; display:flex; gap:.05em; }
+.strip .code span.off { color:#3C4A5C; }
+.strip .seg { display:flex; gap:.05em; font-family:var(--mono); font-size:.55rem;
+  color:#7C8A99; letter-spacing:.02em; margin-top:.15rem; }
+.strip .seg i { font-style:normal; text-align:center; overflow:hidden; white-space:nowrap; }
+.strip .seg i:first-child { flex:1 1 0; }
+.strip .seg i:not(:first-child) { flex:3 1 0; }
+
+/* ปุ่มประเภทต้นทุน — แกนที่ 2 ที่ระบบเดิมไม่มี */
+.segment { display:grid; grid-template-columns:repeat(4,1fr); gap:.35rem; }
+.segment button {
+  border:1.5px solid var(--line); background:var(--slip); padding:.55rem .2rem;
+  font-size:.85rem; font-weight:600; min-height:52px;
+}
+.segment button.on { background:var(--ink); border-color:var(--ink); color:var(--tape); }
+
+.flag { border-left:3px solid var(--tape); background:var(--amber-soft);
+  color:var(--amber-ink); padding:.45rem .6rem; font-size:.82rem; }
+.err { border-left:3px solid var(--rust); background:var(--rust-soft);
+  color:var(--rust-ink); padding:.45rem .6rem; font-size:.82rem; }
+.todo { border-left:3px solid var(--line); background:var(--slip);
+  color:var(--steel); padding:.45rem .6rem; font-size:.82rem; }
+.todo b { color:var(--ink); }
+.empty { border:1px dashed var(--line); padding:1.4rem .9rem; text-align:center;
+  color:var(--steel); font-size:.88rem; }
+
+.kpi { display:grid; grid-template-columns:repeat(auto-fit,minmax(9.5rem,1fr)); gap:.5rem; }
+.kpi .card { padding:.7rem; }
+.kpi .v { font-family:var(--mono); font-size:1.28rem; font-weight:600;
+  font-variant-numeric:tabular-nums; letter-spacing:-.5px; }
+.kpi .k { font-family:var(--mono); font-size:.6rem; letter-spacing:.1em;
+  text-transform:uppercase; color:var(--steel); }
+
+.bars { display:flex; flex-direction:column; gap:.5rem; }
+.bars .b .top { display:flex; justify-content:space-between; font-size:.82rem; gap:.5rem; }
+.bars .b .top b { font-weight:600; }
+.bars .b .top .n { font-family:var(--mono); font-variant-numeric:tabular-nums; color:var(--steel); }
+.bars .track { display:flex; height:14px; background:var(--grey-soft); margin-top:.2rem; }
+.bars .track i { display:block; height:100%; }
+.sw { display:inline-block; width:.68rem; height:.68rem; margin-right:.28rem;
+  vertical-align:-.05rem; }
+.legend { display:flex; flex-wrap:wrap; gap:.75rem; font-size:.76rem;
+  font-family:var(--mono); color:var(--steel); }
+.t-ของ { background:var(--t-ของ); } .t-แรง { background:var(--t-แรง); }
+.t-เช่า { background:var(--t-เช่า); } .t-โสหุ้ย { background:var(--t-โสหุ้ย); }
+
+table { width:100%; border-collapse:collapse; font-size:.84rem; }
+th,td { text-align:left; padding:.35rem .4rem; border-bottom:1px solid var(--line); }
+th { font-family:var(--mono); font-size:.62rem; letter-spacing:.08em;
+  text-transform:uppercase; color:var(--steel); font-weight:400; }
+td.n,th.n { text-align:right; font-family:var(--mono); font-variant-numeric:tabular-nums; }
+.scrollx { overflow-x:auto; }
+
+/* หน้าเลือกบทบาท */
+.gate { max-width:34rem; margin:0 auto; padding:1.4rem .9rem 4rem; }
+.gate .who {
+  display:flex; align-items:center; gap:.7rem; width:100%; text-align:left;
+  background:var(--slip); border:1px solid var(--line); border-left:4px solid var(--ink);
+  padding:.7rem .8rem; font:inherit; color:inherit;
+}
+.gate .who:hover { border-left-color:var(--tape); }
+.gate .who .av {
+  width:2.4rem; height:2.4rem; flex:none; display:grid; place-items:center;
+  background:var(--ink); color:var(--tape); font-family:var(--mono); font-size:1rem; font-weight:600;
+}
+.gate .who .nm { font-weight:600; }
+.gate .who .rl { font-size:.76rem; color:var(--steel); font-family:var(--mono); }
+.gate .who .go { margin-left:auto; color:var(--steel); font-family:var(--mono); font-size:.8rem; }
+
+.sheet {
+  position:fixed; inset:0; z-index:60; background:rgba(23,34,46,.55);
+  display:flex; align-items:flex-end; justify-content:center;
+}
+.sheet .inner {
+  background:var(--paper); border-top:3px solid var(--ink); width:100%; max-width:34rem;
+  max-height:88vh; overflow-y:auto; padding:.9rem .9rem 1.4rem;
+}
+@media (min-width:640px) { .sheet { align-items:center; } .sheet .inner { border:3px solid var(--ink); } }
+
+.toast {
+  position:fixed; left:50%; transform:translateX(-50%); bottom:5rem; z-index:80;
+  background:var(--ink); color:var(--paper); padding:.55rem .9rem; font-size:.86rem;
+  max-width:92vw; text-align:center;
+}
+@media (prefers-reduced-motion:no-preference) {
+  .toast { animation:rise .18s ease-out; }
+  @keyframes rise { from { opacity:0; transform:translate(-50%,.5rem); } }
+}
+</style>
+
+<div id="app"></div>
+<script id="seed" type="application/json">/*__DATA__*/</script>
+<script>
+(() => {
+'use strict';
+
+// ---------------------------------------------------------------- ข้อมูลตั้งต้น
+const D = JSON.parse(document.getElementById('seed').textContent);
+const USERS    = D.u.map(([id, name, role, title]) => ({ id, name, role, title }));
+const PROJECTS = D.p.map(([id, name, type]) => ({ id, name, type }));
+const BUILDINGS= D.b.map(([id, project, name, nature, status, area, floors, real]) =>
+                   ({ id, project, name, nature, status, area, floors, real }));
+const CODES    = D.c.map(([code, name, group, active]) => ({ code, name, group, active }));
+const VENDORS  = D.v.map(([id, name, type, vat, wht, staff]) => ({ id, name, type, vat, wht, staff }));
+const ACCESS   = D.a;
+
+const byId = (arr) => Object.fromEntries(arr.map((x) => [x.id, x]));
+const P = byId(PROJECTS), B = byId(BUILDINGS), V = byId(VENDORS), U = byId(USERS);
+const C = Object.fromEntries(CODES.map((c) => [c.code, c]));
+
+const COST_TYPES = ['ของ', 'แรง', 'เช่า', 'โสหุ้ย'];
+const WHT_TYPES  = ['แรง', 'เช่า'];
+const VAT_RATE   = 0.07;
+const PHOTO_ABOVE = 5000;
+
+// ใบเบิกที่นำเข้าจากฐานข้อมูลเดิม 1,449 ใบ
+const IMPORTED = D.r.map(([id, date, requester, project, building, vendor, payee,
+                           before, vat, total, wht, net, status, note]) => ({
+  id, date, requester, project, building, vendor, payee,
+  before, vat, total, wht, net, status, note, lines: [], imported: true,
+}));
+for (const [i, code, type, amount, desc] of D.l)
+  IMPORTED[i].lines.push({ code, type, amount, desc });
+
+// ---------------------------------------------------------------- ตัวช่วยเล็ก ๆ
+const r2 = (n) => Math.round((Number(n) || 0) * 100) / 100;
+const baht = (n, dp = 0) => (Number(n) || 0).toLocaleString('th-TH',
+  { minimumFractionDigits: dp, maximumFractionDigits: dp });
+const MONTHS = ['ม.ค.','ก.พ.','มี.ค.','เม.ย.','พ.ค.','มิ.ย.','ก.ค.','ส.ค.','ก.ย.','ต.ค.','พ.ย.','ธ.ค.'];
+function thaiDate(iso) {
+  if (!iso) return '—';
+  const [y, m, d] = iso.split('-').map(Number);
+  return `${d} ${MONTHS[m - 1]} ${String(y + 543).slice(-2)}`;
+}
+const today = () => new Date().toISOString().slice(0, 10);
+const daysSince = (iso) => iso ? Math.floor((Date.now() - Date.parse(iso + 'T00:00:00')) / 864e5) : null;
+
+function el(tag, attrs, ...kids) {
+  const n = document.createElement(tag);
+  for (const [k, v] of Object.entries(attrs || {})) {
+    if (v == null || v === false) continue;
+    if (k === 'text') n.textContent = v;
+    else if (k === 'html') n.innerHTML = v;
+    else if (k.startsWith('on')) n.addEventListener(k.slice(2), v);
+    else n.setAttribute(k, v === true ? '' : v);
+  }
+  for (const kid of kids.flat(9)) {
+    if (kid == null || kid === false) continue;
+    n.append(kid.nodeType ? kid : document.createTextNode(String(kid)));
+  }
+  return n;
+}
+function toast(msg) {
+  document.querySelectorAll('.toast').forEach((t) => t.remove());
+  const t = el('div', { class: 'toast', text: msg });
+  document.body.append(t);
+  setTimeout(() => t.remove(), 2600);
+}
+function sheet(title, body, actions) {
+  const wrap = el('div', { class: 'sheet', onclick: (e) => { if (e.target === wrap) wrap.remove(); } },
+    el('div', { class: 'inner' },
+      el('h2', { text: title }), body,
+      el('div', { class: 'row wrap mt' }, actions.map((a) => el('button', {
+        class: `btn ${a.kind || ''}`, style: 'flex:1',
+        onclick: () => { if (a.run && a.run() === false) return; wrap.remove(); },
+      }, a.label)))));
+  document.body.append(wrap);
+  return wrap;
+}
+
+// ---------------------------------------------------------------- สถานะ + สิทธิ์
+const PILL = {
+  'ร่าง': '', 'รออนุมัติ': 'amber', 'อนุมัติแล้ว': 'blue', 'จ่ายแล้ว': 'green',
+  'ปิดรายการ': 'green', 'ไม่อนุมัติ': 'red', 'ยกเลิก': '',
+};
+const statusPill = (s) => el('span', { class: `pill ${PILL[s] || ''}`, text: s });
+
+const CAN = {
+  CEO:    ['create', 'approve', 'pay', 'docs', 'all', 'dash'],
+  COO:    ['create', 'approve', 'all', 'dash'],
+  FINANCE:['pay', 'all', 'dash'],
+  ACCOUNT:['docs', 'all', 'dash'],
+  PM:     ['create', 'dash', 'all'],
+  VIEWER: ['all', 'dash'],
+};
+const can = (cap) => (CAN[S.user.role] || []).includes(cap);
+const seesAll = () => ['CEO', 'COO', 'FINANCE', 'ACCOUNT', 'VIEWER'].includes(S.user.role);
+const myProjects = () => seesAll() ? PROJECTS.map((p) => p.id) : (ACCESS[S.user.id] || []);
+
+const TABS = [
+  { key: 'my',      label: 'งานของฉัน', when: () => can('create') },
+  { key: 'new',     label: 'สร้างใบเบิก', when: () => can('create') },
+  { key: 'approve', label: 'อนุมัติ',    when: () => can('approve') },
+  { key: 'pay',     label: 'จ่ายเงิน',   when: () => can('pay') },
+  { key: 'docs',    label: 'ตามเอกสาร',  when: () => can('docs') },
+  { key: 'dash',    label: 'ภาพรวม',     when: () => can('dash') },
+  { key: 'all',     label: 'ค้นหา',      when: () => can('all') },
+];
+
+// ---------------------------------------------------------------- กฎอัตโนมัติ
+/** VAT · หัก ณ ที่จ่าย · ยอดสุทธิ — สเปก §6.3 */
+function computeTotals(lines, hasVat, vatMode, vendor) {
+  const sum = r2(lines.reduce((s, l) => s + Number(l.amount || 0), 0));
+  let before = sum, vat = 0, total = sum;
+  if (hasVat === 'มี') {
+    if (vatMode === 'รวม VAT แล้ว') { total = sum; before = r2(sum / (1 + VAT_RATE)); vat = r2(total - before); }
+    else { before = sum; vat = r2(sum * VAT_RATE); total = r2(before + vat); }
+  }
+  const pct = Number(vendor?.wht || 0);
+  const raw = lines.filter((l) => WHT_TYPES.includes(l.type))
+                   .reduce((s, l) => s + Number(l.amount || 0), 0);
+  const base = hasVat === 'มี' && vatMode === 'รวม VAT แล้ว' ? r2(raw / (1 + VAT_RATE)) : r2(raw);
+  const wht = r2(base * pct / 100);
+  return { before, vat, total, whtBase: base, wht, net: r2(total - wht) };
+}
+
+/** รหัสอ้างอิงเดิม 10 หลัก — ผู้เบิก(1)+โครงการ(3)+อาคาร(3)+หมวดงาน(3) · ระบบสร้างให้ ไม่ให้คนพิมพ์ */
+const padCode = (v, n, fill) =>
+  String(v || '').toUpperCase().replace(/[^A-Z0-9]/g, '').slice(0, n).padEnd(n, fill);
+const legacyCode = (u, p, b, c) => padCode(u, 1, 'X') + padCode(p, 3, 'X') + padCode(b, 3, 'X') + padCode(c, 3, 'X');
+
+// ---------------------------------------------------------------- ที่เก็บข้อมูลในเครื่อง
+const KEY = 'rabbiz-preview-v1';
+const S = { user: null, tab: 'my', store: null, historyOn: false, filter: {} };
+
+function blank() { return { mine: [], edits: {}, seeded: false }; }
+function loadStore() {
+  try { S.store = Object.assign(blank(), JSON.parse(localStorage.getItem(KEY) || '{}')); }
+  catch { S.store = blank(); }
+}
+function save() {
+  try { localStorage.setItem(KEY, JSON.stringify(S.store)); } catch { /* โหมดส่วนตัว — ไม่เป็นไร */ }
+}
+
+/** ใบเบิกทั้งหมด = ที่นำเข้ามา + ที่สร้างในหน้านี้ แล้วทับด้วยการเปลี่ยนสถานะที่ผู้ใช้กด */
+function allRequests() {
+  const out = IMPORTED.concat(S.store.mine);
+  return out.map((r) => {
+    const e = S.store.edits[r.id];
+    return e ? Object.assign({}, r, e) : r;
+  });
+}
+const visible = () => {
+  const ok = new Set(myProjects());
+  return allRequests().filter((r) => seesAll() || ok.has(r.project));
+};
+const findReq = (id) => allRequests().find((r) => r.id === id);
+function patch(id, fields) {
+  S.store.edits[id] = Object.assign({}, S.store.edits[id], fields);
+  save();
+}
+
+// ---------------------------------------------------------------- กฎเตือน W
+function evaluateFlags(req, others) {
+  const flags = [];
+  const v = V[req.vendor];
+  if (v) {
+    const paid = others.some((o) => o.vendor === req.vendor && o.id !== req.id &&
+      ['จ่ายแล้ว', 'ปิดรายการ'].includes(o.status));
+    if (!paid) flags.push(['W1', 'ผู้ขายรายใหม่ ยังไม่เคยจ่าย', v.name]);
+    if (v.staff) flags.push(['W10', 'จ่ายให้ทีมงานของเราเอง',
+      `${v.name} — ไม่ใช่ผู้รับเหมาภายนอก ตรวจว่าควรลงเป็นค่าแรงหรือเงินเดือน`]);
+  }
+  const dup = others.filter((o) => o.id !== req.id && o.building === req.building &&
+    o.date === req.date && Math.abs(o.total - req.total) < 0.01 &&
+    !['ยกเลิก', 'ไม่อนุมัติ'].includes(o.status));
+  if (dup.length) flags.push(['W5', 'รายการซ้ำ',
+    `ยอดเท่ากันในอาคารเดียวกันวันเดียวกัน: ${dup.map((d) => d.id).join(', ')}`]);
+  if (req.total >= 20000 && Math.round(req.total) % 1000 === 0)
+    flags.push(['W9', 'ยอดเป็นเลขกลมผิดปกติ', `${baht(req.total)} บาท — เลขกลมมักไม่มีบิลจริงรองรับ`]);
+  return flags;
+}
+
+// ---------------------------------------------------------------- ใบตัวอย่างให้ลองกด
+/** สร้างใบที่ยัง "เดินอยู่" ไว้ 5 ใบ เพื่อให้กดอนุมัติ/จ่าย/รับเอกสารได้ทันทีตั้งแต่เปิดครั้งแรก
+    ทุกใบติดป้าย "ตัวอย่าง" ไว้ชัดเจน — ไม่ใช่รายการจริงจากฐานข้อมูล */
+const DEMO_SPECS = [
+  { who: 'M', code: 'STE', type: 'ของ',  desc: 'เหล็กเส้น RB9 · 40 เส้น', amount: 18500, status: 'รออนุมัติ', vat: 'มี', ago: 1, hint: 'สตีล' },
+  { who: 'F', code: 'CON', type: 'แรง',  desc: 'ค่าแรงเทพื้นชั้น 1', amount: 42000, status: 'รออนุมัติ', vat: 'ไม่มี', ago: 2, hint: 'คอนกรีต' },
+  { who: 'B', code: 'SCF', type: 'เช่า', desc: 'ค่าเช่านั่งร้าน 1 เดือน', amount: 25000, status: 'อนุมัติแล้ว', vat: 'ไม่มี', ago: 3, hint: 'โชคทิวา' },
+  { who: 'J', code: 'GEN', type: 'โสหุ้ย', desc: 'ค่าน้ำมันรถขนของเข้าไซต์', amount: 3200, status: 'จ่ายแล้ว', vat: 'ไม่มี', ago: 6, hint: 'ปตท' },
+  { who: 'F', code: 'ELC', type: 'ของ',  desc: 'สายไฟ THW 2.5 · 3 ม้วน', amount: 9800, status: 'จ่ายแล้ว', vat: 'มี', ago: 41, hint: 'แสงอรุณ' },
+  { who: 'M', code: 'PNT', type: 'ของ',  desc: 'สีทาภายใน 12 ถัง', amount: 6200, status: 'ร่าง', vat: 'ไม่มี', ago: 0, hint: 'โฮมเพ้นท์' },
+];
+function seedDemo() {
+  if (S.store.seeded) return;
+  const activeCodes = CODES.filter((c) => c.active);
+  const pickCode = (want) => (C[want] && C[want].active) ? want : activeCodes[0].code;
+  DEMO_SPECS.forEach((spec, i) => {
+    const projs = ACCESS[spec.who] || ['RMT'];
+    const proj = projs[i % projs.length];
+    const inProj = BUILDINGS.filter((b) => b.project === proj && b.real);
+    const bld = (inProj.length ? inProj : BUILDINGS.filter((b) => b.project === proj))[i % Math.max(1, inProj.length)];
+    const vendor = (spec.hint && VENDORS.find((v) => v.name.includes(spec.hint)))
+                || VENDORS[(i * 37 + 5) % VENDORS.length];
+    const code = pickCode(spec.code);
+    const lines = [{ code, type: spec.type, amount: spec.amount, desc: spec.desc }];
+    const t = computeTotals(lines, spec.vat, 'แยก VAT', vendor);
+    const date = new Date(Date.now() - spec.ago * 864e5).toISOString().slice(0, 10);
+    S.store.mine.push({
+      id: `REQ-DEMO-${String(i + 1).padStart(4, '0')}`,
+      date, requester: spec.who, project: proj, building: bld ? bld.id : '',
+      vendor: vendor.id, payee: '', has_vat: spec.vat, vat_mode: 'แยก VAT',
+      before: t.before, vat: t.vat, total: t.total, wht: t.wht, net: t.net,
+      status: spec.status, note: spec.desc, lines, demo: true, photos: 1,
+      doc_received: false, paid_date: spec.status === 'จ่ายแล้ว' ? date : null,
+    });
+  });
+  S.store.seeded = true;
+  save();
+}
+
+// ---------------------------------------------------------------- โครงหน้าจอ
+function mount() {
+  const app = document.getElementById('app');
+  app.textContent = '';
+  if (!S.user) { app.append(gateScreen()); return; }
+
+  app.append(
+    el('header', { class: 'topbar' },
+      el('span', { class: 'brand', text: 'RABBiZ Build' }),
+      el('span', { class: 'muted', style: 'color:#7C8A99',
+        text: `${S.user.name} · ${S.user.title}` }),
+      el('button', { onclick: () => { S.user = null; mount(); } }, 'สลับคน')),
+    el('main', {}, screen()),
+    navbar());
+  window.scrollTo(0, 0);
+}
+
+function navbar() {
+  const nav = el('nav', { class: 'navbar' });
+  for (const t of TABS.filter((t) => t.when())) {
+    const n = countFor(t.key);
+    nav.append(el('button', {
+      class: S.tab === t.key ? 'on' : '',
+      'aria-current': S.tab === t.key ? 'page' : null,
+      onclick: () => { S.tab = t.key; mount(); },
+    }, t.label, n ? el('span', { class: 'dot num', text: n > 99 ? '99+' : n }) : null));
+  }
+  return nav;
+}
+
+function countFor(tab) {
+  const rs = visible();
+  if (tab === 'approve') return rs.filter((r) => r.status === 'รออนุมัติ').length;
+  if (tab === 'pay')     return rs.filter((r) => r.status === 'อนุมัติแล้ว').length;
+  if (tab === 'docs')    return rs.filter((r) => r.status === 'จ่ายแล้ว' && !r.imported && !r.doc_received).length;
+  if (tab === 'my')      return rs.filter((r) => r.requester === S.user.id &&
+                            ['ร่าง', 'ไม่อนุมัติ'].includes(r.status)).length;
+  return 0;
+}
+
+function screen() {
+  switch (S.tab) {
+    case 'new': return newRequestScreen();
+    case 'approve': return queueScreen('approve');
+    case 'pay': return queueScreen('pay');
+    case 'docs': return docsScreen();
+    case 'dash': return dashScreen();
+    case 'all': return listScreen();
+    default: return myWorkScreen();
+  }
+}
+
+// ---------------------------------------------------------------- หน้าเลือกคน
+function gateScreen() {
+  const total = IMPORTED.reduce((s, r) => s + r.total, 0);
+  const order = ['CEO', 'COO', 'FINANCE', 'ACCOUNT', 'PM', 'VIEWER'];
+  const list = USERS.slice().sort((a, b) => order.indexOf(a.role) - order.indexOf(b.role));
+
+  const wrap = el('div', { class: 'gate' },
+    el('div', { class: 'eyebrow', text: 'ตัวอย่างระบบ · ข้อมูลจริงจากฐานข้อมูล v9.1' }),
+    el('h1', { text: 'RABBiZ Build — ระบบเบิกจ่ายงานก่อสร้าง' }),
+    el('p', { class: 'small muted', style: 'max-width:34rem',
+      text: 'กดชื่อคนหนึ่งคน แล้วหน้าจอจะเปลี่ยนเป็นมุมของคนนั้นทั้งหมด — เห็นเฉพาะโครงการที่เขารับผิดชอบ และกดได้เฉพาะสิ่งที่ตำแหน่งเขาทำได้ สลับกลับมาเปลี่ยนคนได้ตลอดเวลา' }),
+
+    el('div', { class: 'kpi mt' },
+      kpi(baht(IMPORTED.length), 'ใบเบิกที่นำเข้าแล้ว'),
+      kpi('฿' + baht(total / 1e6, 2) + ' ล.', 'ยอดรวมที่บันทึกไว้'),
+      kpi(baht(PROJECTS.length), 'โครงการ'),
+      kpi(baht(BUILDINGS.filter((b) => b.real).length), 'อาคาร')),
+
+    el('div', { class: 'rule-head', text: 'เลือกคน' }),
+    el('div', { class: 'stack' }, list.map((u) => el('button', {
+      class: 'who', onclick: () => { S.user = u; S.tab = firstTab(u); mount(); },
+    },
+      el('span', { class: 'av', text: u.id }),
+      el('span', {},
+        el('span', { class: 'nm', text: u.name }),
+        el('span', { class: 'rl', text: ` ${u.title} · ${roleLine(u)}` })),
+      el('span', { class: 'go', text: '→' })))),
+
+    el('p', { class: 'tiny muted mt',
+      text: 'ตัวอย่างนี้ทำงานในเครื่องคุณล้วน ๆ ไม่มีการส่งข้อมูลออกไปไหน สิ่งที่กดจะถูกจำไว้ในเบราว์เซอร์นี้เท่านั้น ระบบจริงมีรหัสผ่าน 2FA และประวัติการแก้ไขครบ' }),
+    el('button', { class: 'btn ghost block mt', onclick: resetAll }, 'ล้างสิ่งที่ทดลองไว้ แล้วเริ่มใหม่'));
+  return wrap;
+}
+function kpi(v, k) {
+  return el('div', { class: 'card' },
+    el('div', { class: 'v', text: v }), el('div', { class: 'k', text: k }));
+}
+function roleLine(u) {
+  if (['CEO', 'COO', 'FINANCE', 'ACCOUNT', 'VIEWER'].includes(u.role)) return 'เห็นทุกโครงการ';
+  const n = (ACCESS[u.id] || []).length;
+  return `ดูแล ${n} โครงการ`;
+}
+function firstTab(u) {
+  const list = TABS.filter((t) => (CAN[u.role] || []).includes(
+    { my: 'create', new: 'create', approve: 'approve', pay: 'pay', docs: 'docs', dash: 'dash', all: 'all' }[t.key]));
+  return list.length ? list[0].key : 'dash';
+}
+function resetAll() {
+  S.store = blank(); save(); seedDemo(); S.user = null; mount();
+  toast('ล้างข้อมูลทดลองแล้ว');
+}
+
+// ---------------------------------------------------------------- การ์ดใบเบิก
+function reqCard(r, opts = {}) {
+  const bld = B[r.building], prj = P[r.project];
+  const urgent = opts.urgent || ['ไม่อนุมัติ'].includes(r.status);
+  const tone = urgent ? 'alert'
+    : r.imported ? 'imported'
+    : ['จ่ายแล้ว', 'ปิดรายการ'].includes(r.status) ? 'ok'
+    : r.status === 'รออนุมัติ' ? 'warn' : '';
+  return el('button', { class: `item ${tone}`, onclick: () => openDetail(r.id) },
+    el('div', { class: 'line1' },
+      el('span', { class: 'id', text: r.id }),
+      r.demo ? el('span', { class: 'pill demo', text: 'ตัวอย่าง' }) : null,
+      el('span', { class: 'amt', text: '฿' + baht(r.total) })),
+    el('div', { class: 'line2 truncate',
+      text: `${V[r.vendor]?.name || r.payee || '—'} · ${r.note || r.lines[0]?.desc || ''}` }),
+    el('div', { class: 'line3 truncate',
+      text: `${bld ? bld.name : '—'} · ${prj ? prj.name : r.project} · ${thaiDate(r.date)}` }),
+    el('div', { class: 'row wrap', style: 'margin-top:.35rem' },
+      statusPill(r.status),
+      ...(opts.extra || []).map((x) => el('span', { class: `pill ${x[1]}`, text: x[0] }))));
+}
+
+// ---------------------------------------------------------------- ใบเบิกทีละใบ
+function openDetail(id) {
+  const r = findReq(id);
+  if (!r) return;
+  const others = allRequests();
+  const flags = r.imported ? [] : evaluateFlags(r, others);
+  const v = V[r.vendor], bld = B[r.building];
+  const code = legacyCode(r.requester, r.project, bld ? bld.name : '', r.lines[0]?.code);
+
+  const body = el('div', {},
+    el('div', { class: 'strip' },
+      el('div', { class: 'lbl', text: 'รหัสอ้างอิงเดิม · ระบบสร้างให้' }),
+      el('div', { class: 'code' }, code.split('').map((ch) => el('span', { text: ch }))),
+      el('div', { class: 'seg' }, ['ผู้เบิก', 'โครงการ', 'อาคาร', 'หมวดงาน'].map((s) => el('i', { text: s })))),
+
+    el('div', { class: 'row wrap', style: 'gap:.35rem' },
+      statusPill(r.status),
+      r.imported ? el('span', { class: 'pill', text: 'นำเข้าย้อนหลัง' }) : null,
+      r.demo ? el('span', { class: 'pill demo', text: 'ใบตัวอย่าง' }) : null),
+
+    el('div', { class: 'scrollx mt' }, el('table', {},
+      el('tbody', {}, [
+        ['ผู้ขอเบิก', `${U[r.requester]?.name || r.requester} (${r.requester})`],
+        ['วันที่', thaiDate(r.date)],
+        ['โครงการ', P[r.project]?.name || r.project],
+        ['อาคาร', bld ? `${bld.name}${bld.area ? ` · ${baht(bld.area)} ตร.ม.` : ''}` : '—'],
+        ['ผู้รับเงิน', v ? `${v.name}${v.staff ? ' · ทีมงานของเรา' : ''}` : (r.payee || '—')],
+        ['หมายเหตุ', r.note || '—'],
+      ].map(([k, val]) => el('tr', {}, el('th', { text: k }), el('td', { text: val })))))),
+
+    el('div', { class: 'rule-head', text: `รายการย่อย · ${r.lines.length} บรรทัด` }),
+    el('div', { class: 'scrollx' }, el('table', {},
+      el('thead', {}, el('tr', {}, el('th', { text: 'หมวดงาน' }), el('th', { text: 'ประเภท' }),
+        el('th', { text: 'รายละเอียด' }), el('th', { class: 'n', text: 'จำนวนเงิน' }))),
+      el('tbody', {}, r.lines.map((l) => el('tr', {},
+        el('td', {}, el('span', { class: 'sw t-' + l.type }), C[l.code]?.cost_name || C[l.code]?.name || l.code),
+        el('td', { text: l.type }),
+        el('td', { class: 'truncate', style: 'max-width:11rem', text: l.desc || '—' }),
+        el('td', { class: 'n', text: baht(l.amount, 2) })))))),
+
+    el('div', { class: 'rule-head', text: 'ยอดเงิน' }),
+    el('div', { class: 'scrollx' }, el('table', {}, el('tbody', {}, [
+      ['ก่อน VAT', r.before], ['VAT 7%', r.vat], ['ยอดรวม', r.total],
+      ['หัก ณ ที่จ่าย', -r.wht], ['จ่ายจริง', r.net],
+    ].map(([k, val], i) => el('tr', {},
+      el('th', { text: k }),
+      el('td', { class: 'n', style: i >= 3 ? 'font-weight:600' : '', text: baht(val, 2) })))))),
+
+    flags.length ? el('div', { class: 'rule-head', text: 'ธงเตือน' }) : null,
+    ...flags.map(([c, label, detail]) => el('div', { class: 'flag' },
+      el('b', { text: `${c} ${label} ` }), el('span', { class: 'tiny', text: detail }))));
+
+  sheet(r.id, body, detailActions(r));
+}
+
+function detailActions(r) {
+  const acts = [];
+  const mine = r.requester === S.user.id;
+  const done = () => { mount(); };
+  if (r.status === 'ร่าง' && mine)
+    acts.push({ label: 'ส่งขออนุมัติ', kind: 'primary',
+      run: () => { patch(r.id, { status: 'รออนุมัติ' }); toast('ส่งขออนุมัติแล้ว'); done(); } });
+  if (r.status === 'รออนุมัติ' && can('approve')) {
+    acts.push({ label: 'อนุมัติ', kind: 'primary', run: () => {
+      patch(r.id, { status: 'อนุมัติแล้ว', decided_by: S.user.id });
+      toast(`อนุมัติ ${r.id} แล้ว`); done();
+    } });
+    acts.push({ label: 'ตีกลับ', kind: 'danger', run: () => {
+      patch(r.id, { status: 'ไม่อนุมัติ', decided_by: S.user.id });
+      toast('ตีกลับให้ผู้เบิกแก้แล้ว'); done();
+    } });
+  }
+  if (r.status === 'อนุมัติแล้ว' && can('pay'))
+    acts.push({ label: `จ่าย ฿${baht(r.net)}`, kind: 'primary', run: () => {
+      patch(r.id, { status: 'จ่ายแล้ว', paid_date: today(), doc_received: false });
+      toast('บันทึกจ่ายเงินแล้ว'); done();
+    } });
+  if (r.status === 'จ่ายแล้ว' && !r.imported && can('docs'))
+    acts.push({ label: r.doc_received ? 'ปิดรายการ' : 'ได้รับเอกสารแล้ว', kind: 'primary', run: () => {
+      patch(r.id, r.doc_received ? { status: 'ปิดรายการ' } : { doc_received: true });
+      toast(r.doc_received ? 'ปิดรายการแล้ว' : 'บันทึกว่าได้รับเอกสารแล้ว'); done();
+    } });
+  if (r.status === 'ไม่อนุมัติ' && mine)
+    acts.push({ label: 'ส่งใหม่', kind: 'primary',
+      run: () => { patch(r.id, { status: 'รออนุมัติ' }); toast('ส่งใหม่แล้ว'); done(); } });
+  acts.push({ label: 'ปิด' });
+  return acts;
+}
+
+// ---------------------------------------------------------------- S1 งานของฉัน
+function myWorkScreen() {
+  const rs = visible().filter((r) => r.requester === S.user.id);
+  const live = rs.filter((r) => !r.imported);
+  const history = rs.filter((r) => r.imported);
+  const needsMe = live.filter((r) => ['ร่าง', 'ไม่อนุมัติ'].includes(r.status));
+  const moving = live.filter((r) => !needsMe.includes(r));
+  const scope = seesAll() ? 'ทุกโครงการ'
+    : (ACCESS[S.user.id] || []).map((id) => P[id]?.name || id).join(' · ') || 'ยังไม่ได้รับสิทธิ์โครงการใด';
+
+  const root = el('div', {},
+    el('div', { class: 'eyebrow truncate', title: scope, text: scope }),
+    el('h1', { text: 'งานของฉัน' }),
+    el('button', { class: 'btn primary block', onclick: () => { S.tab = 'new'; mount(); } },
+      '+ สร้างใบเบิกใหม่'));
+
+  if (needsMe.length) {
+    root.append(el('div', { class: 'rule-head', text: `ต้องการคุณ · ${needsMe.length} ใบ` }),
+      el('div', { class: 'stack' }, needsMe.map((r) => reqCard(r, {
+        urgent: true,
+        extra: [[r.status === 'ร่าง' ? 'ยังไม่ได้ส่ง' : 'ถูกตีกลับ — แก้แล้วส่งใหม่', 'red']],
+      }))));
+  }
+  if (moving.length) {
+    root.append(el('div', { class: 'rule-head', text: `กำลังเดินอยู่ · ${moving.length} ใบ` }),
+      el('div', { class: 'stack' }, moving.map((r) => reqCard(r))));
+  }
+  if (!live.length)
+    root.append(el('div', { class: 'empty mt',
+      text: 'ยังไม่มีใบเบิกใหม่ของคุณ — กดปุ่มด้านบนเพื่อสร้างใบแรก' }));
+
+  root.append(el('div', { class: 'rule-head', text: `ประวัติที่นำเข้าย้อนหลัง · ${baht(history.length)} ใบ` }),
+    el('p', { class: 'tiny muted',
+      text: 'รายการเก่าที่ยกมาจากไฟล์ Excel เดิม ไม่มีการติดตามเอกสาร จึงไม่นับว่า “ของยังไม่มา”' }));
+  if (S.historyOn)
+    root.append(el('div', { class: 'stack' }, history.slice(0, 40).map((r) => reqCard(r))),
+      history.length > 40 ? el('p', { class: 'tiny muted mt',
+        text: `แสดง 40 ใบแรกจาก ${baht(history.length)} ใบ — ดูทั้งหมดได้ที่หน้า “ค้นหา”` }) : null);
+  root.append(el('button', {
+    class: 'btn ghost block mt', onclick: () => { S.historyOn = !S.historyOn; mount(); },
+  }, S.historyOn ? 'ซ่อนประวัติ' : 'ดูประวัติ'));
+  return root;
+}
+
+// ---------------------------------------------------------------- S2 สร้างใบเบิก
+function newRequestScreen() {
+  const projIds = myProjects();
+  const f = {
+    project: projIds[0] || '', building: '', vendorName: '', date: today(),
+    hasVat: 'ไม่มี', vatMode: 'แยก VAT', note: '', photos: 0, petty: false, tried: false,
+    lines: [{ code: '', type: '', desc: '', qty: 1, price: 0 }],
+  };
+
+  const projSel = el('select', { onchange: () => { f.project = projSel.value; f.building = ''; fillBuildings(); refresh(); } },
+    projIds.map((id) => el('option', { value: id, text: `${P[id]?.name || id} (${id})` })));
+  projSel.value = f.project;
+  const bldSel = el('select', { onchange: () => { f.building = bldSel.value; refresh(); } });
+  function fillBuildings() {
+    bldSel.textContent = '';
+    const list = BUILDINGS.filter((b) => b.project === f.project);
+    bldSel.append(el('option', { value: '', text: list.length ? 'เลือกอาคาร' : 'โครงการนี้ยังไม่มีอาคาร' }));
+    for (const b of list)
+      bldSel.append(el('option', { value: b.id, text: `${b.name}${b.real ? '' : ' (ไม่ใช่ตัวอาคาร)'}` }));
+  }
+  fillBuildings();
+
+  const vList = el('datalist', { id: 'vendors' }, VENDORS.map((v) => el('option', { value: v.name })));
+  const vendorIn = el('input', { type: 'text', list: 'vendors', placeholder: 'พิมพ์ชื่อร้าน/ผู้รับเหมา',
+    oninput: () => { f.vendorName = vendorIn.value; refresh(); } });
+  const dateIn = el('input', { type: 'date', value: f.date, onchange: () => { f.date = dateIn.value; refresh(); } });
+  const noteIn = el('input', { type: 'text', placeholder: 'เช่น เหล็กงวดที่ 2',
+    oninput: () => { f.note = noteIn.value; } });
+
+  const vatSel = el('select', { onchange: () => { f.hasVat = vatSel.value; vatModeWrap.style.display = f.hasVat === 'มี' ? '' : 'none'; refresh(); } },
+    ['ไม่มี', 'มี'].map((x) => el('option', { value: x, text: x === 'มี' ? 'มี VAT' : 'ไม่มี VAT' })));
+  const vatModeSel = el('select', { onchange: () => { f.vatMode = vatModeSel.value; refresh(); } },
+    ['แยก VAT', 'รวม VAT แล้ว'].map((x) => el('option', { value: x, text: x })));
+  const vatModeWrap = el('label', { class: 'f', style: 'display:none' },
+    el('span', { text: 'ราคาที่กรอก' }), vatModeSel);
+
+  const photoIn = el('input', { type: 'file', accept: 'image/*', multiple: true,
+    onchange: () => { f.photos = photoIn.files.length; refresh(); } });
+
+  const linesWrap = el('div', { class: 'stack' });
+  const strip = el('div', { class: 'strip' });
+  const totalsBox = el('div', { class: 'card' });
+  const errBox = el('div', { class: 'stack' });
+  const submitBtn = el('button', { class: 'btn primary block', onclick: () => finish('รออนุมัติ') }, 'ส่งขออนุมัติ');
+  const draftBtn = el('button', { class: 'btn ghost block mt', onclick: () => finish('ร่าง') }, 'เก็บเป็นร่างไว้ก่อน');
+
+  function lineRow(l, i) {
+    const codeSel = el('select', { onchange: () => { l.code = codeSel.value; refresh(); } },
+      el('option', { value: '', text: 'เลือกหมวดงาน' }),
+      groupedCodes().map(([group, list]) => el('optgroup', { label: group },
+        list.map((c) => el('option', { value: c.code, text: `${c.code} · ${c.name}` })))));
+    codeSel.value = l.code;
+    const seg = el('div', { class: 'segment' }, COST_TYPES.map((t) => el('button', {
+      type: 'button', class: l.type === t ? 'on' : '',
+      onclick: () => { l.type = t; refresh(); },
+    }, t)));
+    const desc = el('input', { type: 'text', placeholder: 'รายละเอียด เช่น เหล็กเส้น RB9',
+      value: l.desc, oninput: () => { l.desc = desc.value; } });
+    const qty = el('input', { type: 'number', min: '0', step: 'any', value: l.qty,
+      oninput: () => { l.qty = Number(qty.value); refresh(); } });
+    const price = el('input', { type: 'number', min: '0', step: 'any', value: l.price || '',
+      oninput: () => { l.price = Number(price.value); refresh(); } });
+    const amt = el('div', { class: 'num', style: 'font-family:var(--mono);font-weight:600;padding-top:.55rem' });
+    l._paint = () => { amt.textContent = '฿' + baht(r2(l.qty * l.price), 2); };
+    l._paint();
+    return el('div', { class: 'card' },
+      el('div', { class: 'spread' },
+        el('span', { class: 'eyebrow', text: `รายการที่ ${i + 1}` }),
+        f.lines.length > 1 ? el('button', {
+          class: 'btn ghost', style: 'min-height:auto;padding:.1rem .5rem;font-size:.75rem',
+          onclick: () => { f.lines.splice(i, 1); drawLines(); refresh(); },
+        }, 'ลบ') : null),
+      el('label', { class: 'f' }, el('span', { text: 'แกน 1 · หมวดงาน' }), codeSel),
+      el('label', { class: 'f' }, el('span', { text: 'แกน 2 · เงินก้อนนี้เป็นค่าอะไร' }), seg),
+      el('label', { class: 'f' }, el('span', { text: 'รายละเอียด' }), desc),
+      el('div', { class: 'row' },
+        el('label', { class: 'f', style: 'flex:1' }, el('span', { text: 'จำนวน' }), qty),
+        el('label', { class: 'f', style: 'flex:1.4' }, el('span', { text: 'ราคา/หน่วย' }), price),
+        el('label', { class: 'f', style: 'flex:1.2' }, el('span', { text: 'เป็นเงิน' }), amt)));
+  }
+  function drawLines() {
+    linesWrap.textContent = '';
+    f.lines.forEach((l, i) => linesWrap.append(lineRow(l, i)));
+    linesWrap.append(el('button', {
+      class: 'btn block', onclick: () => { f.lines.push({ code: '', type: '', desc: '', qty: 1, price: 0 }); drawLines(); refresh(); },
+    }, '+ เพิ่มรายการ'));
+  }
+  drawLines();
+
+  function current() {
+    const lines = f.lines.map((l) => ({ code: l.code, type: l.type, desc: l.desc, amount: r2(l.qty * l.price) }));
+    const vendor = VENDORS.find((v) => v.name === f.vendorName.trim());
+    return { lines, vendor, t: computeTotals(lines, f.hasVat, f.vatMode, vendor) };
+  }
+
+  function refresh() {
+    const { lines, vendor, t } = current();
+    f.lines.forEach((l) => l._paint && l._paint());
+
+    // แถบรหัส 10 หลัก — เติมทีละช่องตามที่กรอก
+    const code = padCode(S.user.id, 1, '·') + padCode(f.project, 3, '·') +
+                 padCode(B[f.building]?.name, 3, '·') + padCode(lines[0]?.code, 3, '·');
+    strip.textContent = '';
+    strip.append(
+      el('div', { class: 'lbl', text: 'รหัสอ้างอิงเดิม · ระบบสร้างให้ ไม่ต้องพิมพ์เอง' }),
+      el('div', { class: 'code' }, code.split('').map((ch) =>
+        el('span', { class: ch === '·' ? 'off' : '', text: ch }))),
+      el('div', { class: 'seg' }, ['ผู้เบิก', 'โครงการ', 'อาคาร', 'หมวดงาน'].map((s) => el('i', { text: s }))));
+
+    totalsBox.textContent = '';
+    const rows = [['ก่อน VAT', t.before]];
+    if (f.hasVat === 'มี') rows.push(['VAT 7%', t.vat]);
+    rows.push(['ยอดรวม', t.total]);
+    if (t.wht > 0) rows.push([`หัก ณ ที่จ่าย ${vendor.wht}% (ฐานค่าแรง/ค่าเช่า ฿${baht(t.whtBase, 2)})`, -t.wht]);
+    rows.push(['จ่ายจริง', t.net]);
+    totalsBox.append(el('table', {}, el('tbody', {}, rows.map(([k, v], i) => el('tr', {},
+      el('th', { text: k }),
+      el('td', { class: 'n', style: i === rows.length - 1 ? 'font-weight:600;font-size:1rem' : '',
+        text: baht(v, 2) }))))));
+
+    // ก่อนกดส่งครั้งแรกให้ขึ้นเป็นรายการ "ยังขาด" เงียบ ๆ กดส่งแล้วค่อยเป็นสีแดง
+    const errors = validate(f, lines, vendor, t);
+    errBox.textContent = '';
+    if (errors.length)
+      errBox.append(el('div', { class: 'eyebrow',
+        text: f.tried ? `ส่งไม่ได้ · ติด ${errors.length} ข้อ` : `ยังขาดอีก ${errors.length} อย่าง` }));
+    errors.forEach(([c, m]) => errBox.append(el('div', { class: f.tried ? 'err' : 'todo' },
+      el('b', { text: c + ' ' }), m)));
+    if (!errors.length && t.total > 0) {
+      const preview = { id: '—', date: f.date, requester: S.user.id, project: f.project,
+        building: f.building, vendor: vendor?.id, total: t.total, status: 'ร่าง', lines };
+      evaluateFlags(preview, allRequests()).forEach(([c, label, detail]) =>
+        errBox.append(el('div', { class: 'flag' }, el('b', { text: `${c} ${label} ` }),
+          el('span', { class: 'tiny', text: detail }))));
+    }
+    submitBtn.textContent = errors.length && f.tried
+      ? `ยังส่งไม่ได้ · ติด ${errors.length} ข้อ` : 'ส่งขออนุมัติ';
+  }
+
+  function finish(status) {
+    const { lines, vendor, t } = current();
+    const errors = validate(f, lines, vendor, t);
+    if (status === 'รออนุมัติ' && errors.length) {
+      f.tried = true; refresh();
+      errBox.scrollIntoView({ block: 'center', behavior: 'smooth' });
+      toast(`ยังส่งไม่ได้ · ติดกฎอยู่ ${errors.length} ข้อ`);
+      return;
+    }
+    if (status === 'ร่าง' && !lines.some((l) => l.amount > 0)) { toast('ยังไม่มีจำนวนเงิน'); return; }
+    const n = S.store.mine.filter((r) => !r.demo).length + 1;
+    const id = `REQ-${String(new Date().getFullYear() + 543).slice(-2)}${String(new Date().getMonth() + 1).padStart(2, '0')}-N${String(n).padStart(3, '0')}`;
+    S.store.mine.push({
+      id, date: f.date, requester: S.user.id, project: f.project, building: f.building,
+      vendor: vendor?.id || '', payee: vendor ? '' : f.vendorName.trim(),
+      has_vat: f.hasVat, vat_mode: f.vatMode,
+      before: t.before, vat: t.vat, total: t.total, wht: t.wht, net: t.net,
+      status, note: f.note || lines[0]?.desc || '', lines, photos: f.photos,
+      doc_received: false, paid_date: null,
+    });
+    save();
+    toast(status === 'ร่าง' ? `เก็บร่าง ${id} แล้ว` : `ส่ง ${id} ขออนุมัติแล้ว`);
+    S.tab = 'my'; mount();
+  }
+
+  refresh();
+  return el('div', {}, vList,
+    el('div', { class: 'eyebrow', text: 'ใบเบิกใหม่' }),
+    el('h1', { text: 'สร้างใบเบิก' }),
+    strip,
+    el('div', { class: 'card' },
+      el('label', { class: 'f' }, el('span', { text: 'โครงการ' }), projSel),
+      el('label', { class: 'f' }, el('span', { text: 'อาคาร' }), bldSel),
+      el('label', { class: 'f' }, el('span', { text: 'ร้าน / ผู้รับเหมา' }), vendorIn),
+      el('label', { class: 'f' }, el('span', { text: 'วันที่' }), dateIn),
+      el('label', { class: 'f' }, el('span', { text: 'ภาษีมูลค่าเพิ่ม' }), vatSel),
+      vatModeWrap,
+      el('label', { class: 'f' }, el('span', { text: 'หมายเหตุ' }), noteIn)),
+    el('div', { class: 'rule-head', text: 'รายการย่อย' }),
+    linesWrap,
+    el('div', { class: 'rule-head', text: 'รูปบิล / หลักฐาน' }),
+    el('div', { class: 'card' },
+      el('p', { class: 'tiny muted', text: `ใบเบิกเกิน ฿${baht(PHOTO_ABOVE)} ต้องแนบอย่างน้อย 1 รูป` }),
+      photoIn),
+    el('div', { class: 'rule-head', text: 'ยอดเงิน' }),
+    totalsBox,
+    el('div', { class: 'stack mt' }, errBox),
+    el('div', { class: 'mt' }, submitBtn, draftBtn));
+}
+
+function groupedCodes() {
+  const g = {};
+  for (const c of CODES) if (c.active) (g[c.group] ||= []).push(c);
+  return Object.entries(g).sort((a, b) => a[0].localeCompare(b[0], 'th'));
+}
+
+/** กฎบล็อก B1–B10 — ผ่านไม่ได้ */
+function validate(f, lines, vendor, t) {
+  const e = [];
+  if (!f.project || !f.building) e.push(['B3', 'ยังไม่ได้เลือกโครงการและอาคาร']);
+  if (!f.vendorName.trim()) e.push(['B3', 'ยังไม่ได้ระบุร้าน/ผู้รับเหมา']);
+  lines.forEach((l, i) => {
+    if (!l.code) e.push(['B1', `รายการที่ ${i + 1}: ยังไม่ได้เลือกหมวดงาน`]);
+    if (!l.type) e.push(['B2', `รายการที่ ${i + 1}: ยังไม่ได้บอกว่าเป็นค่าของ ค่าแรง ค่าเช่า หรือโสหุ้ย`]);
+    if (!(l.amount > 0)) e.push(['B5', `รายการที่ ${i + 1}: จำนวนเงินต้องมากกว่า 0`]);
+    if (f.petty && l.amount > 2000) e.push(['B10', `รายการที่ ${i + 1}: เงินสดย่อยต่อรายการไม่เกิน ฿2,000`]);
+  });
+  if (t.total > PHOTO_ABOVE && !f.photos)
+    e.push(['B6', `ใบเบิกเกิน ฿${baht(PHOTO_ABOVE)} ต้องแนบรูปบิลอย่างน้อย 1 รูป`]);
+  return e;
+}
+
+// ---------------------------------------------------------------- S3/S4 คิวอนุมัติ · คิวจ่าย
+function queueScreen(kind) {
+  const wantStatus = kind === 'approve' ? 'รออนุมัติ' : 'อนุมัติแล้ว';
+  const rs = visible().filter((r) => r.status === wantStatus)
+                      .sort((a, b) => b.total - a.total);
+  const sum = rs.reduce((s, r) => s + (kind === 'approve' ? r.total : r.net), 0);
+
+  const root = el('div', {},
+    el('div', { class: 'eyebrow', text: kind === 'approve' ? 'รอคุณตัดสินใจ' : 'อนุมัติแล้ว รอโอนเงิน' }),
+    el('h1', { text: kind === 'approve' ? 'อนุมัติ' : 'จ่ายเงิน' }),
+    el('div', { class: 'kpi' },
+      kpi(baht(rs.length), 'ใบในคิว'),
+      kpi('฿' + baht(sum), kind === 'approve' ? 'ยอดรวมที่รออนุมัติ' : 'ยอดที่ต้องโอนจริง')));
+
+  if (!rs.length) {
+    root.append(el('div', { class: 'empty mt', text: kind === 'approve'
+      ? 'ไม่มีใบรออนุมัติ — ลองสวมบทเป็น PM สร้างใบเบิกแล้วกลับมาดู'
+      : 'ไม่มีใบรอจ่าย — ต้องมีคนอนุมัติก่อน' }));
+    return root;
+  }
+
+  const others = allRequests();
+  root.append(el('div', { class: 'rule-head', text: 'เรียงจากยอดมากไปน้อย' }));
+  root.append(el('div', { class: 'stack' }, rs.map((r) => {
+    const flags = r.imported ? [] : evaluateFlags(r, others);
+    const card = reqCard(r, { extra: flags.map((fl) => [`⚑ ${fl[0]}`, 'amber']) });
+    const quick = el('div', { class: 'row', style: 'gap:.4rem;margin-top:.4rem' });
+    if (kind === 'approve') {
+      quick.append(
+        el('button', { class: 'btn primary', style: 'flex:1;min-height:42px;font-size:.85rem',
+          onclick: () => { patch(r.id, { status: 'อนุมัติแล้ว', decided_by: S.user.id }); toast(`อนุมัติ ${r.id}`); mount(); } }, 'อนุมัติ'),
+        el('button', { class: 'btn danger', style: 'flex:1;min-height:42px;font-size:.85rem',
+          onclick: () => { patch(r.id, { status: 'ไม่อนุมัติ', decided_by: S.user.id }); toast('ตีกลับแล้ว'); mount(); } }, 'ตีกลับ'));
+    } else {
+      quick.append(el('button', { class: 'btn primary', style: 'flex:1;min-height:42px;font-size:.85rem',
+        onclick: () => { patch(r.id, { status: 'จ่ายแล้ว', paid_date: today(), doc_received: false }); toast(`จ่าย ${r.id} แล้ว`); mount(); } },
+        `บันทึกจ่าย ฿${baht(r.net)}`));
+    }
+    return el('div', {}, card, quick);
+  })));
+  return root;
+}
+
+// ---------------------------------------------------------------- S5 ตามเอกสาร
+function docsScreen() {
+  // ข้อมูลนำเข้าย้อนหลังไม่มีการติดตามเอกสาร (สเปก §9) จึงไม่นับในหน้านี้
+  const rs = visible().filter((r) => !r.imported && ['จ่ายแล้ว', 'ปิดรายการ'].includes(r.status));
+  const waiting = rs.filter((r) => !r.doc_received)
+    .sort((a, b) => (daysSince(b.paid_date) || 0) - (daysSince(a.paid_date) || 0));
+  const got = rs.filter((r) => r.doc_received);
+  const late = waiting.filter((r) => (daysSince(r.paid_date) || 0) >= 30);
+
+  const root = el('div', {},
+    el('div', { class: 'eyebrow', text: 'จ่ายไปแล้วแต่ยังไม่ได้บิล' }),
+    el('h1', { text: 'ตามเอกสาร' }),
+    el('div', { class: 'kpi' },
+      kpi(baht(waiting.length), 'ใบที่ยังไม่ได้เอกสาร'),
+      kpi('฿' + baht(waiting.reduce((s, r) => s + r.total, 0)), 'มูลค่าที่ค้างเอกสาร'),
+      kpi(baht(late.length), 'ค้างเกิน 30 วัน')),
+    el('p', { class: 'tiny muted mt',
+      text: 'นับ 15 วันเป็นเหลือง 30 วันเป็นแดง · รายการที่นำเข้าจาก Excel เดิมไม่นับ เพราะไม่ได้เก็บสถานะเอกสารไว้' }));
+
+  if (!waiting.length) root.append(el('div', { class: 'empty mt', text: 'ไม่มีใบค้างเอกสาร' }));
+  else root.append(el('div', { class: 'rule-head', text: 'ค้างอยู่' }),
+    el('div', { class: 'stack' }, waiting.map((r) => {
+      const d = daysSince(r.paid_date);
+      const tone = d >= 30 ? 'red' : d >= 15 ? 'amber' : '';
+      return el('div', {}, reqCard(r, { urgent: d >= 30,
+        extra: [[`จ่ายมา ${d} วัน`, tone]] }),
+        el('button', { class: 'btn', style: 'width:100%;min-height:42px;font-size:.85rem;margin-top:.4rem',
+          onclick: () => { patch(r.id, { doc_received: true }); toast('บันทึกว่าได้รับเอกสารแล้ว'); mount(); } },
+          'ได้รับเอกสารแล้ว'));
+    })));
+
+  if (got.length) root.append(el('div', { class: 'rule-head', text: `ได้เอกสารแล้ว · ${got.length} ใบ` }),
+    el('div', { class: 'stack' }, got.map((r) => reqCard(r, { extra: [['เอกสารครบ', 'green']] }))));
+  return root;
+}
+
+// ---------------------------------------------------------------- S6 ภาพรวม
+function dashScreen() {
+  const rs = visible();
+  const booked = rs.filter((r) => ['จ่ายแล้ว', 'ปิดรายการ'].includes(r.status));
+  const total = booked.reduce((s, r) => s + r.total, 0);
+  const pending = rs.filter((r) => r.status === 'รออนุมัติ');
+  const toPay = rs.filter((r) => r.status === 'อนุมัติแล้ว');
+
+  // แยกตามประเภทต้นทุน (แกนที่ 2)
+  const byType = Object.fromEntries(COST_TYPES.concat(['อื่น ๆ']).map((t) => [t, 0]));
+  const byProject = {}, byCode = {}, byBuilding = {};
+  for (const r of booked) {
+    const lineSum = r.lines.reduce((s, l) => s + l.amount, 0) || r.total;
+    const scale = lineSum ? r.total / lineSum : 1;
+    for (const l of r.lines) {
+      const amt = l.amount * scale;
+      byType[COST_TYPES.includes(l.type) ? l.type : 'อื่น ๆ'] += amt;
+      (byProject[r.project] ||= Object.fromEntries(COST_TYPES.concat(['อื่น ๆ']).map((t) => [t, 0])))
+        [COST_TYPES.includes(l.type) ? l.type : 'อื่น ๆ'] += amt;
+      byCode[l.code] = (byCode[l.code] || 0) + amt;
+    }
+    if (r.building) byBuilding[r.building] = (byBuilding[r.building] || 0) + r.total;
+  }
+  const TYPES = COST_TYPES.concat(['อื่น ๆ']);
+  const colour = (t) => COST_TYPES.includes(t) ? `var(--t-${t})` : 'var(--steel)';
+
+  const root = el('div', {},
+    el('div', { class: 'eyebrow', text: seesAll() ? 'ทุกโครงการ' : 'เฉพาะโครงการที่คุณดูแล' }),
+    el('h1', { text: 'ภาพรวม' }),
+    el('div', { class: 'kpi' },
+      kpi('฿' + baht(total / 1e6, 2) + ' ล.', 'ใช้ไปแล้วทั้งหมด'),
+      kpi(baht(booked.length), 'ใบที่จ่ายแล้ว'),
+      kpi(baht(pending.length), 'รออนุมัติ'),
+      kpi('฿' + baht(toPay.reduce((s, r) => s + r.net, 0)), 'รอโอน')));
+
+  // แถบเดียวยาว ๆ แยกสี — เห็นสัดส่วนของ/แรง/เช่า/โสหุ้ยในครั้งเดียว
+  root.append(el('div', { class: 'rule-head', text: 'เงินหมดไปกับอะไร · แกนที่ 2' }));
+  root.append(el('div', { class: 'card' },
+    el('div', { class: 'bars' }, el('div', { class: 'b' },
+      el('div', { class: 'track' }, TYPES.filter((t) => byType[t] > 0).map((t) =>
+        el('i', { style: `flex:${byType[t]};background:${colour(t)}`, title: t }))))),
+    el('div', { class: 'legend mt' }, TYPES.filter((t) => byType[t] > 0).map((t) =>
+      el('span', {}, el('span', { class: 'sw', style: `background:${colour(t)}` }),
+        `${t} ฿${baht(byType[t])} · ${(byType[t] / total * 100).toFixed(0)}%`)))));
+
+  // โครงการ เรียงจากใช้เงินมากที่สุด
+  const projRows = Object.entries(byProject)
+    .map(([id, m]) => [id, TYPES.reduce((s, t) => s + m[t], 0), m])
+    .sort((a, b) => b[1] - a[1]);
+  const max = projRows.length ? projRows[0][1] : 1;
+  root.append(el('div', { class: 'rule-head', text: `แยกตามโครงการ · ${projRows.length} โครงการ` }));
+  root.append(el('div', { class: 'card' }, el('div', { class: 'bars' }, projRows.map(([id, sum, m]) =>
+    el('div', { class: 'b' },
+      el('div', { class: 'top' },
+        el('b', { class: 'truncate', text: P[id]?.name || id }),
+        el('span', { class: 'n', text: '฿' + baht(sum) })),
+      el('div', { class: 'track', style: `width:${Math.max(4, sum / max * 100)}%` },
+        TYPES.filter((t) => m[t] > 0).map((t) =>
+          el('i', { style: `flex:${m[t]};background:${colour(t)}`, title: `${t} ฿${baht(m[t])}` }))))))));
+
+  // หมวดงานที่กินเงินมากที่สุด
+  const codeRows = Object.entries(byCode).sort((a, b) => b[1] - a[1]).slice(0, 10);
+  root.append(el('div', { class: 'rule-head', text: 'หมวดงานที่ใช้เงินมากที่สุด · แกนที่ 1' }));
+  root.append(el('div', { class: 'card scrollx' }, el('table', {},
+    el('thead', {}, el('tr', {}, el('th', { text: 'หมวดงาน' }), el('th', { class: 'n', text: 'ยอด' }),
+      el('th', { class: 'n', text: 'สัดส่วน' }))),
+    el('tbody', {}, codeRows.map(([code, amt]) => el('tr', {},
+      el('td', { text: `${code} · ${C[code]?.name || '—'}` }),
+      el('td', { class: 'n', text: baht(amt) }),
+      el('td', { class: 'n', text: (amt / total * 100).toFixed(1) + '%' })))))));
+
+  // ต้นทุนต่อตารางเมตร — เฉพาะอาคารจริงที่รู้พื้นที่
+  const perSqm = Object.entries(byBuilding)
+    .map(([id, amt]) => [B[id], amt])
+    .filter(([b]) => b && b.real && b.area > 0)
+    .map(([b, amt]) => [b, amt, amt / b.area])
+    .sort((a, b) => b[2] - a[2]).slice(0, 10);
+  if (perSqm.length) {
+    root.append(el('div', { class: 'rule-head', text: 'ต้นทุนต่อตารางเมตร · 10 อาคารที่แพงที่สุด' }));
+    root.append(el('div', { class: 'card scrollx' }, el('table', {},
+      el('thead', {}, el('tr', {}, el('th', { text: 'อาคาร' }), el('th', { class: 'n', text: 'ตร.ม.' }),
+        el('th', { class: 'n', text: 'ใช้ไป' }), el('th', { class: 'n', text: 'บาท/ตร.ม.' }))),
+      el('tbody', {}, perSqm.map(([b, amt, per]) => el('tr', {},
+        el('td', {}, el('div', { class: 'truncate', style: 'max-width:9rem', title: b.name }, b.name),
+          el('div', { class: 'tiny muted', text: `${P[b.project]?.name || b.project} · ${b.nature || '—'}` })),
+        el('td', { class: 'n', text: baht(b.area) }),
+        el('td', { class: 'n', text: baht(amt) }),
+        el('td', { class: 'n', style: 'font-weight:600', text: baht(per) })))))));
+    root.append(el('p', { class: 'tiny muted mt',
+      text: 'ตัวเลขนี้ใช้เทียบกันเองได้ แต่ยังไม่ใช่ต้นทุนปิดจบ — อาคารส่วนใหญ่ยังสร้างไม่เสร็จ และต้นทุนก่อน 1 เม.ย. 2569 ยังไม่ได้นำเข้า' }));
+  }
+  return root;
+}
+
+// ---------------------------------------------------------------- S7 ค้นหา
+function listScreen() {
+  const f = S.filter;
+  f.page ||= 1;
+  const projIds = myProjects();
+
+  const q = el('input', { type: 'text', placeholder: 'พิมพ์ชื่อร้าน อาคาร หรือเลขที่ใบ', value: f.q || '',
+    oninput: () => { f.q = q.value; f.page = 1; draw(); } });
+  const projSel = el('select', { onchange: () => { f.project = projSel.value; f.page = 1; draw(); } },
+    el('option', { value: '', text: 'ทุกโครงการ' }),
+    projIds.map((id) => el('option', { value: id, text: P[id]?.name || id })));
+  projSel.value = f.project || '';
+  const stSel = el('select', { onchange: () => { f.status = stSel.value; f.page = 1; draw(); } },
+    el('option', { value: '', text: 'ทุกสถานะ' }),
+    Object.keys(PILL).map((s) => el('option', { value: s, text: s })));
+  stSel.value = f.status || '';
+
+  const out = el('div', {});
+  const root = el('div', {},
+    el('div', { class: 'eyebrow', text: seesAll() ? 'ทุกโครงการ' : 'เฉพาะโครงการที่คุณดูแล' }),
+    el('h1', { text: 'ค้นหาใบเบิก' }),
+    el('div', { class: 'card' },
+      el('label', { class: 'f' }, el('span', { text: 'คำค้น' }), q),
+      el('div', { class: 'row' },
+        el('label', { class: 'f', style: 'flex:1' }, el('span', { text: 'โครงการ' }), projSel),
+        el('label', { class: 'f', style: 'flex:1' }, el('span', { text: 'สถานะ' }), stSel))),
+    out);
+
+  function draw() {
+    const term = (f.q || '').trim().toLowerCase();
+    const rows = visible().filter((r) =>
+      (!f.project || r.project === f.project) &&
+      (!f.status || r.status === f.status) &&
+      (!term || [r.id, V[r.vendor]?.name, r.payee, B[r.building]?.name, r.note]
+        .some((x) => String(x || '').toLowerCase().includes(term))));
+    const sum = rows.reduce((s, r) => s + r.total, 0);
+    const shown = rows.slice(0, f.page * 30);
+    out.textContent = '';
+    out.append(
+      el('div', { class: 'rule-head',
+        text: `พบ ${baht(rows.length)} ใบ · รวม ฿${baht(sum)}` }),
+      rows.length
+        ? el('div', { class: 'stack' }, shown.map((r) => reqCard(r)))
+        : el('div', { class: 'empty', text: 'ไม่พบใบเบิกที่ตรงกับที่ค้น' }),
+      shown.length < rows.length
+        ? el('button', { class: 'btn ghost block mt', onclick: () => { f.page++; draw(); } },
+            `ดูเพิ่ม · เหลืออีก ${baht(rows.length - shown.length)} ใบ`)
+        : null);
+  }
+  draw();
+  return root;
+}
+
+// ---------------------------------------------------------------- เริ่มทำงาน
+loadStore();
+seedDemo();
+mount();
+})();
+</script>
