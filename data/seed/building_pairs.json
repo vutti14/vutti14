@@ -1,0 +1,56 @@
+[
+ {
+  "pair_id": "P01",
+  "label_a": "R6 (B004)",
+  "label_b": "R7 (B005)",
+  "project_id": "RMT",
+  "same_amount_count": 14,
+  "status": "ยืนยันแล้ว",
+  "note": "อาคารแฝด เทียบต้นทุนกันได้โดยตรง ต่างกัน 4.6% ถือว่าปกติ"
+ },
+ {
+  "pair_id": "P02",
+  "label_a": "R8 (B013)",
+  "label_b": "R9 (B028)",
+  "project_id": "RMT",
+  "same_amount_count": 3,
+  "status": "ยืนยันแล้ว",
+  "note": "อาคารแฝด แต่ต้นทุนต่างกัน 37% — ควรถามแม็กว่าทำไม"
+ },
+ {
+  "pair_id": "P03",
+  "label_a": "45/4",
+  "label_b": "45/5",
+  "project_id": "TLT",
+  "same_amount_count": 2,
+  "status": "ยืนยันแล้ว",
+  "note": "ขึ้นคู่ ค่าใช้จ่ายหารสอง"
+ },
+ {
+  "pair_id": "P04",
+  "label_a": "V1 (B039)",
+  "label_b": "V4 (B023)",
+  "project_id": "RAC",
+  "same_amount_count": 1,
+  "status": "ต้องยืนยัน",
+  "note": "พบจ่ายพร้อมกันยอดเท่ากัน 1 ครั้ง"
+ },
+ {
+  "pair_id": "P05",
+  "label_a": "R5 (B018)",
+  "label_b": "R8 (B013)",
+  "project_id": "RMT",
+  "same_amount_count": 1,
+  "status": "ต้องยืนยัน",
+  "note": "พบจ่ายพร้อมกันยอดเท่ากัน 1 ครั้ง"
+ },
+ {
+  "pair_id": "P06",
+  "label_a": "V02",
+  "label_b": "W1",
+  "project_id": "RMT",
+  "same_amount_count": 1,
+  "status": "ต้องยืนยัน",
+  "note": "พบจ่ายพร้อมกันยอดเท่ากัน 1 ครั้ง"
+ }
+]

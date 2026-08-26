@@ -1,0 +1,452 @@
+[
+ {
+  "cost_code": "AIR",
+  "cost_name": "แอร์",
+  "work_group": "3 งานระบบ",
+  "group_order": 3,
+  "status": "ใช้ต่อ",
+  "merge_into": null,
+  "default_cost_type": null,
+  "note": "หมวดงานปกติ — ผสมค่าวัสดุกับค่าแรงได้ ให้แยกด้วยคอลัมน์ cost_type ในตารางรายการ"
+ },
+ {
+  "cost_code": "BTH",
+  "cost_name": "ห้องน้ำ",
+  "work_group": "2 งานสถาปัตย์",
+  "group_order": 2,
+  "status": "ใช้ต่อ",
+  "merge_into": null,
+  "default_cost_type": null,
+  "note": "หมวดงานปกติ — ผสมค่าวัสดุกับค่าแรงได้ ให้แยกด้วยคอลัมน์ cost_type ในตารางรายการ"
+ },
+ {
+  "cost_code": "CLD",
+  "cost_name": "ผิวอาคาร",
+  "work_group": "2 งานสถาปัตย์",
+  "group_order": 2,
+  "status": "ใช้ต่อ",
+  "merge_into": null,
+  "default_cost_type": null,
+  "note": "หมวดงานปกติ — ผสมค่าวัสดุกับค่าแรงได้ ให้แยกด้วยคอลัมน์ cost_type ในตารางรายการ"
+ },
+ {
+  "cost_code": "CLN",
+  "cost_name": "ทำความสะอาด",
+  "work_group": "5 งานอื่น/ดำเนินการ",
+  "group_order": 5,
+  "status": "ใช้ต่อ",
+  "merge_into": null,
+  "default_cost_type": "แรง",
+  "note": "หมวดงานปกติ — ผสมค่าวัสดุกับค่าแรงได้ ให้แยกด้วยคอลัมน์ cost_type ในตารางรายการ"
+ },
+ {
+  "cost_code": "COL",
+  "cost_name": "สีทาบ้าน",
+  "work_group": "2 งานสถาปัตย์",
+  "group_order": 2,
+  "status": "ยุบรวม",
+  "merge_into": "PNT",
+  "default_cost_type": null,
+  "note": "หมวดงานปกติ — ผสมค่าวัสดุกับค่าแรงได้ ให้แยกด้วยคอลัมน์ cost_type ในตารางรายการ"
+ },
+ {
+  "cost_code": "COM",
+  "cost_name": "ส่วนกลาง",
+  "work_group": "",
+  "group_order": 9,
+  "status": "เลิกใช้",
+  "merge_into": null,
+  "default_cost_type": null,
+  "note": "เป็นสถานที่ ไม่ใช่หมวดงาน — ให้เลิกใช้ ใช้ building_id ระบุพื้นที่ส่วนกลางแทน"
+ },
+ {
+  "cost_code": "CON",
+  "cost_name": "คอนกรีต",
+  "work_group": "1 งานโครงสร้าง",
+  "group_order": 1,
+  "status": "ใช้ต่อ",
+  "merge_into": null,
+  "default_cost_type": "ของ",
+  "note": "หมวดงานปกติ — ผสมค่าวัสดุกับค่าแรงได้ ให้แยกด้วยคอลัมน์ cost_type ในตารางรายการ"
+ },
+ {
+  "cost_code": "CRN",
+  "cost_name": "เครน",
+  "work_group": "5 งานอื่น/ดำเนินการ",
+  "group_order": 5,
+  "status": "เลิกใช้",
+  "merge_into": null,
+  "default_cost_type": null,
+  "note": "หมวดงานปกติ — ผสมค่าวัสดุกับค่าแรงได้ ให้แยกด้วยคอลัมน์ cost_type ในตารางรายการ"
+ },
+ {
+  "cost_code": "DEL",
+  "cost_name": "ค่าส่งของ",
+  "work_group": "5 งานอื่น/ดำเนินการ",
+  "group_order": 5,
+  "status": "ใช้ต่อ",
+  "merge_into": null,
+  "default_cost_type": "โสหุ้ย",
+  "note": "หมวดงานปกติ — ผสมค่าวัสดุกับค่าแรงได้ ให้แยกด้วยคอลัมน์ cost_type ในตารางรายการ"
+ },
+ {
+  "cost_code": "DRN",
+  "cost_name": "ระบบระบายน้ำ",
+  "work_group": "3 งานระบบ",
+  "group_order": 3,
+  "status": "ใช้ต่อ",
+  "merge_into": null,
+  "default_cost_type": null,
+  "note": "หมวดงานปกติ — ผสมค่าวัสดุกับค่าแรงได้ ให้แยกด้วยคอลัมน์ cost_type ในตารางรายการ"
+ },
+ {
+  "cost_code": "ELC",
+  "cost_name": "ไฟฟ้าอาคาร",
+  "work_group": "3 งานระบบ",
+  "group_order": 3,
+  "status": "ใช้ต่อ",
+  "merge_into": null,
+  "default_cost_type": null,
+  "note": "หมวดงานปกติ — ผสมค่าวัสดุกับค่าแรงได้ ให้แยกด้วยคอลัมน์ cost_type ในตารางรายการ"
+ },
+ {
+  "cost_code": "ELP",
+  "cost_name": "ไฟฟ้าโครงการ",
+  "work_group": "3 งานระบบ",
+  "group_order": 3,
+  "status": "ใช้ต่อ",
+  "merge_into": null,
+  "default_cost_type": null,
+  "note": "หมวดงานปกติ — ผสมค่าวัสดุกับค่าแรงได้ ให้แยกด้วยคอลัมน์ cost_type ในตารางรายการ"
+ },
+ {
+  "cost_code": "EXT",
+  "cost_name": "ภายนอกอาคาร",
+  "work_group": "2 งานสถาปัตย์",
+  "group_order": 2,
+  "status": "ยุบรวม",
+  "merge_into": "LND",
+  "default_cost_type": null,
+  "note": "หมวดงานปกติ — ผสมค่าวัสดุกับค่าแรงได้ ให้แยกด้วยคอลัมน์ cost_type ในตารางรายการ"
+ },
+ {
+  "cost_code": "FEN",
+  "cost_name": "รั้ว",
+  "work_group": "4 งานภายนอกโครงการ",
+  "group_order": 4,
+  "status": "ใช้ต่อ",
+  "merge_into": null,
+  "default_cost_type": null,
+  "note": "หมวดงานปกติ — ผสมค่าวัสดุกับค่าแรงได้ ให้แยกด้วยคอลัมน์ cost_type ในตารางรายการ"
+ },
+ {
+  "cost_code": "FIL",
+  "cost_name": "ถมดิน",
+  "work_group": "1 งานโครงสร้าง",
+  "group_order": 1,
+  "status": "ใช้ต่อ",
+  "merge_into": null,
+  "default_cost_type": null,
+  "note": "หมวดงานปกติ — ผสมค่าวัสดุกับค่าแรงได้ ให้แยกด้วยคอลัมน์ cost_type ในตารางรายการ"
+ },
+ {
+  "cost_code": "FIN",
+  "cost_name": "ตกแต่งภายใน",
+  "work_group": "2 งานสถาปัตย์",
+  "group_order": 2,
+  "status": "ใช้ต่อ",
+  "merge_into": null,
+  "default_cost_type": null,
+  "note": "หมวดงานปกติ — ผสมค่าวัสดุกับค่าแรงได้ ให้แยกด้วยคอลัมน์ cost_type ในตารางรายการ"
+ },
+ {
+  "cost_code": "FLL",
+  "cost_name": "ค่าแรงพื้น",
+  "work_group": "1 งานโครงสร้าง",
+  "group_order": 1,
+  "status": "เลิกใช้",
+  "merge_into": null,
+  "default_cost_type": null,
+  "note": "หมวดงานปกติ — ผสมค่าวัสดุกับค่าแรงได้ ให้แยกด้วยคอลัมน์ cost_type ในตารางรายการ"
+ },
+ {
+  "cost_code": "FLR",
+  "cost_name": "งานพื้น",
+  "work_group": "1 งานโครงสร้าง",
+  "group_order": 1,
+  "status": "ใช้ต่อ",
+  "merge_into": null,
+  "default_cost_type": null,
+  "note": "หมวดงานปกติ — ผสมค่าวัสดุกับค่าแรงได้ ให้แยกด้วยคอลัมน์ cost_type ในตารางรายการ"
+ },
+ {
+  "cost_code": "FND",
+  "cost_name": "ฐานราก",
+  "work_group": "1 งานโครงสร้าง",
+  "group_order": 1,
+  "status": "ใช้ต่อ",
+  "merge_into": null,
+  "default_cost_type": null,
+  "note": "หมวดงานปกติ — ผสมค่าวัสดุกับค่าแรงได้ ให้แยกด้วยคอลัมน์ cost_type ในตารางรายการ"
+ },
+ {
+  "cost_code": "FNL",
+  "cost_name": "ค่าแรงฐานราก",
+  "work_group": "1 งานโครงสร้าง",
+  "group_order": 1,
+  "status": "เลิกใช้",
+  "merge_into": null,
+  "default_cost_type": null,
+  "note": "หมวดงานปกติ — ผสมค่าวัสดุกับค่าแรงได้ ให้แยกด้วยคอลัมน์ cost_type ในตารางรายการ"
+ },
+ {
+  "cost_code": "FRM",
+  "cost_name": "แบบหล่อ",
+  "work_group": "1 งานโครงสร้าง",
+  "group_order": 1,
+  "status": "ใช้ต่อ",
+  "merge_into": null,
+  "default_cost_type": null,
+  "note": "หมวดงานปกติ — ผสมค่าวัสดุกับค่าแรงได้ ให้แยกด้วยคอลัมน์ cost_type ในตารางรายการ"
+ },
+ {
+  "cost_code": "GRD",
+  "cost_name": "ปรับระดับดิน",
+  "work_group": "1 งานโครงสร้าง",
+  "group_order": 1,
+  "status": "ยุบรวม",
+  "merge_into": "FIL",
+  "default_cost_type": null,
+  "note": "หมวดงานปกติ — ผสมค่าวัสดุกับค่าแรงได้ ให้แยกด้วยคอลัมน์ cost_type ในตารางรายการ"
+ },
+ {
+  "cost_code": "LAB",
+  "cost_name": "ค่าแรงทั่วไป",
+  "work_group": "",
+  "group_order": 9,
+  "status": "เลิกใช้",
+  "merge_into": null,
+  "default_cost_type": null,
+  "note": "เป็นประเภทต้นทุน ไม่ใช่หมวดงาน — ให้เลิกใช้ แล้วลง cost_type = ค่าแรง คู่กับหมวดงานจริง"
+ },
+ {
+  "cost_code": "LCO",
+  "cost_name": "ค่าแรงทาสี",
+  "work_group": "2 งานสถาปัตย์",
+  "group_order": 2,
+  "status": "เลิกใช้",
+  "merge_into": null,
+  "default_cost_type": null,
+  "note": "หมวดงานปกติ — ผสมค่าวัสดุกับค่าแรงได้ ให้แยกด้วยคอลัมน์ cost_type ในตารางรายการ"
+ },
+ {
+  "cost_code": "LND",
+  "cost_name": "ภูมิทัศน์",
+  "work_group": "4 งานภายนอกโครงการ",
+  "group_order": 4,
+  "status": "ใช้ต่อ",
+  "merge_into": null,
+  "default_cost_type": null,
+  "note": "หมวดงานปกติ — ผสมค่าวัสดุกับค่าแรงได้ ให้แยกด้วยคอลัมน์ cost_type ในตารางรายการ"
+ },
+ {
+  "cost_code": "MAT",
+  "cost_name": "วัสดุอุปกรณ์",
+  "work_group": "",
+  "group_order": 9,
+  "status": "เลิกใช้",
+  "merge_into": null,
+  "default_cost_type": null,
+  "note": "เป็นประเภทต้นทุน ไม่ใช่หมวดงาน — ให้เลิกใช้ แล้วลง cost_type = ค่าวัสดุ คู่กับหมวดงานจริง"
+ },
+ {
+  "cost_code": "NA",
+  "cost_name": "ไม่ระบุ",
+  "work_group": "",
+  "group_order": 9,
+  "status": "เลิกใช้",
+  "merge_into": null,
+  "default_cost_type": null,
+  "note": "หมวดงานปกติ — ผสมค่าวัสดุกับค่าแรงได้ ให้แยกด้วยคอลัมน์ cost_type ในตารางรายการ"
+ },
+ {
+  "cost_code": "OIL",
+  "cost_name": "น้ำมัน",
+  "work_group": "5 งานอื่น/ดำเนินการ",
+  "group_order": 5,
+  "status": "ใช้ต่อ",
+  "merge_into": null,
+  "default_cost_type": "โสหุ้ย",
+  "note": "หมวดงานปกติ — ผสมค่าวัสดุกับค่าแรงได้ ให้แยกด้วยคอลัมน์ cost_type ในตารางรายการ"
+ },
+ {
+  "cost_code": "OPN",
+  "cost_name": "ช่องเปิดอาคาร",
+  "work_group": "2 งานสถาปัตย์",
+  "group_order": 2,
+  "status": "ใช้ต่อ",
+  "merge_into": null,
+  "default_cost_type": null,
+  "note": "หมวดงานปกติ — ผสมค่าวัสดุกับค่าแรงได้ ให้แยกด้วยคอลัมน์ cost_type ในตารางรายการ"
+ },
+ {
+  "cost_code": "OTH",
+  "cost_name": "อื่นๆ",
+  "work_group": "",
+  "group_order": 9,
+  "status": "ใช้ต่อ",
+  "merge_into": null,
+  "default_cost_type": null,
+  "note": "ถังขยะของระบบ — ให้จำกัดไม่เกิน 2% ของยอดต่อเดือน เกินกว่านั้นต้องแตกหมวด"
+ },
+ {
+  "cost_code": "PIP",
+  "cost_name": "ท่อ",
+  "work_group": "3 งานระบบ",
+  "group_order": 3,
+  "status": "ยุบรวม",
+  "merge_into": "PLM",
+  "default_cost_type": null,
+  "note": "หมวดงานปกติ — ผสมค่าวัสดุกับค่าแรงได้ ให้แยกด้วยคอลัมน์ cost_type ในตารางรายการ"
+ },
+ {
+  "cost_code": "PLM",
+  "cost_name": "ประปา",
+  "work_group": "3 งานระบบ",
+  "group_order": 3,
+  "status": "ใช้ต่อ",
+  "merge_into": null,
+  "default_cost_type": null,
+  "note": "หมวดงานปกติ — ผสมค่าวัสดุกับค่าแรงได้ ให้แยกด้วยคอลัมน์ cost_type ในตารางรายการ"
+ },
+ {
+  "cost_code": "PNT",
+  "cost_name": "งานสี",
+  "work_group": "2 งานสถาปัตย์",
+  "group_order": 2,
+  "status": "ใช้ต่อ",
+  "merge_into": null,
+  "default_cost_type": null,
+  "note": "หมวดงานปกติ — ผสมค่าวัสดุกับค่าแรงได้ ให้แยกด้วยคอลัมน์ cost_type ในตารางรายการ"
+ },
+ {
+  "cost_code": "RDS",
+  "cost_name": "ถนนโครงการ",
+  "work_group": "4 งานภายนอกโครงการ",
+  "group_order": 4,
+  "status": "ใช้ต่อ",
+  "merge_into": null,
+  "default_cost_type": null,
+  "note": "หมวดงานปกติ — ผสมค่าวัสดุกับค่าแรงได้ ให้แยกด้วยคอลัมน์ cost_type ในตารางรายการ"
+ },
+ {
+  "cost_code": "REN",
+  "cost_name": "เช่าเครื่องจักร",
+  "work_group": "5 งานอื่น/ดำเนินการ",
+  "group_order": 5,
+  "status": "เลิกใช้",
+  "merge_into": null,
+  "default_cost_type": null,
+  "note": "หมวดงานปกติ — ผสมค่าวัสดุกับค่าแรงได้ ให้แยกด้วยคอลัมน์ cost_type ในตารางรายการ"
+ },
+ {
+  "cost_code": "REP",
+  "cost_name": "ซ่อมแซม",
+  "work_group": "5 งานอื่น/ดำเนินการ",
+  "group_order": 5,
+  "status": "ใช้ต่อ",
+  "merge_into": null,
+  "default_cost_type": null,
+  "note": "หมวดงานปกติ — ผสมค่าวัสดุกับค่าแรงได้ ให้แยกด้วยคอลัมน์ cost_type ในตารางรายการ"
+ },
+ {
+  "cost_code": "ROF",
+  "cost_name": "หลังคา",
+  "work_group": "1 งานโครงสร้าง",
+  "group_order": 1,
+  "status": "ใช้ต่อ",
+  "merge_into": null,
+  "default_cost_type": null,
+  "note": "หมวดงานปกติ — ผสมค่าวัสดุกับค่าแรงได้ ให้แยกด้วยคอลัมน์ cost_type ในตารางรายการ"
+ },
+ {
+  "cost_code": "STE",
+  "cost_name": "เหล็กโครงสร้าง",
+  "work_group": "1 งานโครงสร้าง",
+  "group_order": 1,
+  "status": "ใช้ต่อ",
+  "merge_into": null,
+  "default_cost_type": "ของ",
+  "note": "หมวดงานปกติ — ผสมค่าวัสดุกับค่าแรงได้ ให้แยกด้วยคอลัมน์ cost_type ในตารางรายการ"
+ },
+ {
+  "cost_code": "STL",
+  "cost_name": "ไฟถนน",
+  "work_group": "3 งานระบบ",
+  "group_order": 3,
+  "status": "ยุบรวม",
+  "merge_into": "ELP",
+  "default_cost_type": null,
+  "note": "หมวดงานปกติ — ผสมค่าวัสดุกับค่าแรงได้ ให้แยกด้วยคอลัมน์ cost_type ในตารางรายการ"
+ },
+ {
+  "cost_code": "TMP",
+  "cost_name": "งานชั่วคราว",
+  "work_group": "5 งานอื่น/ดำเนินการ",
+  "group_order": 5,
+  "status": "ใช้ต่อ",
+  "merge_into": null,
+  "default_cost_type": null,
+  "note": "หมวดงานปกติ — ผสมค่าวัสดุกับค่าแรงได้ ให้แยกด้วยคอลัมน์ cost_type ในตารางรายการ"
+ },
+ {
+  "cost_code": "TRV",
+  "cost_name": "เดินทาง",
+  "work_group": "5 งานอื่น/ดำเนินการ",
+  "group_order": 5,
+  "status": "ใช้ต่อ",
+  "merge_into": null,
+  "default_cost_type": "โสหุ้ย",
+  "note": "หมวดงานปกติ — ผสมค่าวัสดุกับค่าแรงได้ ให้แยกด้วยคอลัมน์ cost_type ในตารางรายการ"
+ },
+ {
+  "cost_code": "UTL",
+  "cost_name": "ค่าสาธารณูปโภค",
+  "work_group": "5 งานอื่น/ดำเนินการ",
+  "group_order": 5,
+  "status": "ใช้ต่อ",
+  "merge_into": null,
+  "default_cost_type": "โสหุ้ย",
+  "note": "หมวดงานปกติ — ผสมค่าวัสดุกับค่าแรงได้ ให้แยกด้วยคอลัมน์ cost_type ในตารางรายการ"
+ },
+ {
+  "cost_code": "WAL",
+  "cost_name": "ก่อผนัง",
+  "work_group": "2 งานสถาปัตย์",
+  "group_order": 2,
+  "status": "ใช้ต่อ",
+  "merge_into": null,
+  "default_cost_type": null,
+  "note": "หมวดงานปกติ — ผสมค่าวัสดุกับค่าแรงได้ ให้แยกด้วยคอลัมน์ cost_type ในตารางรายการ"
+ },
+ {
+  "cost_code": "WAT",
+  "cost_name": "ระบบน้ำ",
+  "work_group": "3 งานระบบ",
+  "group_order": 3,
+  "status": "ยุบรวม",
+  "merge_into": "PLM",
+  "default_cost_type": null,
+  "note": "หมวดงานปกติ — ผสมค่าวัสดุกับค่าแรงได้ ให้แยกด้วยคอลัมน์ cost_type ในตารางรายการ"
+ },
+ {
+  "cost_code": "WTL",
+  "cost_name": "ค่าแรงประปา",
+  "work_group": "3 งานระบบ",
+  "group_order": 3,
+  "status": "เลิกใช้",
+  "merge_into": null,
+  "default_cost_type": null,
+  "note": "หมวดงานปกติ — ผสมค่าวัสดุกับค่าแรงได้ ให้แยกด้วยคอลัมน์ cost_type ในตารางรายการ"
+ }
+]

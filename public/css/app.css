@@ -1,0 +1,373 @@
+/* RABBiZBuild Mini ERP — มือถือมาก่อน (สเปก §2 ข้อ 10)
+   ภาษาการออกแบบตามต้นแบบ docs/UXUI_prototype.html:
+   กระดาษไข · หมึกน้ำเงินเข้ม · เทปเหลืองสำหรับสิ่งที่ต้องกด · สนิมแดงสำหรับสิ่งที่ต้องการคุณ */
+
+/* ฟอนต์โหลดจาก index.html — ถ้าออฟไลน์จะตกไปใช้ฟอนต์ไทยของเครื่องแทน */
+
+:root {
+  --ink: #17222E;
+  --ink2: #25344A;
+  --paper: #ECEDE7;
+  --slip: #FDFDFB;
+  --steel: #7C8A99;
+  --line: #C9CDC6;
+  --tape: #F5B301;
+  --rust: #A8442A;
+  --rust-soft: #F6E3DD;
+  --moss: #4A6741;
+  --moss-soft: #E3EADF;
+  --amber-soft: #FBEFCE;
+  --amber-ink: #7A5B00;
+  --grey-soft: #E4E6E0;
+
+  --sans: 'IBM Plex Sans Thai', 'Noto Sans Thai', 'Leelawadee UI', 'Tahoma', system-ui, sans-serif;
+  --mono: 'IBM Plex Mono', 'SF Mono', ui-monospace, monospace;
+  --tap: 48px;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--sans);
+  font-size: 16px;
+  line-height: 1.55;
+  -webkit-text-size-adjust: 100%;
+  /* กระดาษกราฟจาง ๆ ให้รู้สึกเหมือนสมุดหน้างาน */
+  background-image:
+    repeating-linear-gradient(0deg, transparent, transparent 27px, rgba(23, 34, 46, .045) 27px, rgba(23, 34, 46, .045) 28px),
+    repeating-linear-gradient(90deg, transparent, transparent 27px, rgba(23, 34, 46, .045) 27px, rgba(23, 34, 46, .045) 28px);
+}
+
+button, input, select, textarea { font: inherit; color: inherit; }
+a { color: var(--ink); text-decoration: underline; text-underline-offset: 2px; }
+h1, h2, h3 { margin: 0 0 .5rem; line-height: 1.25; letter-spacing: -.2px; }
+h1 { font-size: 1.3rem; font-weight: 700; }
+h2 { font-size: 1.05rem; font-weight: 600; }
+h3 { font-size: .95rem; font-weight: 600; }
+
+/* ---------------------------------------------------------------- โครงหน้า */
+#app { min-height: 100vh; display: flex; flex-direction: column; }
+
+.topbar {
+  position: sticky; top: 0; z-index: 30;
+  display: flex; align-items: center; gap: .6rem;
+  padding: .55rem .9rem;
+  background: var(--ink); color: var(--slip);
+  font-family: var(--mono); font-size: .72rem; letter-spacing: .06em;
+}
+.topbar h1 { font-family: var(--sans); font-size: 1rem; margin: 0; flex: 1; font-weight: 700; letter-spacing: -.3px; }
+.topbar .who { opacity: .82; white-space: nowrap; }
+.topbar button {
+  background: transparent; border: 1px solid rgba(253, 253, 251, .35); color: var(--slip);
+  padding: .3rem .6rem; font-size: .72rem; cursor: pointer; font-family: var(--mono);
+}
+.topbar button:hover { border-color: var(--tape); color: var(--tape); }
+
+main { flex: 1; padding: .9rem .9rem 5.6rem; max-width: 1180px; width: 100%; margin: 0 auto; }
+
+.navbar {
+  position: fixed; left: 0; right: 0; bottom: 0; z-index: 30;
+  display: flex; background: var(--slip);
+  border-top: 2px solid var(--ink);
+  padding-bottom: env(safe-area-inset-bottom);
+  /* บทบาทที่เห็นหลายหน้า (CEO เห็น 10) เลื่อนแนวนอนได้ ดีกว่าบีบจนอ่านไม่ออก */
+  overflow-x: auto; scrollbar-width: none;
+}
+.navbar::-webkit-scrollbar { display: none; }
+.navbar a {
+  flex: 1 0 auto; min-width: 4.4rem; text-align: center; padding: .45rem .3rem .5rem;
+  color: var(--ink2); font-size: .66rem; line-height: 1.15; text-decoration: none;
+  display: flex; flex-direction: column; align-items: center; gap: .12rem;
+  min-height: var(--tap); justify-content: center;
+  border-right: 1px solid var(--line);
+}
+.navbar a:last-child { border-right: 0; }
+.navbar a .ico { font-size: 1.05rem; line-height: 1; }
+.navbar a.active { background: var(--ink); color: var(--tape); font-weight: 600; }
+
+/* ---------------------------------------------------------------- ส่วนประกอบ */
+.card {
+  background: var(--slip); border: 1px solid var(--line);
+  padding: .85rem; margin-bottom: .75rem;
+}
+.card.tight { padding: .6rem .75rem; }
+.card-head { display: flex; align-items: baseline; gap: .5rem; margin-bottom: .6rem; }
+.card-head h2 { margin: 0; flex: 1; }
+
+/* หัวข้อแบบต้นแบบ: ตัวพิมพ์เล็ก โมโนสเปซ ขีดเส้นใต้หนา */
+.eyebrow {
+  font-family: var(--mono); font-size: .68rem; letter-spacing: .16em;
+  text-transform: uppercase; color: var(--steel);
+}
+.rule-head {
+  font-family: var(--mono); font-size: .7rem; letter-spacing: .16em; text-transform: uppercase;
+  color: var(--ink); padding-bottom: .45rem; border-bottom: 2px solid var(--ink); margin-bottom: .8rem;
+}
+
+.row { display: flex; gap: .5rem; align-items: center; }
+.row.wrap { flex-wrap: wrap; }
+.spread { display: flex; justify-content: space-between; align-items: baseline; gap: .5rem; }
+.grow { flex: 1; min-width: 0; }
+.muted { color: var(--steel); }
+.small { font-size: .82rem; }
+.tiny { font-size: .72rem; }
+.mono { font-family: var(--mono); font-variant-numeric: tabular-nums; }
+.right { text-align: right; }
+.center { text-align: center; }
+.truncate { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.mt { margin-top: .7rem; }
+.mb { margin-bottom: .7rem; }
+.hidden { display: none !important; }
+
+label { display: block; font-size: .78rem; color: var(--steel); margin-bottom: .25rem; font-weight: 500; }
+.field { margin-bottom: .8rem; }
+
+input[type=text], input[type=password], input[type=number], input[type=date],
+input[type=email], input[type=search], select, textarea {
+  width: 100%; padding: .6rem .65rem; min-height: var(--tap);
+  border: 1px solid var(--line); border-radius: 0; background: var(--slip); color: var(--ink);
+}
+select { appearance: none; cursor: pointer; padding-right: 2rem;
+  background-image: linear-gradient(45deg, transparent 50%, var(--ink) 50%),
+                    linear-gradient(135deg, var(--ink) 50%, transparent 50%);
+  background-position: calc(100% - 17px) calc(50% + 1px), calc(100% - 12px) calc(50% + 1px);
+  background-size: 5px 5px; background-repeat: no-repeat; }
+textarea { min-height: 4.5rem; }
+input:focus, select:focus, textarea:focus { outline: 2px solid var(--tape); outline-offset: -1px; border-color: var(--ink); }
+input[readonly] { background: var(--paper); color: var(--steel); }
+
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: .4rem;
+  min-height: var(--tap); padding: .55rem 1rem; border-radius: 0;
+  border: 1.5px solid var(--ink); background: var(--slip); color: var(--ink);
+  font-weight: 600; cursor: pointer;
+}
+.btn:disabled { opacity: .45; cursor: not-allowed; }
+.btn.primary { background: var(--tape); border-color: var(--ink); color: var(--ink); }
+.btn.primary:hover:not(:disabled) { background: #ffc522; }
+.btn.danger { background: var(--rust); border-color: var(--rust); color: var(--slip); }
+.btn.ghost { border-color: var(--line); }
+.btn.block { width: 100%; }
+.btn.sm { min-height: 34px; padding: .25rem .6rem; font-size: .78rem; font-weight: 500; }
+.btn:focus-visible { outline: 2px solid var(--rust); outline-offset: 2px; }
+
+/* ปุ่มใหญ่สำหรับประเภทต้นทุน — ช่องที่แก้ปัญหาใหญ่ที่สุดของทั้งระบบ (สเปก §8 S1) */
+.segment { display: grid; grid-template-columns: repeat(4, 1fr); gap: .35rem; }
+.segment button {
+  min-height: 54px; border-radius: 0; cursor: pointer; padding: .5rem .2rem;
+  border: 1.5px solid var(--line); background: var(--slip); color: var(--ink2);
+  font-weight: 600; font-size: .9rem;
+}
+.segment button.on { background: var(--ink); border-color: var(--ink); color: var(--tape); }
+
+.radio-row { display: flex; gap: .4rem; flex-wrap: wrap; }
+.radio-row label {
+  flex: 1; min-width: 7rem; margin: 0; display: flex; align-items: center; gap: .4rem;
+  padding: .5rem .6rem; border: 1.5px solid var(--line);
+  background: var(--slip); color: var(--ink); font-size: .88rem; cursor: pointer;
+  min-height: 44px;
+}
+.radio-row label.on { border-color: var(--ink); background: var(--ink2); color: var(--slip); font-weight: 600; }
+.radio-row input { width: auto; min-height: 0; }
+
+.pill {
+  display: inline-block; padding: .12rem .5rem; font-size: .7rem; font-weight: 600;
+  white-space: nowrap; background: var(--grey-soft); color: var(--ink2);
+}
+.pill.blue { background: var(--ink2); color: var(--slip); }
+.pill.green { background: var(--moss-soft); color: var(--moss); }
+.pill.amber { background: var(--amber-soft); color: var(--amber-ink); }
+.pill.red { background: var(--rust-soft); color: var(--rust); }
+
+.flag {
+  display: block; padding: .4rem .55rem; margin-top: .35rem;
+  background: var(--rust-soft); color: #6f2c1b; font-size: .8rem;
+  border-left: 3px solid var(--rust);
+}
+.flag b { font-family: var(--mono); color: var(--rust); }
+
+.banner {
+  padding: .55rem .7rem; margin-bottom: .75rem; font-size: .84rem; line-height: 1.6;
+  background: var(--slip); border-left: 3px solid var(--tape); color: var(--ink2);
+}
+.banner.warn { border-left-color: var(--rust); background: var(--rust-soft); color: #6f2c1b; }
+.banner.error { border-left-color: var(--rust); background: var(--rust-soft); color: var(--rust); }
+.banner.ok { border-left-color: var(--moss); background: var(--moss-soft); color: var(--moss); }
+.banner b { display: block; font-family: var(--mono); font-size: .68rem; letter-spacing: .14em;
+  text-transform: uppercase; color: var(--steel); margin-bottom: .2rem; }
+
+/* ---------------------------------------------------------------- แถบรหัสอ้างอิง (ลายเซ็นของต้นแบบ) */
+.strip { background: var(--ink); padding: .7rem .8rem; margin-bottom: .75rem; }
+.strip .lbl { font-family: var(--mono); font-size: .6rem; color: var(--steel);
+  letter-spacing: .18em; text-transform: uppercase; }
+.strip .code { font-family: var(--mono); font-size: 1.6rem; font-weight: 600; color: var(--tape);
+  letter-spacing: .11em; margin-top: .15rem; display: flex; gap: 1px; }
+.strip .code span.off { color: #3C4A5C; }
+.strip .seg { font-family: var(--mono); font-size: .56rem; color: var(--steel);
+  display: flex; margin-top: .3rem; letter-spacing: .03em; }
+/* สัดส่วนตามจำนวนตัวอักษรในรหัส 1·3·3·3 — ไม่ล็อกเป็นพิกเซลเพราะฟอนต์อาจตกไปใช้ตัวสำรอง */
+.strip .seg i { font-style: normal; text-align: center; white-space: nowrap; overflow: hidden; }
+.strip .seg i:first-child { flex: 1 1 0; }
+.strip .seg i:not(:first-child) { flex: 3 1 0; }
+
+/* ---------------------------------------------------------------- ตัวเลข */
+.kpi-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--line);
+  border: 1px solid var(--line); margin-bottom: .8rem; }
+.kpi { background: var(--slip); padding: .7rem .75rem; }
+.kpi .label { font-size: .72rem; color: var(--steel); line-height: 1.35; min-height: 2rem; }
+.kpi .value { font-family: var(--mono); font-size: 1.3rem; font-weight: 600; letter-spacing: -.5px; }
+.kpi .sub { font-size: .7rem; color: var(--steel); line-height: 1.4; margin-top: .15rem; }
+.kpi.red .value { color: var(--rust); }
+.kpi.amber .value { color: var(--amber-ink); }
+.kpi.green .value { color: var(--moss); }
+
+.bar-track { height: 8px; background: #DEE0DA; }
+.bar-fill { height: 100%; background: var(--ink); }
+.bar-fill.over { background: var(--rust); }
+
+.chart { display: flex; align-items: flex-end; gap: .3rem; height: 132px; padding-top: .5rem; }
+.chart .col { flex: 1; height: 100%; display: flex; flex-direction: column;
+  align-items: center; justify-content: flex-end; gap: .25rem; }
+.chart .col .bar { width: 100%; background: var(--ink); min-height: 2px; }
+.chart .col .cap { font-family: var(--mono); font-size: .58rem; color: var(--steel); white-space: nowrap; }
+
+.stack { display: flex; height: 26px; background: #DEE0DA; }
+.stack span { display: block; height: 100%; }
+/* สีประจำประเภทต้นทุน — ใช้ทั้งในแถบสัดส่วนและคำอธิบายสี */
+.t-ของ { background: var(--ink); }
+.t-แรง { background: var(--tape); }
+.t-เช่า { background: var(--moss); }
+.t-โสหุ้ย { background: var(--ink2); }
+.t-ไม่ระบุ { background: var(--rust); }
+.legend { display: flex; flex-wrap: wrap; gap: .6rem; margin-top: .45rem; font-size: .74rem; }
+.legend i { width: .7rem; height: .7rem; display: inline-block; margin-right: .25rem; }
+
+/* ---------------------------------------------------------------- ตาราง */
+.table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+table { width: 100%; border-collapse: collapse; font-size: .8rem; }
+th, td { padding: .45rem .5rem; text-align: left; border-bottom: 1px solid var(--line); }
+th { font-family: var(--mono); color: var(--steel); font-weight: 500; font-size: .68rem;
+  white-space: nowrap; letter-spacing: .04em; text-transform: uppercase;
+  border-bottom: 2px solid var(--ink); }
+td.num, th.num { text-align: right; font-family: var(--mono); font-variant-numeric: tabular-nums; white-space: nowrap; }
+tbody tr:hover { background: var(--paper); }
+
+/* ---------------------------------------------------------------- การ์ดใบเบิก */
+.list { display: flex; flex-direction: column; gap: .5rem; }
+.item {
+  background: var(--slip); border: 1px solid var(--line);
+  padding: .6rem .7rem; cursor: pointer; position: relative;
+  border-left: 4px solid var(--line);
+}
+.item:hover { border-color: var(--ink); border-left-color: var(--line); }
+/* สีขอบซ้ายคือสถานะ: เขียว = เดินหน้าปกติ · ไม่มีสี = รอคนอื่น · แดง = ต้องการอะไรจากคุณ */
+.item.ok { border-left-color: var(--moss); }
+.item.warn { border-left-color: var(--tape); }
+.item.alert { border-left-color: var(--rust); }
+.item.imported { border-left-style: dotted; border-left-color: var(--steel); }
+.item .line1 { display: flex; align-items: baseline; gap: .4rem; }
+.item .line1 .id { font-family: var(--mono); font-size: .72rem; color: var(--steel); }
+.item .line1 .amt { margin-left: auto; font-family: var(--mono); font-size: 1rem; font-weight: 600; }
+.item .line2 { font-size: .84rem; margin-top: .2rem; }
+.item .line3 { font-size: .74rem; color: var(--steel); margin-top: .1rem; }
+.item .pick { width: 1.3rem; height: 1.3rem; accent-color: var(--ink); }
+
+/* ระดับความเชื่อถือ C/C2/D ต้องเห็นต่างจากข้อเท็จจริง (สเปก §9) */
+.conf-C, .conf-C2, .conf-D { color: var(--rust); font-family: var(--mono); font-size: .72rem; }
+
+/* ---------------------------------------------------------------- เอกสาร */
+.docgrid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px; margin-top: .5rem; }
+.docgrid > div {
+  border: 1px solid var(--line); padding: .45rem .3rem; text-align: center;
+  font-size: .72rem; line-height: 1.3; cursor: pointer; background: var(--slip);
+}
+.docgrid > div.done { background: var(--moss-soft); border-color: var(--moss); color: var(--moss); font-weight: 600; }
+.docgrid > div.late { background: var(--rust-soft); border-color: var(--rust); color: var(--rust); font-weight: 600; }
+.docgrid > div small { display: block; font-family: var(--mono); font-size: .6rem; opacity: .8; }
+
+/* ---------------------------------------------------------------- โมดัล */
+.modal-back {
+  position: fixed; inset: 0; z-index: 60; background: rgba(23, 34, 46, .55);
+  display: flex; align-items: flex-end; justify-content: center;
+}
+.modal {
+  background: var(--slip); width: 100%; max-width: 560px;
+  border: 2px solid var(--ink); border-bottom: 0;
+  padding: 1rem; max-height: 90vh; overflow-y: auto;
+}
+.modal h2 { margin-bottom: .6rem; }
+.modal-actions { display: flex; gap: .5rem; margin-top: .9rem; }
+.modal-actions .btn { flex: 1; }
+
+.toast {
+  position: fixed; left: 50%; bottom: 5rem; transform: translateX(-50%);
+  z-index: 80; padding: .6rem 1rem; font-size: .85rem;
+  background: var(--ink); color: var(--slip); max-width: 92vw;
+  box-shadow: 5px 5px 0 rgba(23, 34, 46, .18);
+}
+.toast.error { background: var(--rust); }
+.toast.ok { background: var(--moss); }
+
+.sticky-total {
+  position: sticky; bottom: 4.3rem; z-index: 20;
+  background: var(--slip); border: 1px solid var(--line); border-top: 2px solid var(--ink);
+  padding: .65rem .75rem; box-shadow: 0 -3px 10px rgba(23, 34, 46, .08);
+}
+
+.batch {
+  position: sticky; bottom: 4.3rem; z-index: 20;
+  background: var(--ink); color: var(--slip); padding: .65rem .8rem;
+  font-family: var(--mono); font-size: .8rem;
+}
+.batch b { color: var(--tape); }
+
+.filters { display: flex; gap: 2px; overflow-x: auto; padding-bottom: .3rem; margin-bottom: .7rem; }
+.filters button {
+  border: 1px solid var(--line); background: var(--slip); color: var(--ink2);
+  padding: .35rem .75rem; font-family: var(--mono); font-size: .72rem; letter-spacing: .04em;
+  white-space: nowrap; cursor: pointer;
+}
+.filters button:hover { border-color: var(--ink); }
+.filters button.on { background: var(--ink); border-color: var(--ink); color: var(--slip); }
+
+.empty { text-align: center; color: var(--steel); padding: 2rem 1rem; font-size: .88rem; }
+.loading { text-align: center; color: var(--steel); padding: 1.5rem; font-family: var(--mono); font-size: .8rem; }
+
+.doc-row {
+  display: flex; align-items: center; gap: .5rem; padding: .5rem 0;
+  border-bottom: 1px solid var(--line);
+}
+.doc-row:last-child { border-bottom: 0; }
+.doc-row input[type=checkbox] { width: 1.3rem; height: 1.3rem; accent-color: var(--ink); }
+
+/* กล่องเคล็ดลับเทปเหลือง — สิ่งที่คุ้มที่สุดในหน้าจ่ายเงิน */
+.tip { background: var(--amber-soft); padding: .5rem .6rem; font-size: .78rem; line-height: 1.5; margin-top: .4rem; }
+.tip b { font-family: var(--mono); font-size: .85rem; display: block; margin-top: .15rem; }
+
+/* ---------------------------------------------------------------- จอใหญ่ */
+@media (min-width: 720px) {
+  .kpi-grid { grid-template-columns: repeat(4, 1fr); }
+  main { padding: 1.2rem 1.2rem 5.6rem; }
+  .cols-2 { display: grid; grid-template-columns: 1fr 1fr; gap: .8rem; align-items: start; }
+  .modal-back { align-items: center; }
+  .modal { border-bottom: 2px solid var(--ink); }
+}
+
+@media (min-width: 1000px) {
+  .navbar { position: sticky; top: 0; bottom: auto; border-top: 0; border-bottom: 2px solid var(--ink); }
+  .navbar a { flex: 1 1 auto; flex-direction: row; gap: .35rem; font-size: .8rem; }
+  main { padding-bottom: 2rem; }
+  .sticky-total, .batch { bottom: 1rem; }
+}
+
+@media print {
+  .topbar, .navbar, .btn, .filters { display: none !important; }
+  body { background: none; }
+  .card { break-inside: avoid; }
+}
+
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }

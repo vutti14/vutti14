@@ -1,0 +1,722 @@
+[
+ {
+  "price_id": "P001",
+  "item_id": "I001",
+  "vendor_id": "V006",
+  "unit_price": 2025.0,
+  "unit": "คิว",
+  "source_note": "order1",
+  "is_cheapest": 0
+ },
+ {
+  "price_id": "P002",
+  "item_id": "I001",
+  "vendor_id": "V006",
+  "unit_price": 2051.0,
+  "unit": "คิว",
+  "source_note": "order2",
+  "is_cheapest": 0
+ },
+ {
+  "price_id": "P003",
+  "item_id": "I001",
+  "vendor_id": "V006",
+  "unit_price": 1916.82,
+  "unit": "คิว",
+  "source_note": "order3",
+  "is_cheapest": 1
+ },
+ {
+  "price_id": "P004",
+  "item_id": "I001",
+  "vendor_id": "V006",
+  "unit_price": 2025.0,
+  "unit": "คิว",
+  "source_note": "31/7/69",
+  "is_cheapest": 0
+ },
+ {
+  "price_id": "P005",
+  "item_id": "I001",
+  "vendor_id": "V008",
+  "unit_price": 2097.9,
+  "unit": "คิว",
+  "source_note": "",
+  "is_cheapest": 0
+ },
+ {
+  "price_id": "P006",
+  "item_id": "I001",
+  "vendor_id": "V005",
+  "unit_price": 2282.31,
+  "unit": "คิว",
+  "source_note": "11/8/69",
+  "is_cheapest": 0
+ },
+ {
+  "price_id": "P007",
+  "item_id": "I001",
+  "vendor_id": "V007",
+  "unit_price": 1944.0,
+  "unit": "คิว",
+  "source_note": "Fc280 cube",
+  "is_cheapest": 0
+ },
+ {
+  "price_id": "P008",
+  "item_id": "I002",
+  "vendor_id": "V006",
+  "unit_price": 1888.6,
+  "unit": "คิว",
+  "source_note": "",
+  "is_cheapest": 1
+ },
+ {
+  "price_id": "P009",
+  "item_id": "I002",
+  "vendor_id": "V009",
+  "unit_price": 2098.0,
+  "unit": "คิว",
+  "source_note": "SL10-15",
+  "is_cheapest": 0
+ },
+ {
+  "price_id": "P010",
+  "item_id": "I003",
+  "vendor_id": "V005",
+  "unit_price": 2214.69,
+  "unit": "คิว",
+  "source_note": "",
+  "is_cheapest": 1
+ },
+ {
+  "price_id": "P011",
+  "item_id": "I004",
+  "vendor_id": "V001",
+  "unit_price": 310.0,
+  "unit": "เส้น",
+  "source_note": "",
+  "is_cheapest": 1
+ },
+ {
+  "price_id": "P012",
+  "item_id": "I005",
+  "vendor_id": "V001",
+  "unit_price": 335.0,
+  "unit": "เส้น",
+  "source_note": "",
+  "is_cheapest": 1
+ },
+ {
+  "price_id": "P013",
+  "item_id": "I005",
+  "vendor_id": "V001",
+  "unit_price": 371.0,
+  "unit": "เส้น",
+  "source_note": "สีเหลือง",
+  "is_cheapest": 0
+ },
+ {
+  "price_id": "P014",
+  "item_id": "I005",
+  "vendor_id": "V010",
+  "unit_price": 390.0,
+  "unit": "เส้น",
+  "source_note": "เขียวแดง",
+  "is_cheapest": 0
+ },
+ {
+  "price_id": "P015",
+  "item_id": "I006",
+  "vendor_id": "V001",
+  "unit_price": 475.0,
+  "unit": "เส้น",
+  "source_note": "ฟ้าขาว",
+  "is_cheapest": 1
+ },
+ {
+  "price_id": "P016",
+  "item_id": "I007",
+  "vendor_id": "V001",
+  "unit_price": 650.0,
+  "unit": "เส้น",
+  "source_note": "ไม่ระบุ มอก.",
+  "is_cheapest": 1
+ },
+ {
+  "price_id": "P017",
+  "item_id": "I008",
+  "vendor_id": "V001",
+  "unit_price": 745.0,
+  "unit": "เส้น",
+  "source_note": "ฟ้าขาว",
+  "is_cheapest": 1
+ },
+ {
+  "price_id": "P018",
+  "item_id": "I009",
+  "vendor_id": "V001",
+  "unit_price": 1025.0,
+  "unit": "เส้น",
+  "source_note": "ม่วงขาว 23/6/69",
+  "is_cheapest": 1
+ },
+ {
+  "price_id": "P019",
+  "item_id": "I010",
+  "vendor_id": "V001",
+  "unit_price": 1035.0,
+  "unit": "เส้น",
+  "source_note": "ฟ้าขาว",
+  "is_cheapest": 0
+ },
+ {
+  "price_id": "P020",
+  "item_id": "I010",
+  "vendor_id": "V010",
+  "unit_price": 966.0,
+  "unit": "เส้น",
+  "source_note": "",
+  "is_cheapest": 1
+ },
+ {
+  "price_id": "P021",
+  "item_id": "I011",
+  "vendor_id": "V001",
+  "unit_price": 1280.0,
+  "unit": "เส้น",
+  "source_note": "ไม่ระบุ มอก.",
+  "is_cheapest": 1
+ },
+ {
+  "price_id": "P022",
+  "item_id": "I012",
+  "vendor_id": "V001",
+  "unit_price": 1732.0,
+  "unit": "เส้น",
+  "source_note": "ม่วงขาว 23/6/69",
+  "is_cheapest": 1
+ },
+ {
+  "price_id": "P023",
+  "item_id": "I013",
+  "vendor_id": "V001",
+  "unit_price": 4895.0,
+  "unit": "เส้น",
+  "source_note": "",
+  "is_cheapest": 0
+ },
+ {
+  "price_id": "P024",
+  "item_id": "I013",
+  "vendor_id": "V001",
+  "unit_price": 4575.0,
+  "unit": "เส้น",
+  "source_note": "15/8/69",
+  "is_cheapest": 1
+ },
+ {
+  "price_id": "P025",
+  "item_id": "I014",
+  "vendor_id": "V001",
+  "unit_price": 100.0,
+  "unit": "เส้น",
+  "source_note": "order1",
+  "is_cheapest": 0
+ },
+ {
+  "price_id": "P026",
+  "item_id": "I014",
+  "vendor_id": "V001",
+  "unit_price": 94.0,
+  "unit": "เส้น",
+  "source_note": "order2",
+  "is_cheapest": 1
+ },
+ {
+  "price_id": "P027",
+  "item_id": "I014",
+  "vendor_id": "V001",
+  "unit_price": 105.0,
+  "unit": "เส้น",
+  "source_note": "order3",
+  "is_cheapest": 0
+ },
+ {
+  "price_id": "P028",
+  "item_id": "I015",
+  "vendor_id": "V003",
+  "unit_price": 118.0,
+  "unit": "เส้น",
+  "source_note": "",
+  "is_cheapest": 1
+ },
+ {
+  "price_id": "P029",
+  "item_id": "I015",
+  "vendor_id": "V003",
+  "unit_price": 130.0,
+  "unit": "เส้น",
+  "source_note": "เหล็กเต็ม SR-24",
+  "is_cheapest": 0
+ },
+ {
+  "price_id": "P030",
+  "item_id": "I016",
+  "vendor_id": "V010",
+  "unit_price": 96.0,
+  "unit": "เส้น",
+  "source_note": "โรงใหญ่ (ยาว 10m)",
+  "is_cheapest": 1
+ },
+ {
+  "price_id": "P031",
+  "item_id": "I017",
+  "vendor_id": "V001",
+  "unit_price": 182.0,
+  "unit": "เส้น",
+  "source_note": "SD40T 8.88kg",
+  "is_cheapest": 1
+ },
+ {
+  "price_id": "P032",
+  "item_id": "I017",
+  "vendor_id": "V003",
+  "unit_price": 206.0,
+  "unit": "เส้น",
+  "source_note": "DB12",
+  "is_cheapest": 0
+ },
+ {
+  "price_id": "P033",
+  "item_id": "I017",
+  "vendor_id": "V003",
+  "unit_price": 222.0,
+  "unit": "เส้น",
+  "source_note": "DB12 SD-4",
+  "is_cheapest": 0
+ },
+ {
+  "price_id": "P034",
+  "item_id": "I018",
+  "vendor_id": "V001",
+  "unit_price": 290.0,
+  "unit": "เส้น",
+  "source_note": "SD40T 15.78kg",
+  "is_cheapest": 1
+ },
+ {
+  "price_id": "P035",
+  "item_id": "I019",
+  "vendor_id": "V010",
+  "unit_price": 318.0,
+  "unit": "เส้น",
+  "source_note": "โรงใหญ่ (ยาว 10m)",
+  "is_cheapest": 1
+ },
+ {
+  "price_id": "P036",
+  "item_id": "I020",
+  "vendor_id": "V002",
+  "unit_price": 74.0,
+  "unit": "เมตร",
+  "source_note": "order1",
+  "is_cheapest": 0
+ },
+ {
+  "price_id": "P037",
+  "item_id": "I020",
+  "vendor_id": "V002",
+  "unit_price": 55.0,
+  "unit": "เมตร",
+  "source_note": "order2",
+  "is_cheapest": 1
+ },
+ {
+  "price_id": "P038",
+  "item_id": "I021",
+  "vendor_id": "V002",
+  "unit_price": 71.0,
+  "unit": "เมตร",
+  "source_note": "",
+  "is_cheapest": 1
+ },
+ {
+  "price_id": "P039",
+  "item_id": "I022",
+  "vendor_id": "V002",
+  "unit_price": 105.0,
+  "unit": "เมตร",
+  "source_note": "",
+  "is_cheapest": 1
+ },
+ {
+  "price_id": "P040",
+  "item_id": "I023",
+  "vendor_id": "V013",
+  "unit_price": 82.67,
+  "unit": "เมตร",
+  "source_note": "248/แผ่น 3m",
+  "is_cheapest": 1
+ },
+ {
+  "price_id": "P041",
+  "item_id": "I024",
+  "vendor_id": "V012",
+  "unit_price": 57.0,
+  "unit": "เมตร",
+  "source_note": "171/แผ่น 3m",
+  "is_cheapest": 1
+ },
+ {
+  "price_id": "P042",
+  "item_id": "I025",
+  "vendor_id": "V015",
+  "unit_price": 116.62,
+  "unit": "แผ่น",
+  "source_note": "",
+  "is_cheapest": 1
+ },
+ {
+  "price_id": "P043",
+  "item_id": "I026",
+  "vendor_id": "V003",
+  "unit_price": 160.0,
+  "unit": "แผ่น",
+  "source_note": "",
+  "is_cheapest": 1
+ },
+ {
+  "price_id": "P044",
+  "item_id": "I027",
+  "vendor_id": "V016",
+  "unit_price": 145.93,
+  "unit": "แผ่น",
+  "source_note": "",
+  "is_cheapest": 1
+ },
+ {
+  "price_id": "P045",
+  "item_id": "I028",
+  "vendor_id": "V015",
+  "unit_price": 36.75,
+  "unit": "เส้น",
+  "source_note": "",
+  "is_cheapest": 0
+ },
+ {
+  "price_id": "P046",
+  "item_id": "I028",
+  "vendor_id": "V076",
+  "unit_price": 32.0,
+  "unit": "เส้น",
+  "source_note": "ขนาด 0.6",
+  "is_cheapest": 1
+ },
+ {
+  "price_id": "P047",
+  "item_id": "I029",
+  "vendor_id": "V016",
+  "unit_price": 127.07,
+  "unit": "เส้น",
+  "source_note": "",
+  "is_cheapest": 1
+ },
+ {
+  "price_id": "P048",
+  "item_id": "I030",
+  "vendor_id": "V016",
+  "unit_price": 115.46,
+  "unit": "เส้น",
+  "source_note": "",
+  "is_cheapest": 1
+ },
+ {
+  "price_id": "P049",
+  "item_id": "I031",
+  "vendor_id": "V017",
+  "unit_price": 1570.0,
+  "unit": "ถัง",
+  "source_note": "4S #8301 รวม VAT",
+  "is_cheapest": 1
+ },
+ {
+  "price_id": "P050",
+  "item_id": "I032",
+  "vendor_id": "V017",
+  "unit_price": 1295.0,
+  "unit": "ถัง",
+  "source_note": "โฟร์ซีซัน เบส-2.5",
+  "is_cheapest": 0
+ },
+ {
+  "price_id": "P051",
+  "item_id": "I032",
+  "vendor_id": "V003",
+  "unit_price": 1190.0,
+  "unit": "ถัง",
+  "source_note": "nippon ซุปเปอร์เซิฟ",
+  "is_cheapest": 1
+ },
+ {
+  "price_id": "P052",
+  "item_id": "I033",
+  "vendor_id": "V017",
+  "unit_price": 4200.0,
+  "unit": "ถัง",
+  "source_note": "ต้องยืนยันขนาดบรรจุ",
+  "is_cheapest": 1
+ },
+ {
+  "price_id": "P053",
+  "item_id": "I034",
+  "vendor_id": "V003",
+  "unit_price": 1775.0,
+  "unit": "ถัง",
+  "source_note": "",
+  "is_cheapest": 1
+ },
+ {
+  "price_id": "P054",
+  "item_id": "I035",
+  "vendor_id": "V020",
+  "unit_price": 1625.0,
+  "unit": "ถัง",
+  "source_note": "",
+  "is_cheapest": 1
+ },
+ {
+  "price_id": "P055",
+  "item_id": "I036",
+  "vendor_id": "V017",
+  "unit_price": 745.0,
+  "unit": "ถัง",
+  "source_note": "โจตาพลาส เบสA",
+  "is_cheapest": 1
+ },
+ {
+  "price_id": "P056",
+  "item_id": "I037",
+  "vendor_id": "V022",
+  "unit_price": 2730.0,
+  "unit": "ต้น",
+  "source_note": "2 ท่อนต่อ",
+  "is_cheapest": 1
+ },
+ {
+  "price_id": "P057",
+  "item_id": "I038",
+  "vendor_id": "V022",
+  "unit_price": 3780.0,
+  "unit": "ต้น",
+  "source_note": "2 ท่อนต่อ",
+  "is_cheapest": 1
+ },
+ {
+  "price_id": "P058",
+  "item_id": "I039",
+  "vendor_id": "V022",
+  "unit_price": 4830.0,
+  "unit": "ต้น",
+  "source_note": "2 ท่อนต่อ",
+  "is_cheapest": 1
+ },
+ {
+  "price_id": "P059",
+  "item_id": "I040",
+  "vendor_id": "V022",
+  "unit_price": 1240.0,
+  "unit": "ต้น",
+  "source_note": "เหมา 25 ต้น 31000",
+  "is_cheapest": 1
+ },
+ {
+  "price_id": "P060",
+  "item_id": "I040",
+  "vendor_id": "V060",
+  "unit_price": 1666.67,
+  "unit": "ต้น",
+  "source_note": "เหมา 15 ต้น 25000 (I18)",
+  "is_cheapest": 0
+ },
+ {
+  "price_id": "P061",
+  "item_id": "I041",
+  "vendor_id": "V059",
+  "unit_price": 5500.0,
+  "unit": "ต้น",
+  "source_note": "รวมค่าตอก",
+  "is_cheapest": 1
+ },
+ {
+  "price_id": "P062",
+  "item_id": "I042",
+  "vendor_id": "V058",
+  "unit_price": 4000.0,
+  "unit": "วัน",
+  "source_note": "",
+  "is_cheapest": 0
+ },
+ {
+  "price_id": "P063",
+  "item_id": "I042",
+  "vendor_id": "V057",
+  "unit_price": 3500.0,
+  "unit": "วัน",
+  "source_note": "",
+  "is_cheapest": 1
+ },
+ {
+  "price_id": "P064",
+  "item_id": "I042",
+  "vendor_id": null,
+  "unit_price": 4000.0,
+  "unit": "วัน",
+  "source_note": "",
+  "is_cheapest": 0
+ },
+ {
+  "price_id": "P065",
+  "item_id": "I043",
+  "vendor_id": null,
+  "unit_price": 5500.0,
+  "unit": "วัน",
+  "source_note": "",
+  "is_cheapest": 1
+ },
+ {
+  "price_id": "P066",
+  "item_id": "I044",
+  "vendor_id": "V058",
+  "unit_price": 6500.0,
+  "unit": "วัน",
+  "source_note": "",
+  "is_cheapest": 1
+ },
+ {
+  "price_id": "P067",
+  "item_id": "I045",
+  "vendor_id": "V058",
+  "unit_price": 3500.0,
+  "unit": "วัน",
+  "source_note": "",
+  "is_cheapest": 1
+ },
+ {
+  "price_id": "P068",
+  "item_id": "I046",
+  "vendor_id": "V057",
+  "unit_price": 3000.0,
+  "unit": "วัน",
+  "source_note": "",
+  "is_cheapest": 1
+ },
+ {
+  "price_id": "P069",
+  "item_id": "I047",
+  "vendor_id": "V030",
+  "unit_price": 8000.0,
+  "unit": "วัน",
+  "source_note": "25 ตัน",
+  "is_cheapest": 0
+ },
+ {
+  "price_id": "P070",
+  "item_id": "I047",
+  "vendor_id": "V077",
+  "unit_price": 7500.0,
+  "unit": "วัน",
+  "source_note": "30 ตัน",
+  "is_cheapest": 1
+ },
+ {
+  "price_id": "P071",
+  "item_id": "I048",
+  "vendor_id": "V067",
+  "unit_price": 100.0,
+  "unit": "ตร.ม.",
+  "source_note": "",
+  "is_cheapest": 1
+ },
+ {
+  "price_id": "P072",
+  "item_id": "I048",
+  "vendor_id": "V068",
+  "unit_price": 100.0,
+  "unit": "ตร.ม.",
+  "source_note": "",
+  "is_cheapest": 1
+ },
+ {
+  "price_id": "P073",
+  "item_id": "I049",
+  "vendor_id": "V067",
+  "unit_price": 300.0,
+  "unit": "ตร.ม.",
+  "source_note": "",
+  "is_cheapest": 0
+ },
+ {
+  "price_id": "P074",
+  "item_id": "I049",
+  "vendor_id": "V068",
+  "unit_price": 100.0,
+  "unit": "ตร.ม.",
+  "source_note": "",
+  "is_cheapest": 1
+ },
+ {
+  "price_id": "P075",
+  "item_id": "I049",
+  "vendor_id": "V078",
+  "unit_price": 270.0,
+  "unit": "ตร.ม.",
+  "source_note": "เหมา 135 ตร.ม.",
+  "is_cheapest": 0
+ },
+ {
+  "price_id": "P076",
+  "item_id": "I050",
+  "vendor_id": "V067",
+  "unit_price": 100.0,
+  "unit": "เมตร",
+  "source_note": "",
+  "is_cheapest": 1
+ },
+ {
+  "price_id": "P077",
+  "item_id": "I051",
+  "vendor_id": "V067",
+  "unit_price": 100.0,
+  "unit": "ตร.ม.",
+  "source_note": "",
+  "is_cheapest": 1
+ },
+ {
+  "price_id": "P078",
+  "item_id": "I052",
+  "vendor_id": "V067",
+  "unit_price": 350.0,
+  "unit": "ตร.ม.",
+  "source_note": "",
+  "is_cheapest": 1
+ },
+ {
+  "price_id": "P079",
+  "item_id": "I053",
+  "vendor_id": "V068",
+  "unit_price": 130.0,
+  "unit": "ตร.ม.",
+  "source_note": "",
+  "is_cheapest": 1
+ },
+ {
+  "price_id": "P080",
+  "item_id": "I054",
+  "vendor_id": "V069",
+  "unit_price": 172.5,
+  "unit": "เมตร",
+  "source_note": "งานรั้ว protection",
+  "is_cheapest": 1
+ }
+]

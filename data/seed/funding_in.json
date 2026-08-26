@@ -1,0 +1,52 @@
+[
+ {
+  "funding_id": "FIN-2604-0001",
+  "funding_date": "2026-04-01",
+  "amount": 2290000.0,
+  "company": "RABBiZ Group",
+  "source": "นำเข้าย้อนหลังจาก 12_FACT_FUNDING_IN",
+  "accounting_status": "เงินกู้ยืมกรรมการ",
+  "period_label": "เม.ย. 2569",
+  "value_source": "นำเข้าย้อนหลัง"
+ },
+ {
+  "funding_id": "FIN-2605-0002",
+  "funding_date": "2026-05-01",
+  "amount": 2531250.0,
+  "company": "RABBiZ Group",
+  "source": "นำเข้าย้อนหลังจาก 12_FACT_FUNDING_IN",
+  "accounting_status": "เงินกู้ยืมกรรมการ",
+  "period_label": "พ.ค. 2569",
+  "value_source": "นำเข้าย้อนหลัง"
+ },
+ {
+  "funding_id": "FIN-2606-0003",
+  "funding_date": "2026-06-01",
+  "amount": 3223691.19,
+  "company": "RABBiZ Group",
+  "source": "นำเข้าย้อนหลังจาก 12_FACT_FUNDING_IN",
+  "accounting_status": "เงินกู้ยืมกรรมการ",
+  "period_label": "มิ.ย. 2569",
+  "value_source": "นำเข้าย้อนหลัง"
+ },
+ {
+  "funding_id": "FIN-2607-0004",
+  "funding_date": "2026-07-01",
+  "amount": 3003000.0,
+  "company": "RABBiZ Group",
+  "source": "นำเข้าย้อนหลังจาก 12_FACT_FUNDING_IN",
+  "accounting_status": "เงินกู้ยืมกรรมการ",
+  "period_label": "ก.ค. 2569",
+  "value_source": "นำเข้าย้อนหลัง"
+ },
+ {
+  "funding_id": "FIN-2608-0005",
+  "funding_date": "2026-08-01",
+  "amount": 1655000.0,
+  "company": "RABBiZ Group",
+  "source": "นำเข้าย้อนหลังจาก 12_FACT_FUNDING_IN",
+  "accounting_status": "เงินกู้ยืมกรรมการ",
+  "period_label": "ส.ค. 2569 (1-22)",
+  "value_source": "นำเข้าย้อนหลัง"
+ }
+]

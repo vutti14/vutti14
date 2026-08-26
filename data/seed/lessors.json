@@ -1,0 +1,145 @@
+[
+ {
+  "lessor_id": "LS01",
+  "lessor_name": "หจก. เฮง เฮง 168",
+  "entity_type": "ห้างหุ้นส่วนจำกัด",
+  "tax_id": "623557000804",
+  "unit_count": 0,
+  "monthly_rent": 0.0,
+  "staff_count": 4,
+  "monthly_payroll": 68800.0,
+  "note": "วุทธิพัฒน์ ลงนามคนเดียว · ขายไฟที่ TLT 45/4"
+ },
+ {
+  "lessor_id": "LS02",
+  "lessor_name": "หจก. เฮงเฮง 55",
+  "entity_type": "ห้างหุ้นส่วนจำกัด",
+  "tax_id": "623557000537",
+  "unit_count": 13,
+  "monthly_rent": 904407.63,
+  "staff_count": 6,
+  "monthly_payroll": 168500.0,
+  "note": "วุทธิพัฒน์ ลงนามคนเดียว · ขายไฟที่ TLT 45/1"
+ },
+ {
+  "lessor_id": "LS03",
+  "lessor_name": "บจก. ซาโตชิ เอสเตท",
+  "entity_type": "บริษัทจำกัด",
+  "tax_id": "625565000518",
+  "unit_count": 15,
+  "monthly_rent": 908828.95,
+  "staff_count": 5,
+  "monthly_payroll": 150000.0,
+  "note": "ลงนาม + ประทับตรา · ขายไฟที่ TLT 45/7"
+ },
+ {
+  "lessor_id": "LS04",
+  "lessor_name": "บจก. กรีนวู้ด เอสเตต",
+  "entity_type": "บริษัทจำกัด",
+  "tax_id": "625566000473",
+  "unit_count": 0,
+  "monthly_rent": 0.0,
+  "staff_count": 0,
+  "monthly_payroll": 0.0,
+  "note": "ถือที่ดินเปล่าอยุธยา 1 แปลง ยังไม่พัฒนา"
+ },
+ {
+  "lessor_id": "LS05",
+  "lessor_name": "บจก. แวร์เฮ้าคิง",
+  "entity_type": "บริษัทจำกัด",
+  "tax_id": "625566000953",
+  "unit_count": 10,
+  "monthly_rent": 383394.74,
+  "staff_count": 0,
+  "monthly_payroll": 0.0,
+  "note": "ลงนาม + ประทับตรา"
+ },
+ {
+  "lessor_id": "LS06",
+  "lessor_name": "บจก. พาโลมิโนพาร์ค",
+  "entity_type": "บริษัทจำกัด",
+  "tax_id": "625567000507",
+  "unit_count": 3,
+  "monthly_rent": 226500.0,
+  "staff_count": 0,
+  "monthly_payroll": 0.0,
+  "note": "ลงนาม + ประทับตรา"
+ },
+ {
+  "lessor_id": "LS07",
+  "lessor_name": "บจก. แรบบิ่ทพาร์ค",
+  "entity_type": "บริษัทจำกัด",
+  "tax_id": "625567000515",
+  "unit_count": 0,
+  "monthly_rent": 0.0,
+  "staff_count": 0,
+  "monthly_payroll": 0.0,
+  "note": "ลงนาม + ประทับตรา"
+ },
+ {
+  "lessor_id": "LS08",
+  "lessor_name": "บจก. เวลา 40",
+  "entity_type": "บริษัทจำกัด",
+  "tax_id": "625567000493",
+  "unit_count": 0,
+  "monthly_rent": 0.0,
+  "staff_count": 0,
+  "monthly_payroll": 0.0,
+  "note": "ต้องลงนาม 2 คน: วุทธิพัฒน์ + เมธ์วดี ประวัติเรืองศรี"
+ },
+ {
+  "lessor_id": "LS09",
+  "lessor_name": "นายวุทธิพัฒน์ วิศาลศักดิ์",
+  "entity_type": "บุคคลธรรมดา",
+  "tax_id": "1629900106795",
+  "unit_count": 21,
+  "monthly_rent": 977000.0,
+  "staff_count": 0,
+  "monthly_payroll": 0.0,
+  "note": "ไม่จด VAT — ออกได้เฉพาะใบเสร็จรับเงิน"
+ },
+ {
+  "lessor_id": "LS10",
+  "lessor_name": "นางสาวนันท์ปภัทร์ วิศาลศักดิ์",
+  "entity_type": "บุคคลธรรมดา",
+  "tax_id": "",
+  "unit_count": 0,
+  "monthly_rent": 0.0,
+  "staff_count": 0,
+  "monthly_payroll": 0.0,
+  "note": "รอข้อมูล — เป็นทั้งผู้ให้เช่าและผู้เช่า (BNN 700D)"
+ },
+ {
+  "lessor_id": "LS11",
+  "lessor_name": "ผู้เช่าจ่ายตรงกับหน่วยงาน",
+  "entity_type": "—",
+  "tax_id": "",
+  "unit_count": 0,
+  "monthly_rent": 0.0,
+  "staff_count": 0,
+  "monthly_payroll": 0.0,
+  "note": "ใช้เฉพาะคอลัมน์ผู้เรียกเก็บค่าไฟ/ค่าน้ำ"
+ },
+ {
+  "lessor_id": "LS12",
+  "lessor_name": "ยังไม่ระบุ",
+  "entity_type": "—",
+  "tax_id": "",
+  "unit_count": 0,
+  "monthly_rent": 0.0,
+  "staff_count": 0,
+  "monthly_payroll": 0.0,
+  "note": "ใช้ชั่วคราวจนกว่าจะยืนยัน"
+ },
+ {
+  "lessor_id": "LS13",
+  "lessor_name": "ข้อมูลธนาคารเป็นข้อมูลอ่อนไหว — ก่อนส่งไฟล์ให้บุคคลภายนอก ให้ลบคอลัมน์ ธนาคาร เลขที่บัญชี ชื่อบัญชี ออกก่อน",
+  "entity_type": "",
+  "tax_id": "",
+  "unit_count": 0,
+  "monthly_rent": 0.0,
+  "staff_count": 0,
+  "monthly_payroll": 0.0,
+  "note": ""
+ }
+]

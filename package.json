@@ -1,0 +1,23 @@
+{
+  "name": "rabbizbuild-mini-erp",
+  "version": "1.0.0",
+  "description": "Mini ERP สำหรับจัดการงานก่อสร้าง — ระบบเบิกจ่าย RABBiZBuild V1",
+  "type": "module",
+  "engines": { "node": ">=20.11" },
+  "scripts": {
+    "start": "node server/index.js",
+    "dev": "node --watch server/index.js",
+    "setup": "node server/setup.js",
+    "reset": "node server/setup.js --reset",
+    "seed:xlsx": "python3 tools/xlsx_to_seed.py",
+    "test": "node --test tests/*.test.js",
+    "test:ui": "node tests/ui-smoke.mjs"
+  },
+  "dependencies": {
+    "bcryptjs": "^3.0.2",
+    "better-sqlite3": "^12.4.1",
+    "express": "^5.1.0",
+    "multer": "^2.0.2"
+  },
+  "private": true
+}

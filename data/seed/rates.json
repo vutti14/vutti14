@@ -1,0 +1,222 @@
+[
+ {
+  "rate_id": "R001",
+  "cost_type": "แรง",
+  "rate_name": "ค่าแรงเชื่อมติดตั้งเสาเหล็ก",
+  "unit": "กก.",
+  "rate_satoshi": 7.0,
+  "rate_goldy": 15.0,
+  "std_rate": 9.0,
+  "method": "ถ่วงน้ำหนักด้วยปริมาณ 1,472 กับ 432 กก.",
+  "status": "รอยืนยัน"
+ },
+ {
+  "rate_id": "R002",
+  "cost_type": "แรง",
+  "rate_name": "ค่าแรงฉาบผนัง หนา 1 ซม.",
+  "unit": "ตร.ม.",
+  "rate_satoshi": 120.0,
+  "rate_goldy": 80.0,
+  "std_rate": 105.0,
+  "method": "ถ่วงน้ำหนัก 337 กับ 229 ตร.ม.",
+  "status": "รอยืนยัน"
+ },
+ {
+  "rate_id": "R003",
+  "cost_type": "แรง",
+  "rate_name": "ค่าแรงโครงหลังคาเหล็ก",
+  "unit": "กก.",
+  "rate_satoshi": 18.0,
+  "rate_goldy": 12.0,
+  "std_rate": 16.0,
+  "method": "ถ่วงน้ำหนัก 1,663 กับ 884 กก.",
+  "status": "รอยืนยัน"
+ },
+ {
+  "rate_id": "R004",
+  "cost_type": "แรง",
+  "rate_name": "ค่าแรงติดตั้งแผ่นหลังคา",
+  "unit": "ตร.ม.",
+  "rate_satoshi": 80.0,
+  "rate_goldy": 60.0,
+  "std_rate": 75.0,
+  "method": "ถ่วงน้ำหนัก 298.5 กับ 90 ตร.ม.",
+  "status": "รอยืนยัน"
+ },
+ {
+  "rate_id": "R005",
+  "cost_type": "แรง",
+  "rate_name": "ค่าแรงปูแผ่น Metal Deck",
+  "unit": "ตร.ม.",
+  "rate_satoshi": 132.0,
+  "rate_goldy": 100.0,
+  "std_rate": 125.0,
+  "method": "ถ่วงน้ำหนัก 285 กับ 106 ตร.ม.",
+  "status": "รอยืนยัน"
+ },
+ {
+  "rate_id": "R006",
+  "cost_type": "แรง",
+  "rate_name": "ค่าแรงเทพื้นโครงสร้าง + ขัดมัน",
+  "unit": "ตร.ม.",
+  "rate_satoshi": 130.0,
+  "rate_goldy": 100.0,
+  "std_rate": 125.0,
+  "method": "ถ่วงน้ำหนัก 533 กับ 160 ตร.ม.",
+  "status": "รอยืนยัน"
+ },
+ {
+  "rate_id": "R007",
+  "cost_type": "แรง",
+  "rate_name": "ค่าแรงก่อผนังอิฐมวลเบา",
+  "unit": "ตร.ม.",
+  "rate_satoshi": 110.0,
+  "rate_goldy": 80.0,
+  "std_rate": 105.0,
+  "method": "ถ่วงน้ำหนัก 282 กับ 65.8 ตร.ม. · อิฐบล็อก 140 แยก",
+  "status": "รอยืนยัน"
+ },
+ {
+  "rate_id": "R008",
+  "cost_type": "แรง",
+  "rate_name": "ค่าแรงเข้าแบบเทคาน",
+  "unit": "เมตร",
+  "rate_satoshi": 420.0,
+  "rate_goldy": 420.0,
+  "std_rate": 420.0,
+  "method": "ตรงกันทั้งสองใบ",
+  "status": "ยืนยันแล้ว"
+ },
+ {
+  "rate_id": "R009",
+  "cost_type": "แรง",
+  "rate_name": "ค่าแรงปูกระเบื้องพื้นห้องน้ำ",
+  "unit": "ตร.ม.",
+  "rate_satoshi": 200.0,
+  "rate_goldy": 200.0,
+  "std_rate": 200.0,
+  "method": "ตรงกันทั้งสองใบ",
+  "status": "ยืนยันแล้ว"
+ },
+ {
+  "rate_id": "R010",
+  "cost_type": "แรง",
+  "rate_name": "ค่าแรงงานฝ้า / ผนังเบา",
+  "unit": "ตร.ม.",
+  "rate_satoshi": 100.0,
+  "rate_goldy": 100.0,
+  "std_rate": 100.0,
+  "method": "ตรงกันทั้งสองใบ",
+  "status": "ยืนยันแล้ว"
+ },
+ {
+  "rate_id": "R011",
+  "cost_type": "แรง",
+  "rate_name": "ค่าแรงติดตั้งวงกบบานประตู",
+  "unit": "บาน",
+  "rate_satoshi": 1500.0,
+  "rate_goldy": 1500.0,
+  "std_rate": 1500.0,
+  "method": "ตรงกันทั้งสองใบ",
+  "status": "ยืนยันแล้ว"
+ },
+ {
+  "rate_id": "R012",
+  "cost_type": "แรง",
+  "rate_name": "ค่าแรงติดตั้งระบบประปา (เหมา)",
+  "unit": "เหมา",
+  "rate_satoshi": 3500.0,
+  "rate_goldy": 3500.0,
+  "std_rate": 3500.0,
+  "method": "ตรงกันทั้งสองใบ",
+  "status": "ยืนยันแล้ว"
+ },
+ {
+  "rate_id": "R013",
+  "cost_type": "เช่า",
+  "rate_name": "ค่าบริการรถเครน 25 ตัน",
+  "unit": "วัน",
+  "rate_satoshi": 8000.0,
+  "rate_goldy": 8000.0,
+  "std_rate": 8000.0,
+  "method": "ตรงกันทั้งสองใบ",
+  "status": "ยืนยันแล้ว"
+ },
+ {
+  "rate_id": "R014",
+  "cost_type": "เช่า",
+  "rate_name": "งานเคลียร์พื้นที่ / ขุดเปิดหลุม Footing",
+  "unit": "วัน",
+  "rate_satoshi": 4500.0,
+  "rate_goldy": 4500.0,
+  "std_rate": 4500.0,
+  "method": "ตรงกันทั้งสองใบ",
+  "status": "ยืนยันแล้ว"
+ },
+ {
+  "rate_id": "R015",
+  "cost_type": "ของ",
+  "rate_name": "คอนกรีตกำลังอัด 280 ksc",
+  "unit": "ลบ.ม.",
+  "rate_satoshi": 2200.0,
+  "rate_goldy": 1950.0,
+  "std_rate": 2075.0,
+  "method": "เฉลี่ยสองใบ ต่างกัน 12.8% ตามช่วงเวลาสั่ง",
+  "status": "รอยืนยัน"
+ },
+ {
+  "rate_id": "R016",
+  "cost_type": "ของ",
+  "rate_name": "แผ่นพื้นสำเร็จ ยาว 3 ม. ลวด 5 เส้น",
+  "unit": "แผ่น",
+  "rate_satoshi": 315.0,
+  "rate_goldy": 315.0,
+  "std_rate": 315.0,
+  "method": "ตรงกันทั้งสองใบ",
+  "status": "ยืนยันแล้ว"
+ },
+ {
+  "rate_id": "R017",
+  "cost_type": "ของ",
+  "rate_name": "Wire Mesh 4 mm @20 cm",
+  "unit": "ม้วน",
+  "rate_satoshi": 1800.0,
+  "rate_goldy": 1800.0,
+  "std_rate": 1800.0,
+  "method": "ตรงกันทั้งสองใบ",
+  "status": "ยืนยันแล้ว"
+ },
+ {
+  "rate_id": "R018",
+  "cost_type": "ของ",
+  "rate_name": "เหล็ก WF 200x150x6x9 mm",
+  "unit": "เส้น",
+  "rate_satoshi": 4627.0,
+  "rate_goldy": 4820.0,
+  "std_rate": 4720.0,
+  "method": "เฉลี่ยสองใบ",
+  "status": "รอยืนยัน"
+ },
+ {
+  "rate_id": "R019",
+  "cost_type": "ของ",
+  "rate_name": "แผ่นเมทัลชีท 0.35 mm + PU Foam 1 นิ้ว",
+  "unit": "เมตร",
+  "rate_satoshi": 186.0,
+  "rate_goldy": 186.0,
+  "std_rate": 186.0,
+  "method": "ตรงกันทั้งสองใบ",
+  "status": "ยืนยันแล้ว"
+ },
+ {
+  "rate_id": "R020",
+  "cost_type": "ของ",
+  "rate_name": "เหล็กเส้นข้ออ้อย DB-16 / DB-12",
+  "unit": "เส้น",
+  "rate_satoshi": 332.0,
+  "rate_goldy": 332.0,
+  "std_rate": 332.0,
+  "method": "ตรงกันทั้งสองใบ (DB-12 = 189)",
+  "status": "ยืนยันแล้ว"
+ }
+]
