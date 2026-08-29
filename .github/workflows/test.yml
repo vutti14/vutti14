@@ -1,14 +1,16 @@
-# ตรวจทุก push และทุก PR — ก่อนหน้านี้เทสต์รันแค่ในเครื่องคนเขียน
+# ตรวจทุก PR และทุก push บน main — ก่อนหน้านี้เทสต์รันแค่ในเครื่องคนเขียน
 name: ทดสอบ
 
+# push จำกัดไว้ที่ main อย่างเดียว — สาขาที่เปิด PR แล้วถูกตรวจผ่าน event pull_request
+# ถ้าเปิดทั้งสองแบบกว้าง ๆ ทุก push บนสาขาที่มี PR จะรันงานเดียวกันซ้ำสองรอบ
 on:
   push:
-    branches: ['**']
+    branches: [main]
   pull_request:
 
 # push ซ้อนกันบนสาขาเดียว ให้ยกเลิกรอบเก่าทิ้ง ไม่ต้องรอผลที่ไม่มีใครอ่านแล้ว
 concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: true
 
 jobs:
