@@ -1,0 +1,51 @@
+# ตรวจทุก push และทุก PR — ก่อนหน้านี้เทสต์รันแค่ในเครื่องคนเขียน
+name: ทดสอบ
+
+on:
+  push:
+    branches: ['**']
+  pull_request:
+
+# push ซ้อนกันบนสาขาเดียว ให้ยกเลิกรอบเก่าทิ้ง ไม่ต้องรอผลที่ไม่มีใครอ่านแล้ว
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    name: npm test (Node ${{ matrix.node }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        # 20.11 คือขั้นต่ำที่ package.json รองรับ · 22 คือที่ใช้จริงตอนพัฒนา
+        node: ['20.11', '22']
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node }}
+          cache: npm
+
+      - run: npm ci
+
+      # สร้างฐานข้อมูลชั่วคราวเอง ไม่แตะฐานจริง และไม่ต้องต่อเน็ต
+      - run: npm test
+
+  preview:
+    name: preview/index.html ตรงกับ template
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # index.html ถูก generate จาก app.template.html + data/seed
+      # ถ้าแก้ template แล้วลืมรัน builder ไฟล์สองอันจะไม่ตรงกัน — จับตรงนี้
+      - run: python3 tools/build_preview.py
+
+      - name: เทียบกับที่ commit ไว้
+        run: |
+          if ! git diff --exit-code preview/index.html; then
+            echo '::error file=preview/index.html::preview/index.html ไม่ตรงกับ app.template.html — รัน python3 tools/build_preview.py แล้ว commit ผลลัพธ์ด้วย'
+            exit 1
+          fi

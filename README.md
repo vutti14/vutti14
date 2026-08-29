@@ -67,7 +67,7 @@ npm start          # เปิด http://localhost:3000
 
 ```bash
 npm run reset      # ล้างฐานข้อมูลแล้วนำเข้าใหม่ทั้งหมด
-npm test           # ทดสอบกฎและเส้นทางงานทั้งระบบ (39 ชุด)
+npm test           # ทดสอบกฎและเส้นทางงานทั้งระบบ (39 ชุด · GitHub Actions รันให้ทุก push)
 npm run seed:xlsx  # แปลง .xlsx ต้นทางเป็น data/seed/*.json ใหม่ (ต้องมี python3 + openpyxl)
 ```
 
@@ -272,6 +272,9 @@ preview/
 data/
   source/           ไฟล์ Excel ต้นทาง v8
   seed/             ข้อมูลตั้งต้นรูปแบบ JSON
+.github/workflows/
+  test.yml          รัน npm test ทุก push/PR บน Node 20.11 กับ 22
+                    และตรวจว่า preview/index.html ยัง generate ตรงกับ template
 tests/
   api.test.js       ทดสอบกฎและเส้นทางงานทั้งระบบ
   line.test.js      ทดสอบอนุมัติผ่านไลน์ (รันคู่กับ LINE API จำลอง)
@@ -279,7 +282,9 @@ tests/
   ui-smoke.mjs      ทดสอบหน้าจอบนมือถือจำลอง (ต้องติดตั้ง playwright เพิ่ม)
 ```
 
-ไม่มีขั้นตอน build — หน้าเว็บเป็น ES module ล้วน เปลี่ยนไฟล์แล้วรีเฟรชได้เลย
+ไม่มีขั้นตอน build สำหรับตัวระบบ — หน้าเว็บเป็น ES module ล้วน เปลี่ยนไฟล์แล้วรีเฟรชได้เลย
+มีอย่างเดียวคือ `preview/index.html` ที่ generate จาก template + data/seed — **แก้ template แล้วต้องรัน
+`python3 tools/build_preview.py` แล้ว commit ผลลัพธ์ด้วย** ไม่งั้น CI จะฟ้อง
 
 ---
 
