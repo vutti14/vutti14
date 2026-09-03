@@ -63,6 +63,7 @@ function shell() {
   const topbar = el('div', { class: 'topbar' },
     el('h1', { text: 'RABBiZ Build' }),
     el('span', { class: 'who', text: `${state.user.display_name} · ${state.user.role}` }),
+    el('button', { onclick: lineLinkFlow, title: 'ผูกบัญชีไลน์เพื่ออนุมัติจากไลน์' }, 'ไลน์'),
     el('button', { onclick: logout }, 'ออก'));
 
   const nav = el('nav', { class: 'navbar' }, visibleRoutes().map((r) =>
@@ -190,9 +191,10 @@ function setup2faFlow() {
     modal({
       title: 'เปิดใช้ 2FA (บังคับสำหรับบัญชีที่ทำให้เงินออกได้)',
       body: el('div', {},
-        el('p', { class: 'small muted', text: 'เพิ่มบัญชีในแอป Authenticator โดยพิมพ์รหัสลับด้านล่าง หรือเปิดลิงก์ otpauth บนมือถือเครื่องเดียวกัน' }),
+        el('p', { class: 'small muted', text: 'สแกน QR ด้วยแอป Authenticator (Google Authenticator, Authy) — หรือพิมพ์รหัสลับด้านล่างด้วยมือถ้าสแกนไม่ได้' }),
+        el('div', { class: 'qr', html: secret.qr_svg || '' }),
         el('div', { class: 'card tight mono', style: 'word-break:break-all', text: secret.secret }),
-        el('p', {}, el('a', { href: secret.uri, text: 'เปิดในแอป Authenticator' })),
+        el('p', {}, el('a', { href: secret.uri, text: 'เปิดในแอป Authenticator (เครื่องเดียวกัน)' })),
         field('รหัสยืนยัน', code)),
       actions: [
         { label: 'ข้ามไปก่อน', onClick: () => resolve() },
@@ -205,6 +207,41 @@ function setup2faFlow() {
         },
       ],
     });
+  });
+}
+
+/**
+ * ผูกบัญชีไลน์ — ขอรหัส 6 ตัวแล้วให้ผู้ใช้พิมพ์ส่งเข้าห้องแชทของ OA (สเปก §8 S2)
+ * ที่ทำเป็นรหัสแทนการกรอก LINE user id เพราะผู้ใช้ทั่วไปหา id ของตัวเองไม่เจอ
+ */
+export async function lineLinkFlow() {
+  let info;
+  try { info = await api.post('/api/auth/line/link-code'); }
+  catch (err) { return toast(err.message, 'error'); }
+
+  const body = el('div', {},
+    !info.configured && el('div', { class: 'banner warn' },
+      'ระบบยังไม่ได้ผูก LINE Messaging API channel — ผูกบัญชีไว้ก่อนได้ ' +
+      'การ์ดขออนุมัติจะเข้าคิวไว้และส่งให้ทันทีที่ผู้ดูแลตั้งค่าเสร็จ'),
+    el('p', { class: 'small muted', text: `พิมพ์รหัสนี้ส่งเข้าห้องแชทของ RABBiZBuild ในไลน์ ภายใน ${info.valid_minutes} นาที` }),
+    el('div', { class: 'card tight mono huge', style: 'letter-spacing:.35em;text-align:center', text: info.code }),
+    info.oa_qr_svg && el('div', { class: 'qr', html: info.oa_qr_svg }),
+    info.oa_url && el('p', {}, el('a', { href: info.oa_url, target: '_blank', rel: 'noopener', text: 'เปิดห้องแชทของ RABBiZBuild' })),
+    el('p', { class: 'tiny muted', text: 'ต้องผูกบัญชีก่อนถึงกดอนุมัติจากไลน์ได้ — กันการส่งต่อการ์ดแล้วให้คนอื่นกดแทน' }));
+
+  modal({
+    title: 'ผูกบัญชีไลน์',
+    body,
+    actions: [
+      { label: 'ปิด' },
+      {
+        label: 'ยกเลิกการผูก', kind: 'danger',
+        onClick: async () => {
+          try { await api.del('/api/auth/line/link'); toast('ยกเลิกการผูกบัญชีแล้ว', 'ok'); }
+          catch (err) { toast(err.message, 'error'); return true; }
+        },
+      },
+    ],
   });
 }
 

@@ -1,9 +1,12 @@
+import crypto from 'node:crypto';
 import { Router } from 'express';
 import { db, audit } from '../db.js';
 import {
   checkPassword, hashPassword, createSession, destroySession, requireAuth,
   newTotpSecret, verifyTotp, totpUri, logLogin,
 } from '../auth.js';
+import { qrSvg } from '../qrcode.js';
+import { isConfigured as lineConfigured } from '../line.js';
 
 const r = Router();
 const publicUser = (u) => ({
@@ -81,8 +84,21 @@ r.post('/2fa/setup', (req, res) => {
   const secret = newTotpSecret();
   db.prepare('UPDATE users SET totp_secret = ?, totp_enabled = 0 WHERE user_id = ?')
     .run(secret, req.user.user_id);
-  res.json({ secret, uri: totpUri(req.user.username, secret),
-             hint: 'เพิ่มบัญชีในแอป Authenticator ด้วยการสแกน URI หรือพิมพ์รหัสลับด้วยมือ แล้วยืนยันด้วยรหัส 6 หลัก' });
+  const uri = totpUri(req.user.username, secret);
+  res.json({
+    secret, uri, qr_svg: qrSvg(uri),
+    hint: 'สแกน QR ด้วยแอป Authenticator — หรือพิมพ์รหัสลับด้วยมือถ้าสแกนไม่ได้ แล้วยืนยันด้วยรหัส 6 หลัก',
+  });
+});
+
+/** รูป QR ของรหัสลับที่กำลังตั้งค่าอยู่ — เผื่อกรณีเปิดหน้าใหม่หรือสั่งพิมพ์ */
+r.get('/2fa/qr.svg', (req, res) => {
+  if (!req.user) return res.status(401).json({ error: 'ยังไม่ได้เข้าสู่ระบบ' });
+  const row = db.prepare('SELECT totp_secret FROM users WHERE user_id = ?').get(req.user.user_id);
+  if (!row?.totp_secret) return res.status(404).json({ error: 'ยังไม่ได้เริ่มตั้งค่า 2FA' });
+  res.setHeader('Content-Type', 'image/svg+xml; charset=utf-8');
+  res.setHeader('Cache-Control', 'no-store');
+  res.send(qrSvg(totpUri(req.user.username, row.totp_secret), { scale: 6 }));
 });
 
 r.post('/2fa/enable', (req, res) => {
@@ -96,12 +112,54 @@ r.post('/2fa/enable', (req, res) => {
   res.json({ ok: true });
 });
 
-r.post('/line/link', requireAuth, (req, res) => {
-  const id = String(req.body?.line_user_id || '').trim();
-  if (!id) return res.status(400).json({ error: 'ต้องระบุ LINE user id' });
-  db.prepare('UPDATE users SET line_user_id = ? WHERE user_id = ?').run(id, req.user.user_id);
+// ---------------------------------------------------------------- ไลน์ (สเปก §8 S2)
+/**
+ * ผูกบัญชีได้ทางเดียว: ขอรหัสที่นี่ แล้วพิมพ์ส่งเข้า OA
+ *
+ * เคยมี POST /line/link ที่ให้กรอก LINE user id เองตรง ๆ — ถอดออกแล้ว
+ * เพราะไม่ได้พิสูจน์ว่าคนกรอกเป็นเจ้าของบัญชีไลน์นั้นจริง ตั้งแต่ line_user_id
+ * กลายเป็นกุญแจตัดสินว่าใครสั่งอนุมัติได้ ใครก็ตามที่ล็อกอินได้จะกรอก id ของ COO
+ * ทับไว้ก่อน แล้วทำให้ COO ผูกบัญชีตัวเองไม่ได้ตลอดกาล (กดอนุมัติจากไลน์ไม่ได้)
+ * รหัสที่ส่งผ่าน OA พิสูจน์ความเป็นเจ้าของให้เอง เพราะ id มาจากฝั่งไลน์ในคำขอที่เซ็นแล้ว
+ */
+const LINK_CODE_MINUTES = 15;
+const LINK_ALPHABET = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789'; // ตัด I O 0 1 ที่อ่านสับสน
+
+/**
+ * ขอรหัสผูกบัญชี — ผู้ใช้พิมพ์รหัสนี้ส่งเข้าห้องแชทของ OA
+ * ที่ต้องผูกก่อนเพราะสเปก §8 กันการส่งต่อการ์ดแล้วให้คนอื่นกดอนุมัติแทน
+ */
+r.post('/line/link-code', requireAuth, (req, res) => {
+  db.prepare("DELETE FROM line_link_codes WHERE expires_at < datetime('now') OR user_id = ?")
+    .run(req.user.user_id);
+  const bytes = crypto.randomBytes(6);
+  const code = [...bytes].map((b) => LINK_ALPHABET[b % LINK_ALPHABET.length]).join('');
+  const expires = new Date(Date.now() + LINK_CODE_MINUTES * 60000).toISOString();
+  db.prepare('INSERT INTO line_link_codes (code, user_id, expires_at) VALUES (?,?,?)')
+    .run(code, req.user.user_id, expires);
+  const oaUrl = String(process.env.LINE_OA_URL || '').trim();
+  res.json({
+    code,
+    expires_at: expires,
+    valid_minutes: LINK_CODE_MINUTES,
+    oa_url: oaUrl || null,
+    oa_qr_svg: oaUrl ? qrSvg(oaUrl, { scale: 6 }) : null,
+    configured: lineConfigured(),
+  });
+});
+
+r.get('/line/status', requireAuth, (req, res) => {
+  res.json({
+    configured: lineConfigured(),
+    linked: !!req.user.line_user_id,
+    oa_url: String(process.env.LINE_OA_URL || '').trim() || null,
+  });
+});
+
+r.delete('/line/link', requireAuth, (req, res) => {
+  db.prepare('UPDATE users SET line_user_id = NULL WHERE user_id = ?').run(req.user.user_id);
   audit({ table: 'users', recordId: req.user.user_id, field: 'line_user_id',
-          newValue: id, action: 'ผูกบัญชีไลน์', userId: req.user.user_id });
+          oldValue: req.user.line_user_id, action: 'ยกเลิกการผูกบัญชีไลน์', userId: req.user.user_id });
   res.json({ ok: true });
 });
 

@@ -9,6 +9,7 @@ import {
   validateRequest, computeTotals, evaluateFlags, selfApprovalFlag, legacyCode,
   requiredDocuments, FROZEN_STATUSES, EDITABLE_META_FIELDS,
 } from '../rules.js';
+import { notifySubmitted, notifyDecision } from '../notify.js';
 
 const r = Router();
 r.use(requireAuth);
@@ -271,7 +272,9 @@ r.post('/requests', requireCap('request.create'), (req, res) => {
     });
   });
   tx();
-  res.status(201).json({ request: fullRequest(id), flags });
+  const created = fullRequest(id);
+  if (submit) notifySubmitted(created, flags);
+  res.status(201).json({ request: created, flags });
 });
 
 r.put('/requests/:id', (req, res) => {
@@ -327,7 +330,9 @@ r.put('/requests/:id', (req, res) => {
       audit({ table: 'requests', recordId: cur.request_id, action: 'ส่งขออนุมัติ', userId: req.user.user_id });
   });
   tx();
-  res.json({ request: fullRequest(cur.request_id), flags });
+  const saved = fullRequest(cur.request_id);
+  if (submit && cur.status === 'ร่าง') notifySubmitted(saved, flags);
+  res.json({ request: saved, flags });
 });
 
 /** §4 ยอดใบที่จ่ายแล้วแก้ไม่ได้ตลอดกาล — แก้ได้เฉพาะข้อมูลประกอบ และต้องลง audit_log */
@@ -393,7 +398,9 @@ r.post('/requests/:id/submit', (req, res) => {
   db.prepare("UPDATE requests SET status = 'รออนุมัติ', submitted_at = ?, flags = ? WHERE request_id = ?")
     .run(new Date().toISOString(), JSON.stringify(flags), cur.request_id);
   audit({ table: 'requests', recordId: cur.request_id, action: 'ส่งขออนุมัติ', userId: req.user.user_id });
-  res.json({ request: fullRequest(cur.request_id) });
+  const full = fullRequest(cur.request_id);
+  notifySubmitted(full, flags);
+  res.json({ request: full });
 });
 
 r.post('/requests/:id/withdraw', (req, res) => {
@@ -435,7 +442,26 @@ function approveOne(user, id, { acknowledgeFlags }) {
     table: 'requests', recordId: id, field: 'status', oldValue: 'รออนุมัติ', newValue: 'อนุมัติแล้ว',
     action: 'อนุมัติ', userId: user.user_id, reason: self ? 'ใบของผู้อนุมัติเอง' : '',
   });
+  notifyDecision(fullRequest(id), 'อนุมัติแล้ว', user.user_id);
   return { id, ok: true, flags };
+}
+
+/** ไม่อนุมัติหนึ่งใบ — ใช้ร่วมกันระหว่างหน้าเว็บและปุ่มในไลน์ */
+function rejectOne(user, id, reason) {
+  const cur = getReq(id);
+  if (!cur) return { id, ok: false, error: 'ไม่พบใบเบิก' };
+  if (cur.status !== 'รออนุมัติ') return { id, ok: false, error: `สถานะปัจจุบันคือ ${cur.status}` };
+  const why = String(reason || '').trim();
+  if (!why) return { id, ok: false, error: 'ต้องระบุเหตุผลที่ไม่อนุมัติ' };
+  db.prepare(`UPDATE requests SET status = 'ไม่อนุมัติ', approver_id = ?, approved_at = ?,
+              reject_reason = ? WHERE request_id = ?`)
+    .run(user.user_id, new Date().toISOString(), why, cur.request_id);
+  audit({
+    table: 'requests', recordId: cur.request_id, field: 'status', oldValue: cur.status,
+    newValue: 'ไม่อนุมัติ', action: 'ไม่อนุมัติ', userId: user.user_id, reason: why,
+  });
+  notifyDecision(fullRequest(cur.request_id), 'ไม่อนุมัติ', user.user_id, why);
+  return { id, ok: true };
 }
 
 r.post('/requests/bulk-approve', requireCap('request.approve'), (req, res) => {
@@ -455,19 +481,10 @@ r.post('/requests/:id/approve', requireCap('request.approve'), (req, res) => {
 });
 
 r.post('/requests/:id/reject', requireCap('request.reject'), (req, res) => {
-  const cur = getReq(req.params.id);
-  if (!cur) return res.status(404).json({ error: 'ไม่พบใบเบิก' });
-  if (cur.status !== 'รออนุมัติ') return res.status(400).json({ error: 'ไม่อนุมัติได้เฉพาะใบที่รออนุมัติ' });
-  const reason = String(req.body?.reason || '').trim();
-  if (!reason) return res.status(400).json({ error: 'ต้องระบุเหตุผลที่ไม่อนุมัติ' });
-  db.prepare(`UPDATE requests SET status = 'ไม่อนุมัติ', approver_id = ?, approved_at = ?,
-              reject_reason = ? WHERE request_id = ?`)
-    .run(req.user.user_id, new Date().toISOString(), reason, cur.request_id);
-  audit({
-    table: 'requests', recordId: cur.request_id, field: 'status', oldValue: cur.status,
-    newValue: 'ไม่อนุมัติ', action: 'ไม่อนุมัติ', userId: req.user.user_id, reason,
-  });
-  res.json({ request: fullRequest(cur.request_id) });
+  if (!getReq(req.params.id)) return res.status(404).json({ error: 'ไม่พบใบเบิก' });
+  const out = rejectOne(req.user, req.params.id, req.body?.reason);
+  if (!out.ok) return res.status(400).json({ error: out.error });
+  res.json({ request: fullRequest(req.params.id) });
 });
 
 /** §4 ยกเลิกใบหลังอนุมัติ — COO (และ CEO) เท่านั้น และต้องยังไม่จ่าย */
@@ -557,5 +574,5 @@ r.delete('/files/:fileId', (req, res) => {
   res.json({ ok: true });
 });
 
-export { fullRequest, getReq, getLines, projectFilter, assertVisible };
+export { fullRequest, getReq, getLines, projectFilter, assertVisible, approveOne, rejectOne };
 export default r;

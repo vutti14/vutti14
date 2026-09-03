@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import { db, audit, getSetting, setSetting } from '../db.js';
 import { requireAuth, hashPassword } from '../auth.js';
+import { isConfigured as lineConfigured, flushOutbox, OUTBOX_STATUS, appBaseUrl } from '../line.js';
 
 const r = Router();
 r.use(requireAuth);
@@ -130,10 +131,39 @@ r.put('/settings', (req, res) => {
   res.json({ settings: Object.fromEntries(ALLOWED_SETTINGS.map((k) => [k, getSetting(k)])) });
 });
 
+// ---------------------------------------------------------------- ไลน์ (สเปก §8 S2)
+/**
+ * สถานะการเชื่อมต่อไลน์ + คิวข้อความ
+ * ตราบใดที่ยังไม่ได้ตั้ง channel ข้อความจะค้างสถานะ "ยังไม่ได้ตั้งค่า" ให้เห็นว่าใครควรได้รับอะไร
+ */
+r.get('/line', (_req, res) => {
+  const rows = db.prepare(`SELECT o.*, u.display_name FROM line_outbox o
+    LEFT JOIN users u ON u.user_id = o.user_id
+    ORDER BY o.outbox_id DESC LIMIT 100`).all();
+  res.json({
+    configured: lineConfigured(),
+    webhook_url: `${appBaseUrl()}/api/line/webhook`,
+    linked_users: db.prepare(`SELECT user_id, display_name, role FROM users
+      WHERE line_user_id IS NOT NULL AND line_user_id <> '' ORDER BY user_id`).all(),
+    counts: db.prepare('SELECT status, COUNT(*) AS n FROM line_outbox GROUP BY status').all(),
+    outbox: rows.map(({ payload, ...rest }) => rest),
+  });
+});
+
+/** ส่งข้อความที่ค้างอยู่ทั้งหมดอีกครั้ง — ใช้ตอนเพิ่งผูก channel เสร็จ */
+r.post('/line/flush', async (req, res) => {
+  if (!lineConfigured()) return res.status(400).json({ error: 'ยังไม่ได้ตั้งค่า LINE channel' });
+  const out = await flushOutbox({ limit: Number(req.body?.limit) || 50 });
+  audit({ table: 'line_outbox', recordId: 'flush', action: 'ส่งข้อความค้างเข้าไลน์',
+          userId: req.user.user_id, newValue: JSON.stringify(out) });
+  res.json({ ...out, statuses: OUTBOX_STATUS });
+});
+
 r.get('/health', (_req, res) => {
   const counts = {};
   for (const t of ['users', 'projects', 'buildings', 'cost_codes', 'vendors', 'items',
-    'requests', 'request_lines', 'payments', 'documents', 'reversals', 'funding_in', 'audit_log'])
+    'requests', 'request_lines', 'payments', 'documents', 'reversals', 'funding_in', 'audit_log',
+    'line_outbox'])
     counts[t] = db.prepare(`SELECT COUNT(*) AS n FROM ${t}`).get().n;
   const totals = db.prepare(`SELECT value_source, COUNT(*) AS n, ROUND(SUM(total_amount),2) AS amount
     FROM requests GROUP BY value_source`).all();

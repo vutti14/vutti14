@@ -515,3 +515,37 @@ CREATE TABLE IF NOT EXISTS location_pl (
   depreciation_year  REAL,
   flag               TEXT DEFAULT ''
 );
+
+-- ---------------------------------------------------------------- ไลน์ (สเปก §8 S2)
+-- ทุกข้อความที่ระบบตั้งใจส่งเข้าไลน์ถูกบันทึกที่นี่ก่อนเสมอ ถ้ายังไม่ได้ตั้งค่า channel
+-- ข้อความจะค้างสถานะ "ยังไม่ได้ตั้งค่า" ให้เห็นว่าใครควรได้รับอะไร แล้วส่งย้อนหลังได้
+CREATE TABLE IF NOT EXISTS line_outbox (
+  outbox_id    INTEGER PRIMARY KEY AUTOINCREMENT,
+  kind         TEXT NOT NULL,
+  user_id      TEXT,
+  line_user_id TEXT,
+  request_id   TEXT,
+  payload      TEXT NOT NULL,
+  status       TEXT NOT NULL DEFAULT 'รอส่ง',
+  error        TEXT DEFAULT '',
+  created_at   TEXT NOT NULL DEFAULT (datetime('now')),
+  sent_at      TEXT
+);
+CREATE INDEX IF NOT EXISTS idx_line_outbox_status ON line_outbox(status, outbox_id);
+
+-- line_user_id คือกุญแจที่ webhook ใช้ตัดสินว่าคำสั่งมาจากใคร ถ้าซ้ำกันสองคน
+-- คำสั่งจะถูกตีความเป็นของใครก็ได้ จึงบังคับให้ไม่ซ้ำที่ระดับฐานข้อมูล
+-- (partial index — ปล่อยให้คนที่ยังไม่ผูกเป็น NULL ได้หลายคน)
+CREATE UNIQUE INDEX IF NOT EXISTS idx_users_line_user
+  ON users(line_user_id) WHERE line_user_id IS NOT NULL;
+
+-- รหัสผูกบัญชีไลน์ครั้งแรก — ผู้ใช้กดขอในเว็บ แล้วพิมพ์รหัสส่งเข้า OA
+-- (สเปก §8: ต้องผูกบัญชีก่อน เพื่อกันการส่งต่อลิงก์แล้วกดอนุมัติแทนกัน)
+CREATE TABLE IF NOT EXISTS line_link_codes (
+  code       TEXT PRIMARY KEY,
+  user_id    TEXT NOT NULL REFERENCES users(user_id),
+  created_at TEXT NOT NULL DEFAULT (datetime('now')),
+  expires_at TEXT NOT NULL,
+  used_at    TEXT,
+  used_by    TEXT
+);
