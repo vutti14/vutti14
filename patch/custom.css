@@ -1,0 +1,134 @@
+/* ============================================================
+   หินอ่อน.com — CSS เสริม (LnwShop)
+   วางที่: ระบบหลังร้าน → แต่งร้าน → CSS เสริม (Custom CSS)
+   ต่อท้ายของเดิม อย่าลบของเดิมทิ้ง
+   ------------------------------------------------------------
+   ทุกบล็อกมีหมายเลขกำกับ ถ้าบล็อกไหนทำให้หน้าเว็บเพี้ยน
+   ให้ลบเฉพาะบล็อกนั้นออก ไม่ต้องลบทั้งไฟล์
+   ============================================================ */
+
+
+/* [1] แก้บั๊ก: หน้าแรกบนคอมเลื่อนไปทางขวาได้ 4,061px
+   ------------------------------------------------------------
+   สาเหตุ: gadget HTML ที่วางเองในโซนบทความ (.zoneShirt) กว้าง 3,801px
+   ล้นกรอบ .pageUnderwear ที่กว้าง 1,200px ทำให้เกิด scrollbar แนวนอน
+   Google นับเป็นปัญหา "Content wider than screen" */
+.pageUnderwear .widgetZone > .zoneShirt { max-width: 100%; }
+.unitShirt.gadgetHTML { max-width: 100%; }
+.unitShirt.gadgetHTML img,
+.unitShirt.gadgetHTML table,
+.unitShirt.gadgetHTML iframe { max-width: 100%; height: auto; }
+/* ตารางกว้าง ๆ ให้เลื่อนในกล่องตัวเอง ไม่ดันทั้งหน้า */
+.unitShirt.gadgetHTML table { display: block; overflow-x: auto; }
+
+
+/* [2] กันหน้าเลื่อนออกด้านข้างทุกกรณี (safety net) */
+html, body { overflow-x: hidden; }
+
+
+/* [3] รูปภาพ: กันภาพล้นกรอบ + จองพื้นที่ลด CLS
+   ------------------------------------------------------------
+   CLS = Cumulative Layout Shift หนึ่งใน Core Web Vitals
+   ที่ Google ใช้จัดอันดับ */
+.gadgetHTML img, .productDetail img, .articleDetail img {
+  max-width: 100%;
+  height: auto;
+  content-visibility: auto;
+}
+
+
+/* [4] มือถือ: ปุ่มกดต้องใหญ่พอ (Google กำหนดขั้นต่ำ 48x48 CSS px)
+   ------------------------------------------------------------
+   ตรวจแล้วพบว่า 69 จาก 83 ลิงก์บนหน้าแรกมือถือสูงต่ำกว่า 40px */
+@media (max-width: 767px) {
+  .listCategory a,
+  .categoryList a,
+  .gadgetCategory a,
+  .footerMenu a,
+  .pageFooter a {
+    display: block;
+    min-height: 44px;
+    line-height: 1.5;
+    padding-top: 10px;
+    padding-bottom: 10px;
+  }
+  /* เว้นช่องว่างระหว่างลิงก์ที่อยู่ติดกัน ไม่ให้กดพลาด */
+  .listCategory li + li,
+  .categoryList li + li { margin-top: 4px; }
+}
+
+
+/* [5] ตัวอักษรไทยบนมือถือ: 16px ขั้นต่ำ
+   ------------------------------------------------------------
+   ต่ำกว่า 16px ใน input จะทำให้ iOS Safari ซูมหน้าจอเองเวลากดพิมพ์
+   และ Google ตีเป็น "Text too small to read" */
+@media (max-width: 767px) {
+  body, .productDetail, .articleDetail, .gadgetHTML { font-size: 16px; }
+  input, select, textarea { font-size: 16px !important; }
+  .productDetail, .articleDetail { line-height: 1.75; }
+}
+
+
+/* [6] หัวเรื่อง H1 ที่เพิ่มเข้าไปในหน้าแรก (ดู content/home-hero.html)
+   ------------------------------------------------------------
+   ปัจจุบันหน้าแรกไม่มี <h1> เลย — ทั้งเดสก์ท็อปและมือถือ */
+.hn-hero { padding: 28px 20px; background: #faf9f7; border-radius: 12px; margin-bottom: 20px; }
+.hn-hero h1 {
+  font-size: clamp(22px, 5vw, 34px);
+  line-height: 1.35;
+  margin: 0 0 10px;
+  font-weight: 700;
+  color: #1a1a1a;
+}
+.hn-hero p { font-size: clamp(15px, 3.6vw, 17px); line-height: 1.7; color: #444; margin: 0 0 18px; max-width: 62ch; }
+.hn-cta { display: flex; flex-wrap: wrap; gap: 10px; }
+.hn-cta a {
+  display: inline-flex; align-items: center; justify-content: center;
+  min-height: 48px; padding: 0 22px; border-radius: 8px;
+  font-size: 16px; font-weight: 600; text-decoration: none;
+}
+.hn-cta .hn-call { background: #8b1f1f; color: #fff; }
+.hn-cta .hn-line { background: #06c755; color: #fff; }
+.hn-cta .hn-quote { background: #fff; color: #8b1f1f; border: 2px solid #8b1f1f; }
+.hn-cta a:hover { filter: brightness(1.08); }
+
+
+/* [7] ตารางราคาแบบ HTML (ดู content/price-table.html)
+   ------------------------------------------------------------
+   แทนรูป JPEG 3 MB ที่ Google อ่านไม่ออก */
+.hn-price { width: 100%; border-collapse: collapse; font-size: 15px; margin: 14px 0 24px; }
+.hn-price caption { text-align: left; font-weight: 700; font-size: 17px; padding: 10px 0; }
+.hn-price th, .hn-price td { border: 1px solid #ddd; padding: 10px 12px; text-align: center; }
+.hn-price thead th { background: #1a1a1a; color: #fff; font-weight: 600; }
+.hn-price tbody th { text-align: left; background: #f7f7f7; font-weight: 600; }
+.hn-price td:last-child { font-weight: 700; }
+.hn-price-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+@media (max-width: 767px) { .hn-price { font-size: 14px; } .hn-price th, .hn-price td { padding: 8px 6px; } }
+
+
+/* [8] หน้าสินค้า: ลดปุ่มที่แข่งกันเอง
+   ------------------------------------------------------------
+   ตอนนี้มี 3 ปุ่มซ้อนกัน: "ซื้อเลย" / "หยิบลงตะกร้า" / "BUY NOW"
+   ทำให้ลูกค้าลังเล — เน้นปุ่มหลักปุ่มเดียว ที่เหลือทำเป็นปุ่มรอง */
+.productDetail .btnBuyNow,
+.productDetail .btn-buy-now { opacity: .92; }
+@media (max-width: 767px) {
+  .productDetail .btnAddCart, .productDetail .btnBuyNow { min-height: 48px; }
+}
+
+
+/* [9] ซ่อนวิดเจ็ตที่ไม่ช่วยขายและกินพื้นที่บนมือถือ
+   ------------------------------------------------------------
+   "สถิติร้านค้า" และ "เว็บเพื่อนบ้าน" เป็นของยุค 2010
+   ไม่ช่วย conversion และดันเนื้อหาที่สำคัญลงไปข้างล่าง
+   >>> ถ้ายังอยากเก็บไว้ ให้ลบบล็อกนี้ทิ้ง <<< */
+@media (max-width: 767px) {
+  .gadgetStat, .widgetUnit.u-stat,
+  .gadgetFriend, .widgetUnit.u-friend { display: none; }
+}
+
+
+/* [10] ลิงก์เบอร์โทรบนหัวเว็บให้กดง่ายบนมือถือ */
+@media (max-width: 767px) {
+  a[href^="tel:"] { display: inline-flex; align-items: center; min-height: 44px; font-weight: 600; }
+}
