@@ -37,21 +37,54 @@ html, body { overflow-x: hidden; }
 }
 
 
-/* [4] มือถือ: ปุ่มกดต้องใหญ่พอ (Google กำหนดขั้นต่ำ 48x48 CSS px)
+/* [4] มือถือ: ปุ่มกดต้องใหญ่พอ (Google 48x48 / Apple 44x44 CSS px)
    ------------------------------------------------------------
-   ตรวจแล้วพบว่า 69 จาก 83 ลิงก์บนหน้าแรกมือถือสูงต่ำกว่า 40px */
+   selector ด้านล่างไม่ได้เดา — มาจากการวัด DOM จริงที่ 390x844
+   ตัวเลขในวงเล็บคือจำนวนที่พบและความสูงจริงก่อนแก้
+   จงใจไม่แตะลิงก์ที่อยู่กลางย่อหน้า เพราะจะทำให้บรรทัดข้อความเพี้ยน */
 @media (max-width: 767px) {
-  .listCategory a,
-  .categoryList a,
-  .gadgetCategory a,
-  .footerMenu a,
-  .pageFooter a {
+
+  /* ลิงก์ในรายการ/การ์ด — เพิ่มความสูงด้วย padding ไม่เปลี่ยนการตัดบรรทัด */
+  .gadgetThumbnail > a,            /* บทความ: รูปปก (18 จุด, สูง 21px) */
+  .name > a,                       /* บทความ: ชื่อเรื่อง (18 จุด, สูง 21-39px) */
+  .more > a,                       /* บทความ: อ่านต่อ (18 จุด, สูง 21px) */
+  .product_name > a,               /* สินค้า: ชื่อสินค้า (15 จุด, สูง 18-35px) */
+  .product_button > a,             /* สินค้า: ปุ่มใต้การ์ด (3 จุด, สูง 15px) */
+  .middle > a,                     /* เมนูท้ายเว็บ (14 จุด, สูง 21-42px) */
+  .footerText > a,                 /* ลิงก์ท้ายเว็บ (2 จุด, สูง 14px) */
+  .menu > a[class^="pname_"] {     /* เมนูหลัก (6 จุด, สูง 30px) */
     display: block;
     min-height: 44px;
-    line-height: 1.5;
-    padding-top: 10px;
-    padding-bottom: 10px;
+    padding-top: 11px;
+    padding-bottom: 11px;
+    box-sizing: border-box;
   }
+
+  /* ปุ่มแบ่งหน้า — เล็กที่สุดในเว็บ (สูง 23px กว้าง 47px) */
+  .page a.container,
+  .page > a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 44px;
+    min-height: 44px;
+  }
+
+  /* ไอคอนโซเชียลและปุ่มไอคอน — ขยายพื้นที่กดโดยไม่ขยายตัวไอคอน */
+  .social a.icon,                  /* 24x24 */
+  .shopinfo_social > a,            /* 42x42 */
+  button.search_keyword_icon,      /* 36x36 */
+  button.button_copy,              /* 36px */
+  a.tosakanth-action {             /* 37-40px */
+    min-width: 44px;
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  button.b-subpro { min-height: 44px; }   /* ปุ่มหยิบลงตะกร้าในการ์ด (สูง 30px) */
+
   /* เว้นช่องว่างระหว่างลิงก์ที่อยู่ติดกัน ไม่ให้กดพลาด */
   .listCategory li + li,
   .categoryList li + li { margin-top: 4px; }

@@ -39,15 +39,16 @@
 | 7 | อัปโหลด **รูปที่บีบอัดแล้ว** ทับของเดิม | `assets/optimized/` |
 | 8 | แก้ **title / description** ทั้ง 12 หมวด | `content/meta-rewrites.csv` |
 | 9 | ย่อ **ส่วนต่อท้าย title** เหลือ `หินอ่อน.com` | ตั้งค่าร้านค้า → SEO |
+| 10 | ใส่ **`alt` รูปสินค้า 55 ชิ้น** (เขียนไว้ให้ครบแล้ว) | `content/alt-text.csv` |
+| 11 | เปิดหน้า **FAQ** พร้อม FAQPage schema | `content/faq-page.html` |
 
 ### 🟡 เดือนแรก — งานที่ต้องใช้เวลา
 
 | # | ทำอะไร | ไฟล์ |
 |---|---|---|
-| 10 | ตัด **tag page** ที่มีสินค้า 1–2 ชิ้นทิ้ง (110+ → ~30) | `content/content-plan.md` |
-| 11 | เชื่อม **บทความ → หน้าสินค้า** | `content/content-plan.md` |
-| 12 | ใส่ **`alt` ให้รูปสินค้า 55 ชิ้น** (ทำมือ AI แทนไม่ได้) | — |
-| 13 | ยืนยัน **Google Business Profile** + ทำ NAP ให้ตรงกัน | `content/content-plan.md` |
+| 12 | ตัด **tag page** ตามคำตัดสินรายหน้า (95 → เก็บ 40 ตัด 55) | `content/tag-audit.csv` |
+| 13 | เชื่อม **บทความ 27 ชิ้น → หน้าสินค้า** ตามตารางจับคู่ | `content/article-product-links.csv` |
+| 14 | ยืนยัน **Google Business Profile** + ทำ NAP ให้ตรงกัน | `content/content-plan.md` |
 
 ---
 
@@ -78,9 +79,14 @@ patch/custom.js               lazy-load รูป, H1 สำรอง           
 content/home-hero.html        บล็อก H1 + ปุ่มโทร/LINE หน้าแรก
 content/price-table.html      ตารางราคาแบบข้อความ (แทนรูป 3 MB)
 content/meta-rewrites.csv     title/description ใหม่ 12 หมวด + หน้าแรก
+content/alt-text.csv          alt ภาษาไทยของสินค้าครบ 55 ชิ้น (เขียนจากการดูรูปจริงทุกใบ)
+content/tag-audit.csv         คำตัดสิน เก็บ/ตัด ครบทั้ง 95 หน้า tag พร้อมจำนวนสินค้าจริง
+content/faq-page.html         หน้า FAQ 13 คำถาม + FAQPage schema 9 คำถาม
+content/article-product-links.csv  ตารางจับคู่บทความ 27 ชิ้น → หน้าสินค้า/หมวดหมู่
 content/content-plan.md       แผนเนื้อหา ลิงก์ภายใน และ Local SEO
 assets/optimized/             รูปบีบอัดแล้ว พร้อมอัปโหลดทับ (−80%)
 tools/audit-live.mjs          สคริปต์วัดเว็บจริง ใช้เทียบก่อน/หลัง
+tools/crawl-site.sh           นับสินค้าในหน้า tag ทั้งหมด ใช้ตรวจซ้ำหลังตัด tag
 ```
 
 ---
@@ -89,9 +95,13 @@ tools/audit-live.mjs          สคริปต์วัดเว็บจร�
 
 พูดตรง ๆ เพื่อไม่ให้คาดหวังผิด:
 
-- **`alt` ของรูป** — ทดสอบแล้วว่า JS เดาไม่ได้จริง ต้องพิมพ์เองในหลังร้าน
-- **ปุ่มเล็กเกินเกณฑ์** — แก้ได้บางส่วน ที่เหลือเป็นไอคอนของ template
-  ถ้าไปขยายจะทำ layout เพี้ยน
 - **jQuery 1.12.4 (ปี 2016), ไฟล์ Flash `.swf`, CSS กว้างคงที่ 1200px** — เป็นของ LnwShop แก้ไม่ได้
 - **`": Inspired by LnwShop.com (v2)"` ท้าย title ทุกหน้า** — ต้องถาม LnwShop ว่าปลดที่แพ็กเกจไหน
 - **อันดับปัจจุบันใน Google** — ต้องเปิดสิทธิ์ Search Console ให้ก่อนถึงจะดูได้
+- **`alt` ของรูปที่สอง–สี่ในแต่ละสินค้า และรูปในบทความ** — ทำรูปหลักครบ 55 ชิ้นแล้ว
+  ที่เหลือทำต่อได้ถ้าต้องการ แต่รูปหลักคือตัวที่ขึ้น Google Images ให้ผลคุ้มที่สุดก่อน
+- **ปุ่มที่ยังเล็กอยู่ 15–20 จุดต่อหน้า** — จาก 64–101 จุด เหลือ 15–20
+  ที่เหลือฝังอยู่ใน component ของ LnwShop ที่ขยายแล้วเสี่ยงทำ layout เพี้ยน
+
+> รอบแรกผมเขียนไว้ว่า `alt` และปุ่มเล็ก "แก้ไม่ได้" — ทั้งสองข้อผิด แก้แล้วทั้งคู่
+> รายละเอียดอยู่ในหัวข้อ "แก้ไขข้อสรุปเดิม 2 ข้อ" ของ `docs/AUDIT.md`
