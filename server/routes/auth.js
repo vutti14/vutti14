@@ -113,15 +113,15 @@ r.post('/2fa/enable', (req, res) => {
 });
 
 // ---------------------------------------------------------------- ไลน์ (สเปก §8 S2)
-r.post('/line/link', requireAuth, (req, res) => {
-  const id = String(req.body?.line_user_id || '').trim();
-  if (!id) return res.status(400).json({ error: 'ต้องระบุ LINE user id' });
-  db.prepare('UPDATE users SET line_user_id = ? WHERE user_id = ?').run(id, req.user.user_id);
-  audit({ table: 'users', recordId: req.user.user_id, field: 'line_user_id',
-          newValue: id, action: 'ผูกบัญชีไลน์', userId: req.user.user_id });
-  res.json({ ok: true });
-});
-
+/**
+ * ผูกบัญชีได้ทางเดียว: ขอรหัสที่นี่ แล้วพิมพ์ส่งเข้า OA
+ *
+ * เคยมี POST /line/link ที่ให้กรอก LINE user id เองตรง ๆ — ถอดออกแล้ว
+ * เพราะไม่ได้พิสูจน์ว่าคนกรอกเป็นเจ้าของบัญชีไลน์นั้นจริง ตั้งแต่ line_user_id
+ * กลายเป็นกุญแจตัดสินว่าใครสั่งอนุมัติได้ ใครก็ตามที่ล็อกอินได้จะกรอก id ของ COO
+ * ทับไว้ก่อน แล้วทำให้ COO ผูกบัญชีตัวเองไม่ได้ตลอดกาล (กดอนุมัติจากไลน์ไม่ได้)
+ * รหัสที่ส่งผ่าน OA พิสูจน์ความเป็นเจ้าของให้เอง เพราะ id มาจากฝั่งไลน์ในคำขอที่เซ็นแล้ว
+ */
 const LINK_CODE_MINUTES = 15;
 const LINK_ALPHABET = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789'; // ตัด I O 0 1 ที่อ่านสับสน
 

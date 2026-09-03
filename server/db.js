@@ -32,8 +32,26 @@ const ADDED_COLUMNS = [
   ['requests', 'self_paid', 'INTEGER NOT NULL DEFAULT 0'],
 ];
 
+/**
+ * ฐานที่สร้างก่อนมี unique index อาจมี line_user_id ซ้ำหรือเป็นสตริงว่าง
+ * (จาก POST /line/link ที่ถอดออกไปแล้ว) ต้องล้างก่อน ไม่งั้นสร้าง index ไม่ผ่าน
+ * เก็บรายที่ผูกไว้ก่อน ที่เหลือคืนเป็นยังไม่ผูก แล้วให้เจ้าตัวผูกใหม่ผ่าน OA
+ */
+function dedupeLineUserIds() {
+  const hasUsers = db.prepare(
+    "SELECT 1 FROM sqlite_master WHERE type = 'table' AND name = 'users'").get();
+  if (!hasUsers) return;
+  db.prepare("UPDATE users SET line_user_id = NULL WHERE line_user_id = ''").run();
+  const cleared = db.prepare(`UPDATE users SET line_user_id = NULL
+    WHERE line_user_id IS NOT NULL AND rowid NOT IN (
+      SELECT MIN(rowid) FROM users WHERE line_user_id IS NOT NULL GROUP BY line_user_id)`).run();
+  if (cleared.changes)
+    console.warn(`ล้างการผูกบัญชีไลน์ที่ซ้ำกัน ${cleared.changes} รายการ — ให้ผูกใหม่ผ่าน OA`);
+}
+
 /** สร้างตารางทั้งหมดถ้ายังไม่มี + เติมคอลัมน์ที่เพิ่มภายหลัง (idempotent) */
 export function migrate() {
+  dedupeLineUserIds();
   db.exec(fs.readFileSync(path.join(ROOT, 'server', 'schema.sql'), 'utf8'));
   for (const [table, column, decl] of ADDED_COLUMNS) {
     const exists = db.prepare(`SELECT COUNT(*) AS n FROM pragma_table_info(?) WHERE name = ?`)

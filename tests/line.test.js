@@ -271,6 +271,43 @@ test('บัญชีไลน์ที่ยังไม่ผูกสั่�
   assert.equal(still.body.request.status, 'รออนุมัติ');
 });
 
+test('ผูก LINE id ของคนอื่นไม่ได้ — ต้องพิสูจน์ความเป็นเจ้าของผ่าน OA เท่านั้น', async () => {
+  // ช่องโหว่เดิม: POST /line/link ให้กรอก LINE user id เองโดยไม่ต้องพิสูจน์อะไร
+  // PM จึงกรอก id ของ COO ทับไว้ก่อนได้ ทำให้ COO ผูกบัญชีตัวเองไม่ได้และกดอนุมัติจากไลน์ไม่ได้
+  const spoof = await api('POST', '/api/auth/line/link', { line_user_id: COO_LINE_ID }, 'pm');
+  assert.equal(spoof.status, 404, 'endpoint ที่ผูก id เองต้องไม่มีอยู่แล้ว');
+
+  // COO ที่ผูกไว้แล้วต้องยังผูกอยู่เหมือนเดิม
+  const coo = await api('GET', '/api/auth/line/status', undefined, 'coo');
+  assert.equal(coo.body.linked, true);
+
+  // และ PM ต้องยังไม่ถูกผูกกับ id ของ COO
+  const pm = await api('GET', '/api/auth/line/status', undefined, 'pm');
+  assert.equal(pm.body.linked, false);
+
+  // ต่อให้ไถ่รหัสของตัวเองด้วย id ที่คนอื่นถือครองอยู่ ก็ต้องถูกปฏิเสธ
+  const issued = await api('POST', '/api/auth/line/link-code', {}, 'pm');
+  const before = replies.length;
+  await webhook([textEvent(COO_LINE_ID, issued.body.code)]);
+  await eventually(async () => {
+    const r = replies.slice(before).at(-1);
+    return r && JSON.stringify(r.messages).includes('ผูกกับผู้ใช้คนอื่นอยู่แล้ว');
+  });
+  assert.equal((await api('GET', '/api/auth/line/status', undefined, 'pm')).body.linked, false);
+});
+
+test('ฐานข้อมูลบังคับเองว่า LINE id หนึ่งผูกได้คนเดียว', async () => {
+  const { default: Database } = await import('better-sqlite3');
+  const db = new Database(path.join(TMP, 'test.db'), { readonly: true });
+  const idx = db.prepare(
+    "SELECT sql FROM sqlite_master WHERE type = 'index' AND name = 'idx_users_line_user'").get();
+  const dupes = db.prepare(`SELECT line_user_id, COUNT(*) AS n FROM users
+    WHERE line_user_id IS NOT NULL GROUP BY line_user_id HAVING n > 1`).all();
+  db.close();
+  assert.ok(idx && /UNIQUE/i.test(idx.sql), 'ต้องมี unique index บน users.line_user_id');
+  assert.deepEqual(dupes, [], 'ต้องไม่มี line_user_id ซ้ำ');
+});
+
 test('ผู้ขอที่ผูกไลน์ไว้ได้รับแจ้งผลกลับ และคิวข้อความบันทึกครบ', async () => {
   const issued = await api('POST', '/api/auth/line/link-code', {}, 'pm');
   const PM_LINE_ID = 'Upm00000000000000000000000000003';

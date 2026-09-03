@@ -533,6 +533,12 @@ CREATE TABLE IF NOT EXISTS line_outbox (
 );
 CREATE INDEX IF NOT EXISTS idx_line_outbox_status ON line_outbox(status, outbox_id);
 
+-- line_user_id คือกุญแจที่ webhook ใช้ตัดสินว่าคำสั่งมาจากใคร ถ้าซ้ำกันสองคน
+-- คำสั่งจะถูกตีความเป็นของใครก็ได้ จึงบังคับให้ไม่ซ้ำที่ระดับฐานข้อมูล
+-- (partial index — ปล่อยให้คนที่ยังไม่ผูกเป็น NULL ได้หลายคน)
+CREATE UNIQUE INDEX IF NOT EXISTS idx_users_line_user
+  ON users(line_user_id) WHERE line_user_id IS NOT NULL;
+
 -- รหัสผูกบัญชีไลน์ครั้งแรก — ผู้ใช้กดขอในเว็บ แล้วพิมพ์รหัสส่งเข้า OA
 -- (สเปก §8: ต้องผูกบัญชีก่อน เพื่อกันการส่งต่อลิงก์แล้วกดอนุมัติแทนกัน)
 CREATE TABLE IF NOT EXISTS line_link_codes (

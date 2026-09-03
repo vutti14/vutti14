@@ -36,9 +36,17 @@ function redeemLinkCode(code, lineUserId) {
     .get(lineUserId, row.user_id);
   if (taken) return { ok: false, message: 'บัญชีไลน์นี้ผูกกับผู้ใช้คนอื่นอยู่แล้ว' };
 
-  db.prepare('UPDATE users SET line_user_id = ? WHERE user_id = ?').run(lineUserId, row.user_id);
-  db.prepare("UPDATE line_link_codes SET used_at = datetime('now'), used_by = ? WHERE code = ?")
-    .run(lineUserId, code);
+  // unique index กันไว้อีกชั้น เผื่อสองคนไถ่รหัสด้วย id เดียวกันพร้อมกัน
+  try {
+    db.transaction(() => {
+      db.prepare('UPDATE users SET line_user_id = ? WHERE user_id = ?').run(lineUserId, row.user_id);
+      db.prepare("UPDATE line_link_codes SET used_at = datetime('now'), used_by = ? WHERE code = ?")
+        .run(lineUserId, code);
+    })();
+  } catch (err) {
+    if (!/UNIQUE constraint/i.test(err.message)) throw err;
+    return { ok: false, message: 'บัญชีไลน์นี้ผูกกับผู้ใช้คนอื่นอยู่แล้ว' };
+  }
   audit({
     table: 'users', recordId: row.user_id, field: 'line_user_id', newValue: lineUserId,
     action: 'ผูกบัญชีไลน์', userId: row.user_id, reason: 'ผูกด้วยรหัสจากหน้าตั้งค่า',
