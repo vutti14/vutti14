@@ -1,0 +1,961 @@
+<title>แผนลงมือ หินอ่อน.com และ silalang.com</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+Thai:wght@500;700&family=IBM+Plex+Sans+Thai:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+:root{
+  --ground:#F6F5F3; --surface:#FFFFFF; --sunk:#EFEDE9;
+  --ink:#241C17; --body:#4A403A; --muted:#786D64; --faint:#9A9088;
+  --line:#E3DFD9; --line2:#D2CCC4;
+  --rust:#A8322A; --rust-soft:#F4E7E4; --rust-ink:#7E241E;
+  --iron:#3E4A52; --gold:#8F6A1E; --gold-soft:#F6EDD9;
+  --done:#4A7346; --done-soft:#E7EFE5;
+  --shadow:0 1px 2px rgba(36,28,23,.05), 0 6px 20px -12px rgba(36,28,23,.18);
+}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
+  --ground:#15120F; --surface:#1E1A16; --sunk:#282320;
+  --ink:#F0EAE3; --body:#CFC5BB; --muted:#A0958A; --faint:#7C7269;
+  --line:#332C26; --line2:#443B33;
+  --rust:#E58273; --rust-soft:#33211E; --rust-ink:#F0A597;
+  --iron:#9DAEB8; --gold:#D9AE55; --gold-soft:#302818;
+  --done:#82B07B; --done-soft:#1D2A1C;
+  --shadow:0 1px 2px rgba(0,0,0,.4), 0 8px 24px -14px rgba(0,0,0,.7);
+}}
+:root[data-theme="dark"]{
+  --ground:#15120F; --surface:#1E1A16; --sunk:#282320;
+  --ink:#F0EAE3; --body:#CFC5BB; --muted:#A0958A; --faint:#7C7269;
+  --line:#332C26; --line2:#443B33;
+  --rust:#E58273; --rust-soft:#33211E; --rust-ink:#F0A597;
+  --iron:#9DAEB8; --gold:#D9AE55; --gold-soft:#302818;
+  --done:#82B07B; --done-soft:#1D2A1C;
+  --shadow:0 1px 2px rgba(0,0,0,.4), 0 8px 24px -14px rgba(0,0,0,.7);
+}
+*{box-sizing:border-box}
+body{background:var(--ground); color:var(--body);
+  font-family:"IBM Plex Sans Thai",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  font-size:16px; line-height:1.75; -webkit-font-smoothing:antialiased;}
+.wrap{max-width:860px; margin:0 auto; padding:0 20px 96px;}
+h1,h2,h3{font-family:"Noto Serif Thai",Georgia,serif; color:var(--ink); text-wrap:balance; margin:0;}
+code,pre,.num{font-family:"IBM Plex Mono","IBM Plex Sans Thai",monospace; font-variant-numeric:tabular-nums;}
+
+/* ---------- หัวเรื่อง ---------- */
+.top{padding:52px 0 30px; border-bottom:1px solid var(--line);}
+.eyebrow{font-size:12px; letter-spacing:.13em; text-transform:uppercase; color:var(--rust); font-weight:600; margin:0 0 12px;}
+.top h1{font-size:clamp(28px,5.2vw,42px); line-height:1.22; font-weight:700;}
+.top .lede{margin:16px 0 0; font-size:17px; color:var(--body); max-width:62ch;}
+.top .lede strong{color:var(--ink); font-weight:600;}
+
+/* ---------- แถบสถานะจริง ---------- */
+.state{display:grid; grid-template-columns:repeat(auto-fit,minmax(148px,1fr)); gap:1px;
+  background:var(--line); border:1px solid var(--line); border-radius:10px; overflow:hidden; margin:26px 0 0;}
+.state div{background:var(--surface); padding:14px 16px;}
+.state b{display:block; font-family:"IBM Plex Mono",monospace; font-size:23px; font-weight:500; color:var(--ink); line-height:1.2;}
+.state span{display:block; font-size:12.5px; color:var(--muted); margin-top:3px;}
+.state div.hot b{color:var(--rust)}
+
+/* ---------- ความคืบหน้า ---------- */
+.prog{position:sticky; top:0; z-index:20; background:var(--ground);
+  border-bottom:1px solid var(--line); padding:11px 0; margin-bottom:8px;}
+.prog__in{max-width:860px; margin:0 auto; padding:0 20px; display:flex; align-items:center; gap:14px;}
+.prog__bar{flex:1; height:7px; border-radius:4px; background:var(--sunk); overflow:hidden;}
+.prog__fill{height:100%; width:0%; background:var(--done); border-radius:4px; transition:width .35s ease;}
+.prog__txt{font-family:"IBM Plex Mono",monospace; font-size:13px; color:var(--muted); white-space:nowrap;}
+.prog__txt b{color:var(--ink); font-weight:500;}
+.prog__save{font-size:11.5px; color:var(--faint); white-space:nowrap; min-width:52px; text-align:right;}
+
+/* ---------- กลุ่ม ---------- */
+.tier{margin-top:44px;}
+.tier__h{display:flex; align-items:baseline; gap:12px; flex-wrap:wrap;
+  padding-bottom:11px; border-bottom:2px solid var(--line2); margin-bottom:4px;}
+.tier__h h2{font-size:22px; font-weight:700;}
+.tier__h p{margin:0; font-size:13.5px; color:var(--muted); flex:1;}
+.tier__n{font-family:"IBM Plex Mono",monospace; font-size:13px; color:var(--muted);}
+.tier__n b{color:var(--ink); font-weight:500;}
+.tier--now   .tier__h{border-bottom-color:var(--rust);}
+.tier--now   .tier__h h2{color:var(--rust-ink);}
+.tier--decide .tier__h{border-bottom-color:var(--gold);}
+.tier--decide .tier__h h2{color:var(--gold);}
+
+/* ---------- ขั้นตอน ---------- */
+.steps{list-style:none; margin:0; padding:0;}
+.step{display:flex; gap:14px; padding:22px 0; border-bottom:1px solid var(--line);}
+.step:last-child{border-bottom:none;}
+.step__tick{flex:0 0 auto; padding-top:3px; cursor:pointer;}
+.step__tick input{position:absolute; opacity:0; width:1px; height:1px;}
+.step__tick span{display:block; width:24px; height:24px; border:2px solid var(--line2);
+  border-radius:6px; background:var(--surface); transition:all .16s ease; position:relative;}
+.step__tick span::after{content:""; position:absolute; left:7px; top:3px; width:6px; height:11px;
+  border:solid #fff; border-width:0 2.5px 2.5px 0; transform:rotate(42deg) scale(.4); opacity:0; transition:all .16s ease;}
+.step__tick input:checked + span{background:var(--done); border-color:var(--done);}
+.step__tick input:checked + span::after{opacity:1; transform:rotate(42deg) scale(1);}
+.step__tick input:focus-visible + span{outline:2px solid var(--rust); outline-offset:2px;}
+.step__body{flex:1; min-width:0;}
+.step__top{display:flex; flex-wrap:wrap; gap:8px 14px; align-items:baseline; margin-bottom:9px;}
+.step__top h3{font-size:18.5px; font-weight:500; line-height:1.4; flex:1; min-width:min(100%,240px);}
+.step__meta{display:flex; gap:6px; flex-wrap:wrap;}
+.chip{font-family:"IBM Plex Mono",monospace; font-size:11.5px; color:var(--muted);
+  background:var(--sunk); border-radius:5px; padding:2px 8px; white-space:nowrap;}
+.chip--site{background:var(--rust-soft); color:var(--rust-ink);}
+.step__why{margin:0 0 12px; font-size:15px; color:var(--body);}
+.step__why strong{color:var(--ink); font-weight:600;}
+.step.is-done .step__body{opacity:.46;}
+.step.is-done .step__top h3{text-decoration:line-through; text-decoration-color:var(--faint);}
+
+.how{margin:0 0 4px; padding:0 0 0 20px; font-size:14.5px; color:var(--body);}
+.how li{margin-bottom:6px;}
+.how li::marker{color:var(--rust);}
+.how strong{color:var(--ink);}
+.how code, .step__why code{background:var(--sunk); padding:1px 5px; border-radius:4px; font-size:13px; color:var(--ink);}
+
+.links{display:flex; flex-wrap:wrap; gap:9px; margin:4px 0 12px;}
+.lnk{display:inline-flex; align-items:center; gap:7px; min-height:44px; padding:10px 17px;
+  background:var(--rust); color:#fff; border-radius:7px; text-decoration:none; font-size:14.5px; font-weight:500;}
+.lnk:hover{background:var(--rust-ink);}
+.lnk:focus-visible{outline:2px solid var(--ink); outline-offset:2px;}
+:root[data-theme="dark"] .lnk, :root:not([data-theme="light"]) .lnk{color:#1B1512;}
+@media (prefers-color-scheme: light){ :root:not([data-theme="dark"]) .lnk{color:#fff;} }
+
+.dt{width:100%; border-collapse:collapse; margin:6px 0 14px; font-size:14px; display:block; overflow-x:auto;}
+.dt td{border-bottom:1px solid var(--line); padding:8px 12px 8px 0; white-space:nowrap;}
+.dt td:first-child{white-space:normal; color:var(--ink);}
+.dt td:nth-child(2),.dt td:nth-child(3){font-family:"IBM Plex Mono",monospace; text-align:right;}
+.dt td:last-child{color:var(--rust); font-size:13px;}
+
+.det{margin:10px 0 0; border:1px solid var(--line); border-radius:9px; background:var(--surface); overflow:hidden;}
+.det summary{cursor:pointer; padding:11px 15px; font-size:14px; color:var(--ink); font-weight:500; list-style:none;}
+.det summary::-webkit-details-marker{display:none}
+.det summary::before{content:"▸ "; color:var(--rust); font-size:12px;}
+.det[open] summary::before{content:"▾ ";}
+.det summary:hover{background:var(--sunk);}
+.det > .cb, .det > .mt{border-top:1px solid var(--line); border-radius:0; border-left:0; border-right:0; border-bottom:0; margin:0;}
+
+.cb{margin:10px 0; border:1px solid var(--line); border-radius:9px; overflow:hidden; background:var(--surface);}
+.cb__bar{display:flex; align-items:center; gap:10px; padding:8px 12px; background:var(--sunk); border-bottom:1px solid var(--line);}
+.cb__lbl{flex:1; font-size:12.5px; color:var(--muted); font-weight:500; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;}
+.cb__btn{border:1px solid var(--line2); background:var(--surface); color:var(--ink);
+  font-family:inherit; font-size:12.5px; padding:6px 13px; border-radius:6px; cursor:pointer; min-height:34px;}
+.cb__btn:hover{border-color:var(--rust); color:var(--rust);}
+.cb__btn.ok{background:var(--done-soft); border-color:var(--done); color:var(--done);}
+.cb__pre{margin:0; padding:13px 15px; overflow-x:auto; max-height:340px; overflow-y:auto;
+  font-size:12px; line-height:1.65; color:var(--body); background:var(--surface); white-space:pre;}
+
+.mt{border:1px solid var(--line); border-radius:9px; overflow:hidden; margin:10px 0; background:var(--surface);}
+.mt__h{padding:9px 14px; background:var(--sunk); font-size:12.5px; font-weight:600; color:var(--ink); border-bottom:1px solid var(--line);}
+.mt__row{padding:12px 14px; border-bottom:1px solid var(--line);}
+.mt__row:last-child{border-bottom:none;}
+.mt__old{margin-bottom:7px; opacity:.62;}
+.mt__old code{text-decoration:line-through; text-decoration-color:var(--faint);}
+.mt__tag{display:inline-block; font-size:10.5px; padding:1px 7px; border-radius:4px; margin-right:8px; vertical-align:1px; font-family:"IBM Plex Sans Thai",sans-serif;}
+.mt__tag--old{background:var(--sunk); color:var(--muted);}
+.mt__tag--new{background:var(--done-soft); color:var(--done);}
+.mt code{font-size:12.5px; color:var(--ink); word-break:break-word;}
+.mt__d{margin:7px 0 0 0; font-size:13px; color:var(--muted); line-height:1.6;}
+
+.foot{margin-top:52px; padding-top:22px; border-top:1px solid var(--line); font-size:13.5px; color:var(--muted);}
+.foot strong{color:var(--ink);}
+.foot p{margin:0 0 9px;}
+@media (max-width:600px){
+  .wrap{padding:0 15px 80px;} .top{padding:34px 0 22px;}
+  .step{gap:11px; padding:18px 0;} .step__top h3{font-size:17px;}
+  .cb__pre{font-size:11px; max-height:260px;}
+  .lnk{width:100%; justify-content:center;}
+}
+@media (prefers-reduced-motion: reduce){ *{transition:none !important; animation:none !important;} }
+</style>
+<div class="prog"><div class="prog__in">
+  <div class="prog__bar"><div class="prog__fill" id="fill"></div></div>
+  <div class="prog__txt"><b id="pn">0</b>/13 ขั้นตอน</div>
+  <div class="prog__save" id="save"></div>
+</div></div>
+
+<div class="wrap">
+<header class="top">
+  <p class="eyebrow">อัปเดต 6 ก.ย. 2026 · วัดจากเว็บจริงทั้ง 330 หน้า</p>
+  <h1>แผนลงมือ — หินอ่อน.com และ silalang.com</h1>
+  <p class="lede">งานทั้งหมดที่ทำไว้ให้เสร็จแล้ว แต่<strong>ยังไม่มีอะไรถูกวางบนเว็บจริงเลยสักอย่าง</strong>
+  ผมตรวจหน้าแรกทั้งสองเว็บวันนี้ — ไฟล์ขนาดเท่าเดิมทุกไบต์ หน้านี้คือลำดับที่ควรลงมือ
+  เรียงตามผลที่ได้ต่อเวลาที่เสีย ติ๊กเก็บไว้ได้ กลับมาเปิดต่อวันหลังได้เลย</p>
+  <div class="state">
+    <div class="hot"><b>0/330</b><span>หน้าที่แก้ title แล้ว</span></div>
+    <div class="hot"><b>157</b><span>หน้าที่ description ซ้ำกัน</span></div>
+    <div><b>2,603</b><span>รูปที่ไม่มีคำอธิบาย alt</span></div>
+    <div><b>4</b><span>สินค้าที่ราคาชนกันเอง</span></div>
+  </div>
+</header>
+<section class="tier tier--now"><header class="tier__h"><h2>ทำเดี๋ยวนี้</h2><p>เร็ว ผลเยอะ ทำได้ในวันเดียว</p><span class="tier__n"><b class="tdone" data-tier="now">0</b>/5</span></header><ol class="steps"><li class="step" id="s-suffix" data-tier="now"><label class="step__tick"><input type="checkbox" data-step="suffix"><span></span></label><div class="step__body"><div class="step__top"><h3>ปิดคำต่อท้าย “: Inspired by LnwShop.com (v2)”</h3><div class="step__meta"><span class="chip chip--site">ทั้งสองเว็บ</span><span class="chip">⏱ 5 นาที</span><span class="chip">◧ 330 หน้า</span></div></div><p class="step__why">คำนี้กิน 30 ตัวอักษรของทุก title บนทั้ง 330 หน้า และ Google แสดง title ได้แค่ราว 60 ตัวอักษร ปิดครั้งเดียวได้ผลกับทุกหน้าพร้อมกัน — คุ้มที่สุดต่อเวลาที่เสียไปในทั้งรายการนี้</p><ul class="how"><li>เข้าหลังร้าน LnwShop &rarr; ตั้งค่าร้าน &rarr; SEO</li><li>หาหัวข้อชื่อเว็บ / ท้ายชื่อหน้า แล้วลบข้อความ <code>: Inspired by LnwShop.com (v2)</code> ออก</li><li>ถ้าหาไม่เจอ ให้แจ้งฝ่ายซัพพอร์ตของ LnwShop ว่าต้องการปิด title suffix</li></ul></div></li><li class="step" id="s-ga4" data-tier="now"><label class="step__tick"><input type="checkbox" data-step="ga4"><span></span></label><div class="step__body"><div class="step__top"><h3>กดลิงก์เปิดสิทธิ์ GA4 และ Search Console ให้ผม</h3><div class="step__meta"><span class="chip chip--site">ทั้งสองเว็บ</span><span class="chip">⏱ 5 นาที</span></div></div><p class="step__why">คุณอนุญาตด้วยคำพูดแล้ว แต่การเชื่อมต่อทางเทคนิคยังไม่เกิด ระบบยังตอบ NOT_AUTHENTICATED อยู่ พอเชื่อมแล้วผมจะบอกได้ว่าคำไหนติดหน้า 1 แต่ไม่มีคนคลิก ซึ่งเป็นจุดที่แก้ได้เร็วที่สุดในทั้งเว็บ</p><div class="links"><a class="lnk" href="https://gcp1-api-default.supermetrics.com/v2/datasource/login/renew/CcNZJk6xNrpxVRlbvyz5OVNRkKaY1WRqE57MddAiZOFDIqYGRc" target="_blank" rel="noopener">Google Analytics 4 <span aria-hidden="true">↗</span></a><a class="lnk" href="https://gcp1-api-default.supermetrics.com/v2/datasource/login/renew/Ux5rnnP98avALu1rdz9qHxvw3puB68LEp24qpxFFykiEkV6e3J" target="_blank" rel="noopener">Google Search Console <span aria-hidden="true">↗</span></a></div></div></li><li class="step" id="s-gbp" data-tier="now"><label class="step__tick"><input type="checkbox" data-step="gbp"><span></span></label><div class="step__body"><div class="step__top"><h3>ตั้ง Google Business Profile ทั้งสองที่ — นี่คือดาวที่ได้จริง</h3><div class="step__meta"><span class="chip chip--site">ทั้งสองเว็บ</span><span class="chip">⏱ 90 นาที</span></div></div><p class="step__why">ผมเคยแนะนำ aggregateRating ให้คุณ ซึ่ง<strong>ผิด</strong> — Google เลิกแสดงดาวจากรีวิวที่เว็บให้คะแนนตัวเองบนหน้าธุรกิจ ตั้งแต่ ก.ย. 2019 ใส่ไปก็ไม่ขึ้น ดาวที่ขึ้นจริงคือดาวใน Google Maps ซึ่งฟรีและอยู่<strong>เหนือ</strong>ผลค้นหาปกติ</p><ul class="how"><li>ค้นใน Google Maps ว่า <em>ศิลาเพชร กำแพงเพชร</em> และ <em>SIAM STONE ศรีนครินทร์</em></li><li>เจอแล้วกดยืนยันความเป็นเจ้าของ ไม่เจอให้สร้างใหม่ที่ business.google.com</li><li>ใส่ชื่อ ที่อยู่ เบอร์ ให้ตรงกับบนเว็บ<strong>เป๊ะทุกตัวอักษร</strong> เพราะ Google เอามาเทียบกัน</li><li>ลงรูปอย่างน้อย 15 รูป: หน้าร้าน ของจริง หน้าเหมือง ทีมงาน งานที่ติดตั้งเสร็จ</li><li>ขอรีวิวจากลูกค้าเก่า 20 รายแรกที่นึกออก แล้ว<strong>ตอบทุกรีวิว</strong> รวมรีวิวแย่</li></ul></div></li><li class="step" id="s-wiki" data-tier="now"><label class="step__tick"><input type="checkbox" data-step="wiki"><span></span></label><div class="step__body"><div class="step__top"><h3>แก้ 2 หน้าที่ใช้ข้อความลอกจากวิกิพีเดีย</h3><div class="step__meta"><span class="chip chip--site">silalang.com</span><span class="chip">⏱ 15 นาที</span><span class="chip">◧ 2 หน้า</span></div></div><p class="step__why">หน้า <code>/article/1/</code> และหน้าหมวด <code>/category/8/</code> ใช้ description ที่ขึ้นต้นว่า “ศิลาแลง จากวิกิพีเดีย สารานุกรมเสรี…” Google รู้ว่าข้อความนี้เป็นของวิกิพีเดียและจะไม่ให้อันดับกับหน้าที่ลอกมา ที่เจ็บกว่านั้นคือ <code>/category/8/</code> คือหน้า<strong>เหมืองของคุณเอง</strong> — จุดขายที่แข็งที่สุดที่คุณมี กลับใช้ข้อความจากสารานุกรม ทั้งที่คุณมีเรื่องเล่าจากของจริงที่ไม่มีใครมี</p><ul class="how"><li>เปลี่ยน description ของสองหน้านี้เป็นข้อความข้างล่าง</li><li>แล้วเขียนเนื้อหาหน้าเหมืองใหม่จากสิ่งที่คุณเห็นจริงหน้าเหมือง ไม่ใช่จากสารานุกรม</li></ul><div class="cb"><div class="cb__bar"><span class="cb__lbl">description ใหม่ของ /category/8/ (หน้าเหมือง)</span><button class="cb__btn" data-copy="c0">คัดลอก</button></div><pre class="cb__pre" id="c0"><code>ศิลาเพชร เจ้าของเหมืองศิลาแลงที่กำแพงเพชร ไม่ใช่คนกลาง ตัดหินเองจากหน้าเหมือง คุมคุณภาพตั้งแต่ต้นทางและสั่งขนาดพิเศษได้</code></pre></div><div class="cb"><div class="cb__bar"><span class="cb__lbl">description ใหม่ของ /article/1/</span><button class="cb__btn" data-copy="c1">คัดลอก</button></div><pre class="cb__pre" id="c1"><code>ศิลาแลงมาจากไหน กระบวนการเกิดในธรรมชาติ และทำไมขุดใหม่แล้วนิ่มแต่แข็งเมื่อโดนอากาศ อธิบายโดยเจ้าของเหมืองศิลาเพชร กำแพงเพชร</code></pre></div></div></li><li class="step" id="s-dupprod" data-tier="now"><label class="step__tick"><input type="checkbox" data-step="dupprod"><span></span></label><div class="step__body"><div class="step__top"><h3>ลบสินค้าซ้ำ #39 และ #59</h3><div class="step__meta"><span class="chip chip--site">silalang.com</span><span class="chip">⏱ 10 นาที</span><span class="chip">◧ 2 หน้า</span></div></div><p class="step__why">พระพิฆเนศ 13 นิ้ว มีสองหน้า (#38 กับ #39) และ ร.5 30 นิ้ว มีสองหน้า (#58 กับ #59) ชื่อเหมือนกันเป๊ะ ต่างกันแค่ slug ลงท้าย <code>-2</code> Google อ่านเป็น duplicate content แล้วสองหน้าแย่งอันดับกันเอง</p><ul class="how"><li>ลบ <code>/product/39/</code> และ <code>/product/59/</code> ทิ้ง</li><li>ถ้ามีคนเคยลิงก์มาที่หน้าเก่า ให้ตั้ง redirect ไปหน้าที่เหลือ</li><li><strong>ถ้าจริง ๆ เป็นคนละพิมพ์</strong> อย่าลบ — ให้แก้ชื่อสินค้าให้ต่างกันแทน เช่น เติม “พิมพ์ที่ 2”</li></ul></div></li></ol></section><section class="tier tier--decide"><header class="tier__h"><h2>ต้องตัดสินใจก่อน</h2><p>ผมทำแทนไม่ได้ ต้องเป็นคุณ</p><span class="tier__n"><b class="tdone" data-tier="decide">0</b>/2</span></header><ol class="steps"><li class="step" id="s-price" data-tier="decide"><label class="step__tick"><input type="checkbox" data-step="price"><span></span></label><div class="step__body"><div class="step__top"><h3>ตัดสินใจเรื่องราคาที่ชนกันระหว่างสองเว็บ</h3><div class="step__meta"><span class="chip chip--site">ทั้งสองเว็บ</span><span class="chip">⏱ ขึ้นกับคุณ</span><span class="chip">◧ 8 หน้า</span></div></div><p class="step__why">สินค้าทับกัน 8 รายการ และ <strong>4 รายการราคาไม่ตรงกัน โดยเหมืองแพงกว่าหน้าร้านปลีก 9–38%</strong> ซึ่งขัดกับจุดขาย “เราเป็นเจ้าของเหมืองเอง” โดยตรง และทั้งสองเว็บยังเขียนว่า “ราคาถูกที่สุด” พร้อมกัน <strong>อย่าเพิ่งเอาบล็อกเชื่อมสองเว็บไปวางจนกว่าจะแก้ข้อนี้</strong> เพราะคุณจะพาลูกค้าไปเจอความขัดแย้งนี้ด้วยตัวเอง</p><table class="dt"><tbody><tr><td>ศิลาแลง 30×30 ซม.</td><td>90 ฿</td><td>65 ฿</td><td>เหมืองแพงกว่า 38%</td></tr><tr><td>หญ้าเทียม 30 มม.</td><td>350 ฿</td><td>300 ฿</td><td>เหมืองแพงกว่า 17%</td></tr><tr><td>หญ้าเทียม 35 มม.</td><td>350 ฿</td><td>320 ฿</td><td>เหมืองแพงกว่า 9%</td></tr><tr><td>หญ้าเทียม 40 มม.</td><td>450 ฿</td><td>340 ฿</td><td>เหมืองแพงกว่า 32%</td></tr></tbody></table><ul class="how"><li><strong>ก.</strong> ปรับให้ราคาเท่ากันทุกช่องทาง — ง่ายสุด ไม่ต้องอธิบายอะไรเลย</li><li><strong>ข. (ผมแนะนำ)</strong> แยกบทบาท: silalang = ขายส่งมีขั้นต่ำ · หินอ่อน.com = ขายปลีกไม่มีขั้นต่ำ แล้วเขียนบอกให้ชัดบนหน้า</li><li><strong>ค.</strong> เลิกขายทับกัน ตัดหญ้าเทียมออกจากเว็บใดเว็บหนึ่ง</li><li>ตอนนี้มัน<strong>กลับด้าน</strong> — เหมืองแพงกว่าคนกลาง ซึ่งอธิบายไม่ได้ถ้าไม่บอกเหตุผลไว้บนหน้า</li></ul></div></li><li class="step" id="s-buddha" data-tier="decide"><label class="step__tick"><input type="checkbox" data-step="buddha"><span></span></label><div class="step__body"><div class="step__top"><h3>ตัดสินใจเรื่องราคาพระบูชาที่เท่ากันหมด 39 องค์</h3><div class="step__meta"><span class="chip chip--site">silalang.com</span><span class="chip">⏱ ขึ้นกับคุณ</span><span class="chip">◧ 39 หน้า</span></div></div><p class="step__why">พิมพ์ 16×9 นิ้ว (15 องค์) ใช้เนื้อหินมากกว่าพิมพ์ 9×8 นิ้ว (7 องค์) <strong>2.25 เท่า แต่ราคาต่างกัน 0 บาท</strong> สองพิมพ์นี้รวมกันคือ 22 จาก 39 องค์ ไม่ใช่กรณีขอบที่นาน ๆ ขายที แต่ผม<strong>ไม่รู้ต้นทุนคุณ</strong> และถ้าคุณตั้งราคาเดียวโดยตั้งใจเพื่อให้ลูกค้าเลือกง่าย นั่นก็มีเหตุผลรองรับ</p><table class="dt"><tbody><tr><td>หน้าตัก ≤ 5 นิ้ว</td><td>1,200 ฿</td><td>590 ฿</td><td>5 องค์</td></tr><tr><td>หน้าตัก 6–7 นิ้ว</td><td>1,200 ฿</td><td>990 ฿</td><td>5 องค์</td></tr><tr><td>หน้าตัก 8–9 นิ้ว</td><td>1,200 ฿</td><td>1,490 ฿</td><td>12 องค์</td></tr><tr><td>สูง 16 นิ้วขึ้นไป</td><td>1,200 ฿</td><td>2,190 ฿</td><td>15 องค์</td></tr></tbody></table><ul class="how"><li><strong>อย่าเปลี่ยนทั้ง 39 องค์รวดเดียว</strong></li><li>ทดลองกับพิมพ์ 16×9 ตัวเดียวก่อน ขึ้นเป็น 1,890 บาท (ไม่ต้องกระโดดไป 2,190) แล้วดู 30 วัน</li><li>ถ้ายอดไม่ตก ค่อยขยับต่อและทยอยทำพิมพ์อื่น</li><li><strong>อย่าลดราคาองค์เล็กก่อนขึ้นราคาองค์ใหญ่</strong> — ลดก่อนแล้วรายได้หายทันที</li></ul></div></li></ol></section><section class="tier tier--week"><header class="tier__h"><h2>สัปดาห์นี้</h2><p>ก๊อบวาง มีของให้ครบแล้ว</p><span class="tier__n"><b class="tdone" data-tier="week">0</b>/4</span></header><ol class="steps"><li class="step" id="s-css" data-tier="week"><label class="step__tick"><input type="checkbox" data-step="css"><span></span></label><div class="step__body"><div class="step__top"><h3>วาง CSS แก้หน้าล้นจอและปุ่มเล็กบนมือถือ</h3><div class="step__meta"><span class="chip chip--site">ทั้งสองเว็บ</span><span class="chip">⏱ 20 นาที</span><span class="chip">◧ 330 หน้า</span></div></div><p class="step__why">หน้าเดสก์ท็อปของ หินอ่อน.com กว้าง 2,621–4,061 px ทั้งที่จอกว้าง 1,200 px คนต้องเลื่อนซ้ายขวาถึงจะอ่านครบ และปุ่มบนมือถือ 101 จุดเล็กกว่า 44 px ซึ่งเป็นขนาดต่ำสุดที่นิ้วกดไม่พลาด ตัวเลขทั้งหมดวัดจากหน้าเว็บจริง</p><ul class="how"><li>หลังร้าน LnwShop &rarr; ตั้งค่า &rarr; CSS เพิ่มเติม (Custom CSS)</li><li>ก๊อบทั้งก้อนไปวาง แล้วบันทึก</li><li>เปิดเว็บบนมือถือตัวเองเช็คว่าปุ่มกดง่ายขึ้นและไม่มีอะไรล้นขอบ</li></ul><details class="det"><summary>หินอ่อน.com — Custom CSS — 6,858 ตัวอักษร</summary><div class="cb"><div class="cb__bar"><span class="cb__lbl">หินอ่อน.com — Custom CSS</span><button class="cb__btn" data-copy="c2">คัดลอก</button></div><pre class="cb__pre" id="c2"><code>/* ============================================================
+   หินอ่อน.com — CSS เสริม (LnwShop)
+   วางที่: ระบบหลังร้าน → แต่งร้าน → CSS เสริม (Custom CSS)
+   ต่อท้ายของเดิม อย่าลบของเดิมทิ้ง
+   ------------------------------------------------------------
+   ทุกบล็อกมีหมายเลขกำกับ ถ้าบล็อกไหนทำให้หน้าเว็บเพี้ยน
+   ให้ลบเฉพาะบล็อกนั้นออก ไม่ต้องลบทั้งไฟล์
+   ============================================================ */
+
+
+/* [1] แก้บั๊ก: หน้าแรกบนคอมเลื่อนไปทางขวาได้ 4,061px
+   ------------------------------------------------------------
+   สาเหตุ: gadget HTML ที่วางเองในโซนบทความ (.zoneShirt) กว้าง 3,801px
+   ล้นกรอบ .pageUnderwear ที่กว้าง 1,200px ทำให้เกิด scrollbar แนวนอน
+   Google นับเป็นปัญหา &quot;Content wider than screen&quot; */
+.pageUnderwear .widgetZone &gt; .zoneShirt { max-width: 100%; }
+.unitShirt.gadgetHTML { max-width: 100%; }
+.unitShirt.gadgetHTML img,
+.unitShirt.gadgetHTML table,
+.unitShirt.gadgetHTML iframe { max-width: 100%; height: auto; }
+/* ตารางกว้าง ๆ ให้เลื่อนในกล่องตัวเอง ไม่ดันทั้งหน้า */
+.unitShirt.gadgetHTML table { display: block; overflow-x: auto; }
+
+
+/* [2] กันหน้าเลื่อนออกด้านข้างทุกกรณี (safety net) */
+html, body { overflow-x: hidden; }
+
+
+/* [3] รูปภาพ: กันภาพล้นกรอบ + จองพื้นที่ลด CLS
+   ------------------------------------------------------------
+   CLS = Cumulative Layout Shift หนึ่งใน Core Web Vitals
+   ที่ Google ใช้จัดอันดับ */
+.gadgetHTML img, .productDetail img, .articleDetail img {
+  max-width: 100%;
+  height: auto;
+  content-visibility: auto;
+}
+
+
+/* [4] มือถือ: ปุ่มกดต้องใหญ่พอ (Google 48x48 / Apple 44x44 CSS px)
+   ------------------------------------------------------------
+   selector ด้านล่างไม่ได้เดา — มาจากการวัด DOM จริงที่ 390x844
+   ตัวเลขในวงเล็บคือจำนวนที่พบและความสูงจริงก่อนแก้
+   จงใจไม่แตะลิงก์ที่อยู่กลางย่อหน้า เพราะจะทำให้บรรทัดข้อความเพี้ยน */
+@media (max-width: 767px) {
+
+  /* ลิงก์ในรายการ/การ์ด — เพิ่มความสูงด้วย padding ไม่เปลี่ยนการตัดบรรทัด */
+  .gadgetThumbnail &gt; a,            /* บทความ: รูปปก (18 จุด, สูง 21px) */
+  .name &gt; a,                       /* บทความ: ชื่อเรื่อง (18 จุด, สูง 21-39px) */
+  .more &gt; a,                       /* บทความ: อ่านต่อ (18 จุด, สูง 21px) */
+  .product_name &gt; a,               /* สินค้า: ชื่อสินค้า (15 จุด, สูง 18-35px) */
+  .product_button &gt; a,             /* สินค้า: ปุ่มใต้การ์ด (3 จุด, สูง 15px) */
+  .middle &gt; a,                     /* เมนูท้ายเว็บ (14 จุด, สูง 21-42px) */
+  .footerText &gt; a,                 /* ลิงก์ท้ายเว็บ (2 จุด, สูง 14px) */
+  .menu &gt; a[class^=&quot;pname_&quot;] {     /* เมนูหลัก (6 จุด, สูง 30px) */
+    display: block;
+    min-height: 44px;
+    padding-top: 11px;
+    padding-bottom: 11px;
+    box-sizing: border-box;
+  }
+
+  /* ปุ่มแบ่งหน้า — เล็กที่สุดในเว็บ (สูง 23px กว้าง 47px) */
+  .page a.container,
+  .page &gt; a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 44px;
+    min-height: 44px;
+  }
+
+  /* ไอคอนโซเชียลและปุ่มไอคอน — ขยายพื้นที่กดโดยไม่ขยายตัวไอคอน */
+  .social a.icon,                  /* 24x24 */
+  .shopinfo_social &gt; a,            /* 42x42 */
+  button.search_keyword_icon,      /* 36x36 */
+  button.button_copy,              /* 36px */
+  a.tosakanth-action {             /* 37-40px */
+    min-width: 44px;
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  button.b-subpro { min-height: 44px; }   /* ปุ่มหยิบลงตะกร้าในการ์ด (สูง 30px) */
+
+  /* เว้นช่องว่างระหว่างลิงก์ที่อยู่ติดกัน ไม่ให้กดพลาด */
+  .listCategory li + li,
+  .categoryList li + li { margin-top: 4px; }
+}
+
+
+/* [5] ตัวอักษรไทยบนมือถือ: 16px ขั้นต่ำ
+   ------------------------------------------------------------
+   ต่ำกว่า 16px ใน input จะทำให้ iOS Safari ซูมหน้าจอเองเวลากดพิมพ์
+   และ Google ตีเป็น &quot;Text too small to read&quot; */
+@media (max-width: 767px) {
+  body, .productDetail, .articleDetail, .gadgetHTML { font-size: 16px; }
+  input, select, textarea { font-size: 16px !important; }
+  .productDetail, .articleDetail { line-height: 1.75; }
+}
+
+
+/* [6] หัวเรื่อง H1 ที่เพิ่มเข้าไปในหน้าแรก (ดู content/home-hero.html)
+   ------------------------------------------------------------
+   ปัจจุบันหน้าแรกไม่มี &lt;h1&gt; เลย — ทั้งเดสก์ท็อปและมือถือ */
+.hn-hero { padding: 28px 20px; background: #faf9f7; border-radius: 12px; margin-bottom: 20px; }
+.hn-hero h1 {
+  font-size: clamp(22px, 5vw, 34px);
+  line-height: 1.35;
+  margin: 0 0 10px;
+  font-weight: 700;
+  color: #1a1a1a;
+}
+.hn-hero p { font-size: clamp(15px, 3.6vw, 17px); line-height: 1.7; color: #444; margin: 0 0 18px; max-width: 62ch; }
+.hn-cta { display: flex; flex-wrap: wrap; gap: 10px; }
+.hn-cta a {
+  display: inline-flex; align-items: center; justify-content: center;
+  min-height: 48px; padding: 0 22px; border-radius: 8px;
+  font-size: 16px; font-weight: 600; text-decoration: none;
+}
+.hn-cta .hn-call { background: #8b1f1f; color: #fff; }
+.hn-cta .hn-line { background: #06c755; color: #fff; }
+.hn-cta .hn-quote { background: #fff; color: #8b1f1f; border: 2px solid #8b1f1f; }
+.hn-cta a:hover { filter: brightness(1.08); }
+
+
+/* [7] ตารางราคาแบบ HTML (ดู content/price-table.html)
+   ------------------------------------------------------------
+   แทนรูป JPEG 3 MB ที่ Google อ่านไม่ออก */
+.hn-price { width: 100%; border-collapse: collapse; font-size: 15px; margin: 14px 0 24px; }
+.hn-price caption { text-align: left; font-weight: 700; font-size: 17px; padding: 10px 0; }
+.hn-price th, .hn-price td { border: 1px solid #ddd; padding: 10px 12px; text-align: center; }
+.hn-price thead th { background: #1a1a1a; color: #fff; font-weight: 600; }
+.hn-price tbody th { text-align: left; background: #f7f7f7; font-weight: 600; }
+.hn-price td:last-child { font-weight: 700; }
+.hn-price-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+@media (max-width: 767px) { .hn-price { font-size: 14px; } .hn-price th, .hn-price td { padding: 8px 6px; } }
+
+
+/* [8] หน้าสินค้า: ลดปุ่มที่แข่งกันเอง
+   ------------------------------------------------------------
+   ตอนนี้มี 3 ปุ่มซ้อนกัน: &quot;ซื้อเลย&quot; / &quot;หยิบลงตะกร้า&quot; / &quot;BUY NOW&quot;
+   ทำให้ลูกค้าลังเล — เน้นปุ่มหลักปุ่มเดียว ที่เหลือทำเป็นปุ่มรอง */
+.productDetail .btnBuyNow,
+.productDetail .btn-buy-now { opacity: .92; }
+@media (max-width: 767px) {
+  .productDetail .btnAddCart, .productDetail .btnBuyNow { min-height: 48px; }
+}
+
+
+/* [9] ซ่อนวิดเจ็ตที่ไม่ช่วยขายและกินพื้นที่บนมือถือ
+   ------------------------------------------------------------
+   &quot;สถิติร้านค้า&quot; และ &quot;เว็บเพื่อนบ้าน&quot; เป็นของยุค 2010
+   ไม่ช่วย conversion และดันเนื้อหาที่สำคัญลงไปข้างล่าง
+   &gt;&gt;&gt; ถ้ายังอยากเก็บไว้ ให้ลบบล็อกนี้ทิ้ง &lt;&lt;&lt; */
+@media (max-width: 767px) {
+  .gadgetStat, .widgetUnit.u-stat,
+  .gadgetFriend, .widgetUnit.u-friend { display: none; }
+}
+
+
+/* [10] ลิงก์เบอร์โทรบนหัวเว็บให้กดง่ายบนมือถือ */
+@media (max-width: 767px) {
+  a[href^=&quot;tel:&quot;] { display: inline-flex; align-items: center; min-height: 44px; font-weight: 600; }
+}
+</code></pre></div></details><details class="det"><summary>silalang.com — Custom CSS — 4,291 ตัวอักษร</summary><div class="cb"><div class="cb__bar"><span class="cb__lbl">silalang.com — Custom CSS</span><button class="cb__btn" data-copy="c3">คัดลอก</button></div><pre class="cb__pre" id="c3"><code>/* ============================================================
+   silalang.com (ศิลาเพชร) — CSS เสริม
+   วางที่: หลังร้าน LnwShop → แต่งร้าน → CSS เสริม (ต่อท้ายของเดิม)
+   ทุกบล็อกมีหมายเลข ถ้าบล็อกไหนทำหน้าเพี้ยน ลบเฉพาะบล็อกนั้น
+   ============================================================ */
+
+/* [1] กันรูปโปสเตอร์ล้นกรอบ + จองพื้นที่ลด CLS
+   หน้าแรกเป็นโปสเตอร์เรียงกัน ถ้าไม่จองพื้นที่ หน้าจะกระตุกตอนรูปโหลด */
+.gadgetHTML img, .productDetail img, .articleDetail img {
+  max-width: 100%;
+  height: auto;
+  content-visibility: auto;
+}
+html, body { overflow-x: hidden; }   /* เดสก์ท็อปเกิน 2px กันไว้ก่อน */
+
+
+/* [2] มือถือ: ปุ่มกดต้องใหญ่พอ (Google 48x48 / Apple 44x44)
+   วัดจริงที่ 390x844: หน้าแรก 34/54 · หมวดพระบูชา 74/118 · บทความ 56/77 เล็กเกิน
+   selector ชุดนี้มาจากการวัด DOM จริง ไม่ได้เดา */
+@media (max-width: 767px) {
+  .gadgetThumbnail &gt; a,
+  .name &gt; a,
+  .more &gt; a,
+  .product_name &gt; a,
+  .product_button &gt; a,
+  .middle &gt; a,
+  .footerText &gt; a,
+  .menu &gt; a[class^=&quot;pname_&quot;] {
+    display: block;
+    min-height: 44px;
+    padding-top: 11px;
+    padding-bottom: 11px;
+    box-sizing: border-box;
+  }
+
+  .page a.container, .page &gt; a {
+    display: inline-flex; align-items: center; justify-content: center;
+    min-width: 44px; min-height: 44px;
+  }
+
+  .social a.icon,
+  .shopinfo_social &gt; a,
+  button.search_keyword_icon,
+  button.button_copy,
+  a.tosakanth-action {
+    min-width: 44px; min-height: 44px;
+    display: inline-flex; align-items: center; justify-content: center;
+  }
+
+  button.b-subpro { min-height: 44px; }
+  .listCategory li + li, .categoryList li + li { margin-top: 4px; }
+}
+
+
+/* [3] ตัวอักษรไทยบนมือถือ 16px ขั้นต่ำ
+   ต่ำกว่า 16px ใน input ทำให้ iOS Safari ซูมหน้าจอเองตอนกดพิมพ์ */
+@media (max-width: 767px) {
+  body, .productDetail, .articleDetail, .gadgetHTML { font-size: 16px; }
+  input, select, textarea { font-size: 16px !important; }
+  .productDetail, .articleDetail { line-height: 1.75; }
+}
+
+
+/* [4] บล็อกเปิดหน้าแรก (ดู content-silalang/home-hero.html)
+   สีดึงจากแบรนด์จริงบนเว็บ: แดงอิฐศิลาแลง + ครีม */
+.sp-hero { padding: 26px 20px; background: #FBF7F2; border-radius: 12px; margin-bottom: 20px; }
+.sp-hero h1 {
+  font-size: clamp(21px, 5vw, 33px);
+  line-height: 1.35; margin: 0 0 10px; font-weight: 700; color: #1A1A1A;
+}
+.sp-hero p { font-size: clamp(15px, 3.6vw, 17px); line-height: 1.75; color: #43403C; margin: 0 0 14px; max-width: 62ch; }
+.sp-cta { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 18px; }
+.sp-cta a {
+  display: inline-flex; align-items: center; justify-content: center;
+  min-height: 48px; padding: 0 22px; border-radius: 8px;
+  font-size: 16px; font-weight: 600; text-decoration: none;
+}
+.sp-cta .sp-call  { background: #A8322A; color: #fff; }
+.sp-cta .sp-line  { background: #06C755; color: #fff; }
+.sp-cta .sp-quote { background: #fff; color: #A8322A; border: 2px solid #A8322A; }
+.sp-cta a:hover { filter: brightness(1.08); }
+
+
+/* [5] ตารางสเปก/ราคาแบบข้อความ */
+.sp-table { width: 100%; border-collapse: collapse; font-size: 15px; margin: 14px 0 22px; }
+.sp-table caption { text-align: left; font-weight: 700; font-size: 17px; padding: 10px 0; }
+.sp-table th, .sp-table td { border: 1px solid #E0D9D0; padding: 10px 12px; text-align: center; }
+.sp-table thead th { background: #2A2522; color: #fff; font-weight: 600; }
+.sp-table tbody th { text-align: left; background: #FAF7F3; font-weight: 600; }
+.sp-table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+@media (max-width: 767px) { .sp-table { font-size: 14px; } .sp-table th, .sp-table td { padding: 8px 6px; } }
+
+
+/* [6] คำบรรยายใต้รูปโปสเตอร์
+   ใช้คู่กับ home-hero.html เพื่อให้ข้อความในโปสเตอร์มีเวอร์ชันที่ Google อ่านได้ */
+.sp-figure { margin: 0 0 22px; }
+.sp-figure img { display: block; width: 100%; height: auto; border-radius: 8px; }
+.sp-figure figcaption { font-size: 15px; line-height: 1.7; color: #43403C; padding: 10px 2px 0; }
+
+
+/* [7] ซ่อนวิดเจ็ตที่ไม่ช่วยขายบนมือถือ
+   &gt;&gt;&gt; ถ้ายังอยากเก็บไว้ ลบบล็อกนี้ทิ้ง &lt;&lt;&lt; */
+@media (max-width: 767px) {
+  .gadgetStat, .widgetUnit.u-stat,
+  .gadgetFriend, .widgetUnit.u-friend { display: none; }
+}
+
+
+/* [8] ลิงก์เบอร์โทรบนมือถือให้กดง่าย */
+@media (max-width: 767px) {
+  a[href^=&quot;tel:&quot;] { display: inline-flex; align-items: center; min-height: 44px; font-weight: 600; }
+}
+</code></pre></div></details></div></li><li class="step" id="s-head" data-tier="week"><label class="step__tick"><input type="checkbox" data-step="head"><span></span></label><div class="step__body"><div class="step__top"><h3>วาง head snippet — schema บอก Google ว่าคุณเป็นธุรกิจอะไร</h3><div class="step__meta"><span class="chip chip--site">ทั้งสองเว็บ</span><span class="chip">⏱ 15 นาที</span><span class="chip">◧ 330 หน้า</span></div></div><p class="step__why">หินอ่อน.com ไม่มี JSON-LD เลยแม้แต่บล็อกเดียว Google จึงไม่รู้ว่าเป็นร้านวัสดุก่อสร้างที่มีที่อยู่จริง ในนี้มี sameAs ที่ชี้สองเว็บกลับหากันด้วย ซึ่งเป็นวิธีที่ถูกต้องในการบอกว่าเป็นธุรกิจเดียวกัน (ไม่ใช่การทำ backlink)</p><ul class="how"><li>หลังร้าน LnwShop &rarr; ตั้งค่า &rarr; โค้ดใน &lt;head&gt;</li><li>ก๊อบไปวาง แล้วเช็คด้วย Rich Results Test ของ Google</li><li><strong>หินอ่อน.com:</strong> อย่าลืมเปลี่ยน <code>G-XXXXXXXXXX</code> เป็นรหัส GA4 จริง ก๊อบจาก silalang ได้เลย</li><li><strong>silalang.com:</strong> ในนี้<strong>ไม่มี</strong>บล็อก WebSite เพราะเว็บคุณมีอยู่แล้ว ถ้าใส่ซ้ำ Google จะสับสน</li></ul><details class="det"><summary>หินอ่อน.com — head snippet — 4,017 ตัวอักษร</summary><div class="cb"><div class="cb__bar"><span class="cb__lbl">หินอ่อน.com — head snippet</span><button class="cb__btn" data-copy="c4">คัดลอก</button></div><pre class="cb__pre" id="c4"><code>&lt;!-- ============================================================
+     หินอ่อน.com — โค้ดเสริมส่วนหัว (LnwShop)
+     วางที่: ระบบหลังร้าน → ตั้งค่าร้านค้า → โค้ดเสริม → ส่วน &lt;head&gt;
+     ------------------------------------------------------------
+     [1] Schema.org — บอก Google ว่าธุรกิจนี้คือใคร อยู่ที่ไหน
+     [2] Sitelinks Search Box — ให้ Google แสดงช่องค้นหาใต้ผลการค้นหา
+     [3] GA4 — ตอนนี้เว็บใช้ Universal Analytics (UA-18903793-17)
+         ซึ่ง Google หยุดเก็บข้อมูลตั้งแต่ 1 ก.ค. 2023 = ไม่มีข้อมูลมา 3 ปี
+     ============================================================ --&gt;
+
+
+&lt;!-- [1] ข้อมูลธุรกิจ (Organization + LocalBusiness)
+     &gt;&gt;&gt; ตรวจสอบ 3 จุดนี้ก่อนวางจริง: รหัสไปรษณีย์ / เวลาทำการ / เลขทะเบียนพาณิชย์ &lt;&lt;&lt; --&gt;
+&lt;script type=&quot;application/ld+json&quot;&gt;
+{
+  &quot;@context&quot;: &quot;https://schema.org&quot;,
+  &quot;@type&quot;: &quot;HomeAndConstructionBusiness&quot;,
+  &quot;@id&quot;: &quot;https://www.xn--q3ca6cja3bzj.com/#organization&quot;,
+  &quot;name&quot;: &quot;SIAM STONE — หินอ่อน.com&quot;,
+  &quot;alternateName&quot;: [&quot;สยามสโตน&quot;, &quot;หินอ่อน.com&quot;, &quot;หินอ่อนดอทคอม&quot;],
+  &quot;url&quot;: &quot;https://www.xn--q3ca6cja3bzj.com/&quot;,
+  &quot;logo&quot;: &quot;https://cy.lnwfile.com/_/cy/_raw/oj/cv/to.png&quot;,
+  &quot;image&quot;: &quot;https://inwfile.com/s-cy/ojcvto.png&quot;,
+  &quot;description&quot;: &quot;ผู้ผลิตและจำหน่ายแผ่นหินอ่อน หินแกรนิต หินศิลาแลง หินตกแต่งสวน และหญ้าเทียม ตัดตามขนาด ส่งตรงจากโรงงาน&quot;,
+  &quot;telephone&quot;: &quot;+66655678989&quot;,
+  &quot;email&quot;: &quot;siamstonesale@gmail.com&quot;,
+  &quot;priceRange&quot;: &quot;฿฿&quot;,
+  &quot;currenciesAccepted&quot;: &quot;THB&quot;,
+  &quot;paymentAccepted&quot;: &quot;เงินสด, โอนเงิน, บัตรเครดิต&quot;,
+  &quot;address&quot;: {
+    &quot;@type&quot;: &quot;PostalAddress&quot;,
+    &quot;streetAddress&quot;: &quot;700 ถนนศรีนครินทร์ แขวงหนองบอน&quot;,
+    &quot;addressLocality&quot;: &quot;เขตประเวศ&quot;,
+    &quot;addressRegion&quot;: &quot;กรุงเทพมหานคร&quot;,
+    &quot;postalCode&quot;: &quot;10250&quot;,
+    &quot;addressCountry&quot;: &quot;TH&quot;
+  },
+  &quot;geo&quot;: {
+    &quot;@type&quot;: &quot;GeoCoordinates&quot;,
+    &quot;latitude&quot;: 13.6710127271,
+    &quot;longitude&quot;: 100.6442410407
+  },
+  &quot;openingHoursSpecification&quot;: [{
+    &quot;@type&quot;: &quot;OpeningHoursSpecification&quot;,
+    &quot;dayOfWeek&quot;: [&quot;Monday&quot;,&quot;Tuesday&quot;,&quot;Wednesday&quot;,&quot;Thursday&quot;,&quot;Friday&quot;,&quot;Saturday&quot;],
+    &quot;opens&quot;: &quot;08:00&quot;,
+    &quot;closes&quot;: &quot;17:00&quot;
+  }],
+  &quot;areaServed&quot;: { &quot;@type&quot;: &quot;Country&quot;, &quot;name&quot;: &quot;ประเทศไทย&quot; },
+  &quot;sameAs&quot;: [
+    &quot;https://www.facebook.com/siamstone456&quot;,
+    &quot;https://line.me/ti/p/~saimstone456&quot;,
+    &quot;https://www.tiktok.com/@siamstone456&quot;,
+    &quot;https://www.silalang.com/&quot;
+  ],
+  &quot;contactPoint&quot;: [{
+    &quot;@type&quot;: &quot;ContactPoint&quot;,
+    &quot;telephone&quot;: &quot;+66655678989&quot;,
+    &quot;contactType&quot;: &quot;sales&quot;,
+    &quot;areaServed&quot;: &quot;TH&quot;,
+    &quot;availableLanguage&quot;: [&quot;Thai&quot;]
+  }, {
+    &quot;@type&quot;: &quot;ContactPoint&quot;,
+    &quot;telephone&quot;: &quot;+66625599000&quot;,
+    &quot;contactType&quot;: &quot;customer service&quot;,
+    &quot;areaServed&quot;: &quot;TH&quot;,
+    &quot;availableLanguage&quot;: [&quot;Thai&quot;]
+  }]
+}
+&lt;/script&gt;
+
+
+&lt;!-- [2] เว็บไซต์ + ช่องค้นหาในผลการค้นหา Google --&gt;
+&lt;script type=&quot;application/ld+json&quot;&gt;
+{
+  &quot;@context&quot;: &quot;https://schema.org&quot;,
+  &quot;@type&quot;: &quot;WebSite&quot;,
+  &quot;@id&quot;: &quot;https://www.xn--q3ca6cja3bzj.com/#website&quot;,
+  &quot;url&quot;: &quot;https://www.xn--q3ca6cja3bzj.com/&quot;,
+  &quot;name&quot;: &quot;หินอ่อน.com | SIAM STONE&quot;,
+  &quot;inLanguage&quot;: &quot;th-TH&quot;,
+  &quot;publisher&quot;: { &quot;@id&quot;: &quot;https://www.xn--q3ca6cja3bzj.com/#organization&quot; },
+  &quot;potentialAction&quot;: {
+    &quot;@type&quot;: &quot;SearchAction&quot;,
+    &quot;target&quot;: {
+      &quot;@type&quot;: &quot;EntryPoint&quot;,
+      &quot;urlTemplate&quot;: &quot;https://www.xn--q3ca6cja3bzj.com/search?q={search_term_string}&quot;
+    },
+    &quot;query-input&quot;: &quot;required name=search_term_string&quot;
+  }
+}
+&lt;/script&gt;
+
+
+&lt;!-- [3] Google Analytics 4
+     &gt;&gt;&gt; แทน G-XXXXXXXXXX ด้วย Measurement ID จริงจาก analytics.google.com
+         (Admin → Data Streams → Web → Measurement ID) &lt;&lt;&lt;
+     ถ้าใช้ GTM-N3SX83RH ที่มีอยู่แล้ว ให้ตั้ง GA4 Configuration Tag ใน GTM แทน
+     แล้วไม่ต้องวางบล็อกนี้ — แต่อย่าวางทั้งสองทาง จะนับซ้ำ --&gt;
+&lt;script async src=&quot;https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX&quot;&gt;&lt;/script&gt;
+&lt;script&gt;
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag(&#x27;js&#x27;, new Date());
+  gtag(&#x27;config&#x27;, &#x27;G-XXXXXXXXXX&#x27;);
+&lt;/script&gt;
+
+
+&lt;!-- [4] เร่งการโหลดรูป (รูปทั้งหมดอยู่บนโดเมน lnwfile.com) --&gt;
+&lt;link rel=&quot;preconnect&quot; href=&quot;https://cy.lnwfile.com&quot; crossorigin&gt;
+&lt;link rel=&quot;dns-prefetch&quot; href=&quot;https://cy.lnwfile.com&quot;&gt;
+</code></pre></div></details><details class="det"><summary>silalang.com — head snippet — 3,892 ตัวอักษร</summary><div class="cb"><div class="cb__bar"><span class="cb__lbl">silalang.com — head snippet</span><button class="cb__btn" data-copy="c5">คัดลอก</button></div><pre class="cb__pre" id="c5"><code>&lt;!-- ============================================================
+     silalang.com (ศิลาเพชร) — โค้ดเสริมส่วนหัว
+     วางที่: หลังร้าน LnwShop → ตั้งค่าร้านค้า → โค้ดเสริม → ส่วน &lt;head&gt;
+     ------------------------------------------------------------
+     &gt;&gt;&gt; เว็บนี้ &quot;ไม่ต้อง&quot; เพิ่ม GA4 &lt;&lt;&lt;
+     ตรวจแล้ว G-FPKE24QWKN ทำงานอยู่จริง ยิง /g/collect ได้ปกติ ผ่าน GTM-MGT5T89
+     ถ้าเพิ่มอีกจะนับซ้ำ
+
+     สิ่งที่ควรทำแทนคือ &quot;ลบ&quot; ของที่ตายแล้วออก — ดูหมายเหตุท้ายไฟล์
+     ============================================================ --&gt;
+
+
+&lt;!-- [1] ข้อมูลธุรกิจ — เหมืองศิลาแลง
+     ใช้ MiningBusiness ไม่ได้ (schema.org ไม่มีชนิดนี้) จึงใช้ LocalBusiness
+     ที่มี additionalType ชี้ไปยัง Wikidata ของ &quot;quarry&quot; เพื่อความชัดเจน
+
+     &gt;&gt;&gt; ต้องกรอกก่อนวางจริง: ที่อยู่เหมือง, พิกัด, เวลาทำการ, เลขทะเบียน &lt;&lt;&lt;     --&gt;
+&lt;script type=&quot;application/ld+json&quot;&gt;
+{
+  &quot;@context&quot;: &quot;https://schema.org&quot;,
+  &quot;@type&quot;: &quot;LocalBusiness&quot;,
+  &quot;@id&quot;: &quot;https://www.silalang.com/#organization&quot;,
+  &quot;additionalType&quot;: &quot;https://www.wikidata.org/wiki/Q188040&quot;,
+  &quot;name&quot;: &quot;ศิลาเพชร&quot;,
+  &quot;alternateName&quot;: [&quot;เหมืองศิลาแลงศิลาเพชร&quot;, &quot;silalang.com&quot;],
+  &quot;url&quot;: &quot;https://www.silalang.com/&quot;,
+  &quot;image&quot;: &quot;https://inwfile.com/s-cb/8e27d3.jpg&quot;,
+  &quot;description&quot;: &quot;เหมืองศิลาแลงของตัวเองที่กำแพงเพชร ตัดสดทุกวัน จำหน่ายศิลาแลงเหลี่ยม ศิลาแลงกลม ประติมากรรมศิลาแลง และพระบูชาศิลาแลงอัด ส่งทั่วประเทศ&quot;,
+  &quot;telephone&quot;: &quot;+66915152222&quot;,
+  &quot;priceRange&quot;: &quot;฿&quot;,
+  &quot;currenciesAccepted&quot;: &quot;THB&quot;,
+  &quot;address&quot;: {
+    &quot;@type&quot;: &quot;PostalAddress&quot;,
+    &quot;streetAddress&quot;: &quot;[กรอก — ที่ตั้งเหมือง/สำนักงาน]&quot;,
+    &quot;addressLocality&quot;: &quot;[กรอก — อำเภอ เช่น พรานกระต่าย]&quot;,
+    &quot;addressRegion&quot;: &quot;กำแพงเพชร&quot;,
+    &quot;postalCode&quot;: &quot;[กรอก]&quot;,
+    &quot;addressCountry&quot;: &quot;TH&quot;
+  },
+  &quot;geo&quot;: {
+    &quot;@type&quot;: &quot;GeoCoordinates&quot;,
+    &quot;latitude&quot;: &quot;[กรอก]&quot;,
+    &quot;longitude&quot;: &quot;[กรอก]&quot;
+  },
+  &quot;openingHoursSpecification&quot;: [{
+    &quot;@type&quot;: &quot;OpeningHoursSpecification&quot;,
+    &quot;dayOfWeek&quot;: [&quot;Monday&quot;,&quot;Tuesday&quot;,&quot;Wednesday&quot;,&quot;Thursday&quot;,&quot;Friday&quot;,&quot;Saturday&quot;],
+    &quot;opens&quot;: &quot;[กรอก]&quot;,
+    &quot;closes&quot;: &quot;[กรอก]&quot;
+  }],
+  &quot;areaServed&quot;: { &quot;@type&quot;: &quot;Country&quot;, &quot;name&quot;: &quot;ประเทศไทย&quot; },
+  &quot;sameAs&quot;: [
+    &quot;https://www.xn--q3ca6cja3bzj.com/&quot;
+  ],
+  &quot;contactPoint&quot;: [{
+    &quot;@type&quot;: &quot;ContactPoint&quot;,
+    &quot;telephone&quot;: &quot;+66915152222&quot;,
+    &quot;contactType&quot;: &quot;sales&quot;,
+    &quot;areaServed&quot;: &quot;TH&quot;,
+    &quot;availableLanguage&quot;: [&quot;Thai&quot;]
+  }]
+}
+&lt;/script&gt;
+
+
+&lt;!-- ⚠️ ลบบล็อก WebSite ออกแล้ว — silalang.com มี WebSite JSON-LD ของ LnwShop อยู่แล้ว
+     (ตรวจจากหน้าเว็บจริง 6 ก.ย. 2026: มี @type WebSite พร้อม SearchAction อยู่ใน &lt;head&gt;)
+     ถ้าใส่ซ้ำจะมี WebSite สองอันในหน้าเดียว ซึ่ง Google อาจสับสนว่าอันไหนคือของจริง
+     หมายเหตุ: หินอ่อน.com ไม่มี ให้คงบล็อก WebSite ใน patch/head-snippet.html ไว้ตามเดิม --&gt;
+
+
+&lt;!-- [3] เร่งการโหลดรูป (รูปทั้งหมดอยู่บนโดเมน lnwfile.com) --&gt;
+&lt;link rel=&quot;preconnect&quot; href=&quot;https://cb.lnwfile.com&quot; crossorigin&gt;
+&lt;link rel=&quot;dns-prefetch&quot; href=&quot;https://cb.lnwfile.com&quot;&gt;
+
+
+&lt;!-- ============================================================
+     สิ่งที่ควร &quot;ลบ&quot; ออก — ทำใน GTM ไม่ใช่ที่นี่
+     ------------------------------------------------------------
+     ตรวจพบ tag ที่ยิงอยู่บนหน้าแรกตอนนี้:
+
+       G-FPKE24QWKN     GA4              ✅ ใช้งานได้จริง — เก็บไว้
+       GTM-MGT5T89      Tag Manager      ✅ เก็บไว้
+       Facebook Pixel   fbevents.js      ✅ เก็บไว้
+       UA-39933185-2    Universal Analytics  ❌ ตายแล้ว — ลบ
+       UA-18903793-17   Universal Analytics  ❌ ตายแล้ว และเป็นของหินอ่อน.com — ลบ
+       GT-NSSXP8C       Google Tag        ⚠️ ตรวจว่าซ้ำกับ GA4 ไหม
+
+     Universal Analytics หยุดเก็บข้อมูลตั้งแต่ 1 ก.ค. 2023 สองตัวนั้นไม่ได้เก็บอะไรเลย
+     แค่ทำให้เบราว์เซอร์โหลดสคริปต์เพิ่มโดยเปล่าประโยชน์
+
+     ที่น่าสังเกตคือ UA-18903793-17 เป็นตัวเดียวกับที่ยิงอยู่บนหินอ่อน.com
+     น่าจะเป็นการก๊อปโค้ดข้ามเว็บมา ควรลบทั้งสองที่
+
+     &gt;&gt;&gt; ทำที่ tagmanager.google.com → workspace → Tags → ปิดหรือลบ tag UA ทั้งสองตัว &lt;&lt;&lt;
+     ============================================================ --&gt;
+</code></pre></div></details></div></li><li class="step" id="s-meta20" data-tier="week"><label class="step__tick"><input type="checkbox" data-step="meta20"><span></span></label><div class="step__body"><div class="step__top"><h3>วาง title และ description ใหม่ให้สินค้าขายดี 20 หน้าแรก</h3><div class="step__meta"><span class="chip chip--site">ทั้งสองเว็บ</span><span class="chip">⏱ 90 นาที</span><span class="chip">◧ 40 หน้า</span></div></div><p class="step__why">หินอ่อน.com มี 122 จาก 214 หน้าที่ใช้ description <strong>ข้อความเดียวกันเป๊ะ</strong> ในนั้นเป็นหน้าสินค้า 95 หน้า description คือข้อความที่คนอ่านใน Google ก่อนตัดสินใจกด 122 หน้าที่พูดเหมือนกันหมด แปลว่าไม่มีหน้าไหนมีเหตุผลให้ใครกด</p><ul class="how"><li>เริ่มจาก 20 หน้าที่ขายดีที่สุดก่อน ไม่ต้องทำครบ 330 หน้าในวันเดียว</li><li>ตัวเต็มทั้ง 330 หน้าอยู่ในไฟล์ <code>content/meta-all-pages.csv</code> และ <code>content-silalang/meta-all-pages.csv</code></li><li>ในไฟล์มีคอลัมน์ของเดิมให้เทียบข้าง ๆ ทุกแถว</li></ul><details class="det"><summary>ดูตัวอย่างที่เขียนใหม่แล้ว</summary><div class="mt"><div class="mt__h">หินอ่อน.com</div><div class="mt__row"><div class="mt__old"><span class="mt__tag mt__tag--old">เดิม</span><code>Black Marquina - หินอ่อน.com | SIAM STONE แผ่นหินอ่อน หินแกรนิต : Inspired by LnwShop.com (v2)</code></div><div class="mt__new"><span class="mt__tag mt__tag--new">ใหม่</span><code>Black Marquina | หินอ่อน.com</code><p class="mt__d">Black Marquina จากSIAM STONE ศรีนครินทร์ กรุงเทพฯ ดูขนาด ราคาต่อหน่วย และข้อควรรู้ก่อนสั่ง สอบถามและขอตัวอย่างจริง โทร 065-567-8989</p></div></div><div class="mt__row"><div class="mt__old"><span class="mt__tag mt__tag--old">เดิม</span><code>China Black granite - หินอ่อน.com | SIAM STONE แผ่นหินอ่อน หินแกรนิต : Inspired by LnwShop.com (</code></div><div class="mt__new"><span class="mt__tag mt__tag--new">ใหม่</span><code>China Black granite | หินอ่อน.com</code><p class="mt__d">China Black granite จากSIAM STONE ศรีนครินทร์ กรุงเทพฯ ดูขนาด ราคาต่อหน่วย และข้อควรรู้ก่อนสั่ง สอบถามและขอตัวอย่างจริง โทร 065-567-8989</p></div></div><div class="mt__row"><div class="mt__old"><span class="mt__tag mt__tag--old">เดิม</span><code>cobble - หินอ่อน.com | SIAM STONE แผ่นหินอ่อน หินแกรนิต : Inspired by LnwShop.com (v2)</code></div><div class="mt__new"><span class="mt__tag mt__tag--new">ใหม่</span><code>cobble | หินอ่อน.com</code><p class="mt__d">cobble จากSIAM STONE ศรีนครินทร์ กรุงเทพฯ ดูขนาด ราคาต่อหน่วย และข้อควรรู้ก่อนสั่ง สอบถามและขอตัวอย่างจริง โทร 065-567-8989</p></div></div><div class="mt__row"><div class="mt__old"><span class="mt__tag mt__tag--old">เดิม</span><code>cobble stone - หินอ่อน.com | SIAM STONE แผ่นหินอ่อน หินแกรนิต : Inspired by LnwShop.com (v2)</code></div><div class="mt__new"><span class="mt__tag mt__tag--new">ใหม่</span><code>cobble stone | หินอ่อน.com</code><p class="mt__d">cobble stone จากSIAM STONE ศรีนครินทร์ กรุงเทพฯ ดูขนาด ราคาต่อหน่วย และข้อควรรู้ก่อนสั่ง สอบถามและขอตัวอย่างจริง โทร 065-567-8989</p></div></div><div class="mt__row"><div class="mt__old"><span class="mt__tag mt__tag--old">เดิม</span><code>cobblestone - หินอ่อน.com | SIAM STONE แผ่นหินอ่อน หินแกรนิต : Inspired by LnwShop.com (v2)</code></div><div class="mt__new"><span class="mt__tag mt__tag--new">ใหม่</span><code>cobblestone | หินอ่อน.com</code><p class="mt__d">cobblestone จากSIAM STONE ศรีนครินทร์ กรุงเทพฯ ดูขนาด ราคาต่อหน่วย และข้อควรรู้ก่อนสั่ง สอบถามและขอตัวอย่างจริง โทร 065-567-8989</p></div></div><div class="mt__row"><div class="mt__old"><span class="mt__tag mt__tag--old">เดิม</span><code>G20 - หินอ่อน.com | SIAM STONE แผ่นหินอ่อน หินแกรนิต : Inspired by LnwShop.com (v2)</code></div><div class="mt__new"><span class="mt__tag mt__tag--new">ใหม่</span><code>G20 | หินอ่อน.com</code><p class="mt__d">G20 จากSIAM STONE ศรีนครินทร์ กรุงเทพฯ ดูขนาด ราคาต่อหน่วย และข้อควรรู้ก่อนสั่ง สอบถามและขอตัวอย่างจริง โทร 065-567-8989</p></div></div><div class="mt__row"><div class="mt__old"><span class="mt__tag mt__tag--old">เดิม</span><code>granite - หินอ่อน.com | SIAM STONE แผ่นหินอ่อน หินแกรนิต : Inspired by LnwShop.com (v2)</code></div><div class="mt__new"><span class="mt__tag mt__tag--new">ใหม่</span><code>granite | หินอ่อน.com</code><p class="mt__d">granite จากSIAM STONE ศรีนครินทร์ กรุงเทพฯ ดูขนาด ราคาต่อหน่วย และข้อควรรู้ก่อนสั่ง สอบถามและขอตัวอย่างจริง โทร 065-567-8989</p></div></div><div class="mt__row"><div class="mt__old"><span class="mt__tag mt__tag--old">เดิม</span><code>Indian Black Granite - หินอ่อน.com | SIAM STONE แผ่นหินอ่อน หินแกรนิต : Inspired by LnwShop.com </code></div><div class="mt__new"><span class="mt__tag mt__tag--new">ใหม่</span><code>Indian Black Granite | หินอ่อน.com</code><p class="mt__d">Indian Black Granite จากSIAM STONE ศรีนครินทร์ กรุงเทพฯ ดูขนาด ราคาต่อหน่วย และข้อควรรู้ก่อนสั่ง สอบถามและขอตัวอย่างจริง โทร 065-567-8989</p></div></div><div class="mt__row"><div class="mt__old"><span class="mt__tag mt__tag--old">เดิม</span><code>marble - หินอ่อน.com | SIAM STONE แผ่นหินอ่อน หินแกรนิต : Inspired by LnwShop.com (v2)</code></div><div class="mt__new"><span class="mt__tag mt__tag--new">ใหม่</span><code>marble | หินอ่อน.com</code><p class="mt__d">marble จากSIAM STONE ศรีนครินทร์ กรุงเทพฯ ดูขนาด ราคาต่อหน่วย และข้อควรรู้ก่อนสั่ง สอบถามและขอตัวอย่างจริง โทร 065-567-8989</p></div></div><div class="mt__row"><div class="mt__old"><span class="mt__tag mt__tag--old">เดิม</span><code>SIAM STONE - หินอ่อน.com | SIAM STONE แผ่นหินอ่อน หินแกรนิต : Inspired by LnwShop.com (v2)</code></div><div class="mt__new"><span class="mt__tag mt__tag--new">ใหม่</span><code>SIAM STONE | หินอ่อน.com</code><p class="mt__d">SIAM STONE จากSIAM STONE ศรีนครินทร์ กรุงเทพฯ ดูขนาด ราคาต่อหน่วย และข้อควรรู้ก่อนสั่ง สอบถามและขอตัวอย่างจริง โทร 065-567-8989</p></div></div><div class="mt__row"><div class="mt__old"><span class="mt__tag mt__tag--old">เดิม</span><code>Vincent White - หินอ่อน.com | SIAM STONE แผ่นหินอ่อน หินแกรนิต : Inspired by LnwShop.com (v2)</code></div><div class="mt__new"><span class="mt__tag mt__tag--new">ใหม่</span><code>Vincent White | หินอ่อน.com</code><p class="mt__d">Vincent White จากSIAM STONE ศรีนครินทร์ กรุงเทพฯ ดูขนาด ราคาต่อหน่วย และข้อควรรู้ก่อนสั่ง สอบถามและขอตัวอย่างจริง โทร 065-567-8989</p></div></div><div class="mt__row"><div class="mt__old"><span class="mt__tag mt__tag--old">เดิม</span><code>White Pearl Granite - หินอ่อน.com | SIAM STONE แผ่นหินอ่อน หินแกรนิต : Inspired by LnwShop.com (</code></div><div class="mt__new"><span class="mt__tag mt__tag--new">ใหม่</span><code>White Pearl Granite | หินอ่อน.com</code><p class="mt__d">White Pearl Granite จากSIAM STONE ศรีนครินทร์ กรุงเทพฯ ดูขนาด ราคาต่อหน่วย และข้อควรรู้ก่อนสั่ง สอบถามและขอตัวอย่างจริง โทร 065-567-8989</p></div></div></div><div class="mt"><div class="mt__h">silalang.com</div><div class="mt__row"><div class="mt__old"><span class="mt__tag mt__tag--old">เดิม</span><code>หินอ่อน หิมาลายัน ขนาด30*60เซนติเมตร (ราคาต่อตารางเมตร) - ศิลาเพชร | ศิลาแลงแท้จากเหมืองกำแพงเพช</code></div><div class="mt__new"><span class="mt__tag mt__tag--new">ใหม่</span><code>หินอ่อน หิมาลายัน ขนาด30*60เซนติเมตร | ศิลาเพชร</code><p class="mt__d">หินอ่อนหิมาลายันไวท์ ขนาด 30 × 60 ซม. — 1,750 บาทต่อตารางเมตร หินอ่อนสีขาวลายเส้นเทาอ่อนถึงเทาเงิน เส้นลายละเอียดและกระจายทั่วแผ่น</p></div></div><div class="mt__row"><div class="mt__old"><span class="mt__tag mt__tag--old">เดิม</span><code>หินอ่อน หิมาลายัน ขนาด60*60เซนติเมตร (ราคาต่อตารางเมตร) - ศิลาเพชร | ศิลาแลงแท้จากเหมืองกำแพงเพช</code></div><div class="mt__new"><span class="mt__tag mt__tag--new">ใหม่</span><code>หินอ่อน หิมาลายัน ขนาด60*60เซนติเมตร | ศิลาเพชร</code><p class="mt__d">หินอ่อนหิมาลายันไวท์ ขนาด 60 × 60 ซม. — 2,650 บาทต่อตารางเมตร หินอ่อนขาวลายเส้นเทาละเอียด แผ่นใหญ่ 60 × 60 ซม. ให้แนวร่องยาแบ่งพื้นน้อยกว่าครึ่งหนึ่งเมื่อเ</p></div></div><div class="mt__row"><div class="mt__old"><span class="mt__tag mt__tag--old">เดิม</span><code>หินแกรนิต ไวท์เพิร์ล ขนาด30*60เซนติเมตร พ่นทราย(ราคาต่อตารางเมตร) - ศิลาเพชร | ศิลาแลงแท้จากเหมื</code></div><div class="mt__new"><span class="mt__tag mt__tag--new">ใหม่</span><code>หินแกรนิต ไวท์เพิร์ล ขนาด30*60เซนติเมตร | ศิลาเพชร</code><p class="mt__d">หินแกรนิตไวท์เพิร์ล ขนาด 30 × 60 ซม. ผิวพ่นทราย — 1,450 บาทต่อตารางเมตร หินแกรนิตสีเทาอ่อนอมขาว มีเม็ดแร่กระจายสม่ำเสมอทั้งแผ่น</p></div></div><div class="mt__row"><div class="mt__old"><span class="mt__tag mt__tag--old">เดิม</span><code>หินแกรนิต ไวท์เพิร์ล ขนาด60*60เซนติเมตร พ่นทราย(ราคาต่อตารางเมตร) - ศิลาเพชร | ศิลาแลงแท้จากเหมื</code></div><div class="mt__new"><span class="mt__tag mt__tag--new">ใหม่</span><code>หินแกรนิต ไวท์เพิร์ล ขนาด60*60เซนติเมตร | ศิลาเพชร</code><p class="mt__d">หินแกรนิตไวท์เพิร์ล ขนาด 60 × 60 ซม. ผิวพ่นทราย — 1,850 บาทต่อตารางเมตร หินแกรนิตเทาอ่อนอมขาว ผิวพ่นทรายกันลื่น แผ่นใหญ่ 60 × 60 ซม.</p></div></div><div class="mt__row"><div class="mt__old"><span class="mt__tag mt__tag--old">เดิม</span><code>พระพิฆเนศ ขนาดสูง 13 นิ้ว หน้าตักกว้าง 7 นิ้ว - ศิลาเพชร | ศิลาแลงแท้จากเหมืองกำแพงเพชร : Inspir</code></div><div class="mt__new"><span class="mt__tag mt__tag--new">ใหม่</span><code>พระพิฆเนศ ขนาดสูง 13 นิ้ว หน้าตักกว้าง 7 นิ้ว | ศิลาเพชร</code><p class="mt__d">พระพิฆเนศ ศิลาแลงอัด สูง 13 นิ้ว หน้าตักกว้าง 7 นิ้ว พระพิฆเนศ เทพเจ้าแห่งการขจัดอุปสรรคและความสำเร็จ เป็นเทพประจำงานศิลปะ การออกแบบ</p></div></div><div class="mt__row"><div class="mt__old"><span class="mt__tag mt__tag--old">เดิม</span><code>พระพิฆเนศ ขนาดสูง 13 นิ้ว หน้าตักกว้าง 7 นิ้ว - ศิลาเพชร | ศิลาแลงแท้จากเหมืองกำแพงเพชร : Inspir</code></div><div class="mt__new"><span class="mt__tag mt__tag--new">ใหม่</span><code>พระพิฆเนศ ขนาดสูง 13 นิ้ว หน้าตักกว้าง 7 นิ้ว | ศิลาเพชร</code><p class="mt__d">พระพิฆเนศ ศิลาแลงอัด สูง 13 นิ้ว หน้าตักกว้าง 7 นิ้ว (พิมพ์ที่สอง) พระพิฆเนศขนาดเดียวกับองค์แรก แต่เป็นคนละพิมพ์ ต่างกันที่ท่าประทับและรายละเอียดเครื่องทรง</p></div></div><div class="mt__row"><div class="mt__old"><span class="mt__tag mt__tag--old">เดิม</span><code>รัชกาลที่ 5 ขนาดสูง 30 นิ้ว หน้าตักกว้าง 5 นิ้ว - ศิลาเพชร | ศิลาแลงแท้จากเหมืองกำแพงเพชร : Insp</code></div><div class="mt__new"><span class="mt__tag mt__tag--new">ใหม่</span><code>รัชกาลที่ 5 ขนาดสูง 30 นิ้ว หน้าตักกว้าง 5 นิ้ว | ศิลาเพชร</code><p class="mt__d">พระบรมรูปรัชกาลที่ 5 ศิลาแลงอัด องค์ใหญ่ สูง 30 นิ้ว พระบรมรูปรัชกาลที่ 5 องค์ใหญ่ สูง 30 นิ้ว หรือประมาณ 76 เซนติเมตร</p></div></div><div class="mt__row"><div class="mt__old"><span class="mt__tag mt__tag--old">เดิม</span><code>รัชกาลที่ 5 ขนาดสูง 30 นิ้ว หน้าตักกว้าง 5 นิ้ว - ศิลาเพชร | ศิลาแลงแท้จากเหมืองกำแพงเพชร : Insp</code></div><div class="mt__new"><span class="mt__tag mt__tag--new">ใหม่</span><code>รัชกาลที่ 5 ขนาดสูง 30 นิ้ว หน้าตักกว้าง 5 นิ้ว | ศิลาเพชร</code><p class="mt__d">พระบรมรูปรัชกาลที่ 5 ศิลาแลงอัด องค์ใหญ่ สูง 30 นิ้ว (พิมพ์ที่สอง) พระบรมรูปรัชกาลที่ 5 ขนาด 30 นิ้วอีกพิมพ์หนึ่ง ต่างจากองค์แรกที่ท่าประทับและรายละเอียดฉล</p></div></div></div></details></div></li><li class="step" id="s-js" data-tier="week"><label class="step__tick"><input type="checkbox" data-step="js"><span></span></label><div class="step__body"><div class="step__top"><h3>วาง JS ช่วยเรื่องรูปโหลดช้าและ alt ที่ว่าง</h3><div class="step__meta"><span class="chip chip--site">ทั้งสองเว็บ</span><span class="chip">⏱ 15 นาที</span><span class="chip">◧ 330 หน้า</span></div></div><p class="step__why">รูปที่ไม่มีคำอธิบาย (alt) มี 1,530 จาก 5,108 รูปบน หินอ่อน.com และ 1,073 จาก 2,135 รูปบน silalang สคริปต์นี้เติม alt จากบริบทรอบ ๆ ให้อัตโนมัติ และหน่วงโหลดรูปที่ยังไม่เห็นบนจอ</p><ul class="how"><li>หลังร้าน LnwShop &rarr; ตั้งค่า &rarr; JavaScript เพิ่มเติม</li><li><strong>นี่คือทางแก้ชั่วคราว</strong> — alt ที่เขียนมือดีกว่าเสมอ ตัวเต็ม 55 รายการอยู่ใน <code>content/alt-text.csv</code></li></ul><details class="det"><summary>หินอ่อน.com — Custom JS — 4,229 ตัวอักษร</summary><div class="cb"><div class="cb__bar"><span class="cb__lbl">หินอ่อน.com — Custom JS</span><button class="cb__btn" data-copy="c6">คัดลอก</button></div><pre class="cb__pre" id="c6"><code>/* ============================================================
+   หินอ่อน.com — JS เสริม (LnwShop)
+   วางที่: ระบบหลังร้าน → แต่งร้าน → โค้ดเสริมท้ายหน้า (before &lt;/body&gt;)
+   ครอบด้วย &lt;script&gt; ... &lt;/script&gt; ถ้าช่องนั้นรับ HTML
+   ------------------------------------------------------------
+   สิ่งที่ไฟล์นี้ทำ (เรียงตามผลกระทบ):
+   [A] หยุดโหลดรูปที่มองไม่เห็น  -&gt; ประหยัด ~4.5 MB ต่อการเข้าหน้าแรก 1 ครั้ง
+   [B] บอกเบราว์เซอร์ว่ารูปไหนสำคัญ (LCP) -&gt; หน้าแสดงผลเร็วขึ้น
+   [C] เติม alt ให้รูปที่ไม่มี alt        -&gt; ช่วย SEO + คนตาบอด
+   [D] ใส่ H1 สำรองในหน้าแรก             -&gt; ใช้ชั่วคราวเท่านั้น (ดูหมายเหตุ)
+
+   ปลอดภัย: ไม่แตะ DOM ของระบบตะกร้า/ชำระเงิน ไม่เขียนทับฟังก์ชันของ LnwShop
+   ============================================================ */
+(function () {
+  &#x27;use strict&#x27;;
+
+  var LCP_BUDGET = 2; // จำนวนรูปแรกที่ยอมให้โหลดทันที (รูปที่เห็นตอนเปิดหน้า)
+
+  /* ---------- [A]+[B]+[C] จัดการรูปภาพ ---------- */
+  function tuneImages() {
+    var imgs = Array.prototype.slice.call(document.images);
+    var eager = 0;
+
+    imgs.forEach(function (img) {
+      if (img.dataset.hnDone) return;
+      img.dataset.hnDone = &#x27;1&#x27;;
+
+      var r = img.getBoundingClientRect();
+      var vh = window.innerHeight || 800;
+
+      // รูปที่ render ขนาด 0x0 = โหลดมาแล้วไม่ได้แสดงเลย (พบ 3 รูป รวม ~4.5 MB)
+      var invisible = r.width === 0 &amp;&amp; r.height === 0;
+      // รูปที่อยู่ต่ำกว่าหน้าจอแรก
+      var offscreen = r.top &gt; vh;
+
+      if (invisible || offscreen) {
+        if (!img.loading || img.loading === &#x27;auto&#x27;) img.loading = &#x27;lazy&#x27;;
+        img.decoding = &#x27;async&#x27;;
+      } else if (eager &lt; LCP_BUDGET) {
+        // รูปที่เห็นทันที = ผู้ต้องสงสัย LCP ให้โหลดก่อนเพื่อน
+        img.loading = &#x27;eager&#x27;;
+        img.decoding = &#x27;sync&#x27;;
+        img.setAttribute(&#x27;fetchpriority&#x27;, &#x27;high&#x27;);
+        eager++;
+      } else {
+        img.loading = &#x27;lazy&#x27;;
+        img.decoding = &#x27;async&#x27;;
+      }
+
+      // [C] เติม alt จากบริบทรอบ ๆ ถ้าไม่มี (พบ 9 จาก 25 รูปในหน้าแรกไม่มี alt)
+      if (!img.hasAttribute(&#x27;alt&#x27;) || img.alt.trim() === &#x27;&#x27;) {
+        var link = img.closest(&#x27;a&#x27;);
+        var guess =
+          (link &amp;&amp; (link.getAttribute(&#x27;title&#x27;) || link.textContent)) ||
+          (img.closest(&#x27;[title]&#x27;) &amp;&amp; img.closest(&#x27;[title]&#x27;).getAttribute(&#x27;title&#x27;)) ||
+          &#x27;&#x27;;
+        guess = guess.replace(/\s+/g, &#x27; &#x27;).trim().slice(0, 100);
+        // ถ้าเดาไม่ได้ ให้ alt=&quot;&quot; (บอก screen reader ว่าเป็นรูปประกอบ) ดีกว่าไม่มี alt เลย
+        img.setAttribute(&#x27;alt&#x27;, guess || &#x27;&#x27;);
+      }
+    });
+  }
+
+  /* ---------- [D] H1 สำรองสำหรับหน้าแรก ----------
+     !! หมายเหตุสำคัญ !!
+     นี่คือทางแก้ชั่วคราว วิธีที่ถูกต้องคือวาง &lt;h1&gt; จริงลงใน gadget HTML
+     ของหน้าแรก (ดูไฟล์ content/home-hero.html) แล้วลบบล็อกนี้ทิ้ง
+     Google ต้อง render JS ก่อนถึงจะเห็น H1 ที่ใส่ด้วยวิธีนี้ ซึ่งช้ากว่าและ
+     ไม่การันตี 100%                                                       */
+  function ensureH1() {
+    var isHome = location.pathname === &#x27;/&#x27; || location.pathname === &#x27;&#x27;;
+    if (!isHome) return;
+    if (document.querySelector(&#x27;h1&#x27;)) return;
+
+    var host = document.querySelector(&#x27;.pageUnderwear&#x27;) || document.querySelector(&#x27;.pageWrapper&#x27;);
+    if (!host) return;
+
+    var h1 = document.createElement(&#x27;h1&#x27;);
+    h1.textContent = &#x27;หินอ่อน หินแกรนิต แผ่นหินตัดตามขนาด — SIAM STONE&#x27;;
+    // ให้ดูกลมกลืน ไม่ใช่ซ่อน (ซ่อน H1 = เสี่ยงโดนมองว่า cloaking)
+    h1.style.cssText = &#x27;font-size:clamp(20px,4.5vw,30px);line-height:1.35;margin:18px 0 12px;font-weight:700;&#x27;;
+    host.insertBefore(h1, host.firstChild);
+  }
+
+  /* ---------- ตัวรัน ---------- */
+  function run() {
+    try { tuneImages(); } catch (e) {}
+    try { ensureH1(); } catch (e) {}
+  }
+
+  if (document.readyState === &#x27;loading&#x27;) {
+    document.addEventListener(&#x27;DOMContentLoaded&#x27;, run);
+  } else {
+    run();
+  }
+  // LnwShop ใช้ Vue เติม DOM ทีหลัง จึงต้องรันซ้ำ
+  window.addEventListener(&#x27;load&#x27;, function () { setTimeout(run, 500); setTimeout(run, 2500); });
+
+  // เผื่อ carousel/แท็บ เติมรูปเพิ่มหลังจากนั้น
+  if (window.MutationObserver) {
+    var t;
+    new MutationObserver(function () {
+      clearTimeout(t);
+      t = setTimeout(function () { try { tuneImages(); } catch (e) {} }, 300);
+    }).observe(document.documentElement, { childList: true, subtree: true });
+  }
+})();
+</code></pre></div></details><details class="det"><summary>silalang.com — Custom JS — 3,975 ตัวอักษร</summary><div class="cb"><div class="cb__bar"><span class="cb__lbl">silalang.com — Custom JS</span><button class="cb__btn" data-copy="c7">คัดลอก</button></div><pre class="cb__pre" id="c7"><code>/* ============================================================
+   silalang.com (ศิลาเพชร) — JS เสริม
+   วางที่: หลังร้าน LnwShop → แต่งร้าน → โค้ดเสริมท้ายหน้า (before &lt;/body&gt;)
+   ------------------------------------------------------------
+   [A] lazy-load รูปที่ยังไม่ถึงตา  -&gt; หน้าแรกโหลดรูป 14.38 MB ตอนนี้ทุกใบโหลดพร้อมกัน
+   [B] จัดลำดับความสำคัญรูปแรก (LCP)
+   [C] เติม alt จากบริบท           -&gt; 18 จาก 24 รูปในหน้าแรกไม่มี alt ที่ใช้งานได้
+   [D] ย่อรูป _raw ที่ใหญ่เกินจำเป็น -&gt; ดูหมายเหตุในบล็อก [D] ก่อนเปิดใช้
+
+   ปลอดภัย: ไม่แตะ DOM ของตะกร้า/ชำระเงิน ไม่เขียนทับฟังก์ชันของ LnwShop
+   ============================================================ */
+(function () {
+  &#x27;use strict&#x27;;
+
+  var LCP_BUDGET = 2;   // จำนวนรูปแรกที่ยอมให้โหลดทันที
+
+  /* ---------- [A][B][C] ---------- */
+  function tuneImages() {
+    var eager = 0;
+    Array.prototype.slice.call(document.images).forEach(function (img) {
+      if (img.dataset.spDone) return;
+      img.dataset.spDone = &#x27;1&#x27;;
+
+      var r = img.getBoundingClientRect();
+      var vh = window.innerHeight || 800;
+      var invisible = r.width === 0 &amp;&amp; r.height === 0;
+      var offscreen = r.top &gt; vh;
+
+      if (invisible || offscreen) {
+        if (!img.loading || img.loading === &#x27;auto&#x27;) img.loading = &#x27;lazy&#x27;;
+        img.decoding = &#x27;async&#x27;;
+      } else if (eager &lt; LCP_BUDGET) {
+        img.loading = &#x27;eager&#x27;;
+        img.decoding = &#x27;sync&#x27;;
+        img.setAttribute(&#x27;fetchpriority&#x27;, &#x27;high&#x27;);
+        eager++;
+      } else {
+        img.loading = &#x27;lazy&#x27;;
+        img.decoding = &#x27;async&#x27;;
+      }
+
+      if (!img.hasAttribute(&#x27;alt&#x27;) || img.alt.trim() === &#x27;&#x27;) {
+        var link = img.closest(&#x27;a&#x27;);
+        var guess =
+          (link &amp;&amp; (link.getAttribute(&#x27;title&#x27;) || link.textContent)) ||
+          (img.closest(&#x27;[title]&#x27;) &amp;&amp; img.closest(&#x27;[title]&#x27;).getAttribute(&#x27;title&#x27;)) || &#x27;&#x27;;
+        guess = guess.replace(/\s+/g, &#x27; &#x27;).trim().slice(0, 100);
+        img.setAttribute(&#x27;alt&#x27;, guess || &#x27;&#x27;);
+      }
+    });
+  }
+
+  /* ---------- [D] ย่อรูป _raw ที่ใหญ่เกินจำเป็น ----------
+     !! อ่านก่อนเปิดใช้ !!
+     lnwfile รองรับขนาดสำเร็จรูปแค่บางค่า (50, 300, 600, 1024)
+     และ _fit จะใส่ขอบขาวให้เต็มกรอบสี่เหลี่ยมจัตุรัส
+
+     - รูปสินค้าที่เป็นสี่เหลี่ยมจัตุรัสอยู่แล้ว (1040x1040) -&gt; ใช้ได้ดี ไม่มีขอบเพิ่ม
+     - รูปโปสเตอร์แนวตั้ง (960x1440) -&gt; จะได้ขอบขาวบนล่าง อย่าใช้กับพวกนี้
+
+     บล็อกนี้จึงย่อเฉพาะรูปที่ &quot;อัตราส่วนใกล้จัตุรัส&quot; เท่านั้น
+     ทางที่ดีกว่าคืออัปโหลดไฟล์ใน assets/silalang-optimized/ ทับของเดิม
+     ซึ่งลดได้ 81-85% โดยไม่มีขอบขาวและไม่เสียความคมเลย
+
+     &gt;&gt;&gt; ถ้าอัปโหลดไฟล์ใหม่แล้ว ให้ลบบล็อก [D] นี้ทิ้ง &lt;&lt;&lt;                       */
+  var SHRINK_RAW = true;   // ตั้ง false เพื่อปิดบล็อกนี้
+
+  function shrinkRawImages() {
+    if (!SHRINK_RAW) return;
+    Array.prototype.slice.call(document.images).forEach(function (img) {
+      if (img.dataset.spShrunk) return;
+      var src = img.currentSrc || img.src || &#x27;&#x27;;
+      if (src.indexOf(&#x27;/_raw/&#x27;) === -1) return;
+      if (!img.naturalWidth || !img.naturalHeight) return;
+
+      var ratio = img.naturalWidth / img.naturalHeight;
+      if (ratio &lt; 0.92 || ratio &gt; 1.08) return;      // ไม่ใช่จัตุรัส -&gt; ข้าม กันขอบขาว
+
+      var shown = img.getBoundingClientRect().width;
+      if (!shown || img.naturalWidth &lt; shown * 2.2) return;   // ไม่ได้ใหญ่เกิน -&gt; ข้าม
+
+      img.dataset.spShrunk = &#x27;1&#x27;;
+      img.src = src.replace(&#x27;/_raw/&#x27;, &#x27;/_fit/1024/1024/&#x27;);
+    });
+  }
+
+  function run() {
+    try { tuneImages(); } catch (e) {}
+    try { shrinkRawImages(); } catch (e) {}
+  }
+
+  if (document.readyState === &#x27;loading&#x27;) document.addEventListener(&#x27;DOMContentLoaded&#x27;, run);
+  else run();
+
+  window.addEventListener(&#x27;load&#x27;, function () { setTimeout(run, 500); setTimeout(run, 2500); });
+
+  if (window.MutationObserver) {
+    var t;
+    new MutationObserver(function () {
+      clearTimeout(t);
+      t = setTimeout(function () { try { run(); } catch (e) {} }, 300);
+    }).observe(document.documentElement, { childList: true, subtree: true });
+  }
+})();
+</code></pre></div></details></div></li></ol></section><section class="tier tier--month"><header class="tier__h"><h2>เดือนนี้</h2><p>ทยอยทำ ไม่ต้องรีบ</p><span class="tier__n"><b class="tdone" data-tier="month">0</b>/2</span></header><ol class="steps"><li class="step" id="s-photos" data-tier="month"><label class="step__tick"><input type="checkbox" data-step="photos"><span></span></label><div class="step__body"><div class="step__top"><h3>ถ่ายรูป 6 รูปให้บทความ “ศิลาแลงแท้ vs เทียม”</h3><div class="step__meta"><span class="chip chip--site">silalang.com</span><span class="chip">⏱ 60 นาที</span><span class="chip">◧ 1 หน้า</span></div></div><p class="step__why">บทความเขียนเสร็จแล้ว รอแค่รูป และรูปที่ 1 สำคัญที่สุด: ศิลาแลงแท้ 6 ก้อนเรียงกันให้เห็นว่า<strong>ไม่มีก้อนไหนซ้ำ</strong> นี่คือหลักฐานที่คู่แข่งที่ขายปูนหล่อทำตามไม่ได้ ทั้งบทความอยู่ได้ด้วยคำว่า “เราถ่ายจากของจริงของเรา”</p><ul class="how"><li><strong>1.</strong> ศิลาแลงแท้ 6 ก้อนวางเรียงกัน ถ่ายจากด้านบนตรง ๆ &mdash; รูปที่สำคัญที่สุด</li><li><strong>2.</strong> ถ้าหาปูนหล่อมาเทียบได้ วาง 4 ก้อนจากพิมพ์เดียวกันให้เห็นลายซ้ำ (หาไม่ได้ให้ตัดออก อย่าใช้รูปจากเน็ต)</li><li><strong>3.</strong> โคลสอัพรูพรุน ถ่ายเฉียงให้เห็นความลึก</li><li><strong>4.</strong> ก้อนที่กะเทาะมุมแล้ว ให้เห็นเนื้อในสีเดียวกับผิว</li><li><strong>5.</strong> ราดน้ำ ถ่ายตอนน้ำกำลังซึมและสีเข้มขึ้น</li><li><strong>6.</strong> หน้าเหมืองจริง ให้เห็นรอยตัดเป็นก้อนที่ผนังบ่อ</li><li><strong>ห้ามใช้รูปจากเว็บอื่นหรือรูป AI เด็ดขาด</strong> — มีรูปปลอมแม้รูปเดียวก็เสียทั้งหน้า</li></ul></div></li><li class="step" id="s-rest" data-tier="month"><label class="step__tick"><input type="checkbox" data-step="rest"><span></span></label><div class="step__body"><div class="step__top"><h3>ทยอยวาง title และ description ที่เหลือ วันละ 10–20 หน้า</h3><div class="step__meta"><span class="chip chip--site">ทั้งสองเว็บ</span><span class="chip">⏱ ขึ้นกับคุณ</span><span class="chip">◧ 288 หน้า</span></div></div><p class="step__why">เหลืออีก 288 หน้า ไม่ต้องรีบ แต่ต้องไม่หยุด ทำวันละ 15 หน้าจะเสร็จในสามสัปดาห์</p><ul class="how"><li>ไล่จากหน้าที่มีคนเข้าเยอะที่สุดลงมา — พอเชื่อม GA4 แล้วผมจัดลำดับให้ได้</li><li>ทำหมวดสินค้าก่อนบทความ เพราะหน้าสินค้าคือหน้าที่ทำเงิน</li></ul></div></li></ol></section>
+<footer class="foot">
+  <p><strong>ของทั้งหมดอยู่ที่ไหน</strong> — ไฟล์ตัวเต็มอยู่ใน pull request บน GitHub:
+  คำอธิบายสินค้า 120 ชิ้น, title และ description ครบ 330 หน้า, บทความศิลาแลงแท้ vs เทียม,
+  ตารางราคาพระบูชา, ชุดรีวิว และเอกสารกลยุทธ์เชื่อมสองเว็บ</p>
+  <p><strong>สิ่งที่ผมยังทำแทนคุณไม่ได้</strong> — ต้นทุนต่อองค์ของพระบูชา, ยอดขายย้อนหลังแยกตามพิมพ์,
+  และการกดสองลิงก์เปิดสิทธิ์ GA4 กับ Search Console</p>
+  <p>เครื่องหมายถูกเก็บไว้ให้ทุกคนที่เปิดหน้านี้เห็นตรงกัน ไม่ต้องจดที่อื่น</p>
+</footer>
+</div>
+
+<script>window.__DONE__ = {};</script>
+<script>
+(function(){
+  var DONE = window.__DONE__ || {};
+  var boxes = Array.prototype.slice.call(document.querySelectorAll('input[data-step]'));
+  var fill=document.getElementById('fill'), pn=document.getElementById('pn'), save=document.getElementById('save');
+  var artifact=null, pending=null, timer=null;
+
+  function paint(){
+    var n=0;
+    boxes.forEach(function(b){
+      var on=!!DONE[b.dataset.step];
+      b.checked=on; b.closest('.step').classList.toggle('is-done',on); if(on)n++;
+    });
+    pn.textContent=n;
+    fill.style.width=(n/boxes.length*100).toFixed(1)+'%';
+    document.querySelectorAll('.tdone').forEach(function(el){
+      var t=el.dataset.tier, done=0;
+      document.querySelectorAll('.step[data-tier="'+t+'"] input[data-step]').forEach(function(b){ if(DONE[b.dataset.step]) done++; });
+      el.textContent=done;
+    });
+  }
+  paint();
+
+  boxes.forEach(function(b){
+    b.addEventListener('change',function(){
+      DONE[b.dataset.step]=b.checked; if(!b.checked) delete DONE[b.dataset.step];
+      paint(); queue();
+    });
+  });
+
+  function queue(){
+    if(!artifact){ save.textContent='บันทึกในเครื่อง'; try{localStorage.setItem('sila-plan',JSON.stringify(DONE));}catch(e){} return; }
+    save.textContent='กำลังบันทึก…';
+    clearTimeout(timer); timer=setTimeout(commit,900);
+  }
+  function commit(){
+    var doc='<!doctype html>\n'+document.documentElement.outerHTML;
+    doc=doc.replace(/window\.__DONE__\s*=\s*\{[\s\S]*?\};/, 'window.__DONE__ = '+JSON.stringify(DONE)+';');
+    artifact.publish(doc).then(function(){ save.textContent='บันทึกแล้ว'; })
+      .catch(function(e){ save.textContent = (e&&e.code==='conflict') ? 'มีคนแก้พร้อมกัน' : 'บันทึกไม่ได้'; });
+  }
+
+  if(window.claude && claude.use){
+    claude.use('artifact').then(function(a){
+      artifact=a;
+      save.textContent = a ? '' : 'บันทึกในเครื่อง';
+      if(!a){ try{ var s=localStorage.getItem('sila-plan'); if(s){ DONE=JSON.parse(s); paint(); } }catch(e){} }
+    }).catch(function(){ save.textContent='บันทึกในเครื่อง'; });
+  } else { try{ var s=localStorage.getItem('sila-plan'); if(s){ DONE=JSON.parse(s); paint(); } }catch(e){} }
+
+  document.addEventListener('click',function(e){
+    var btn=e.target.closest('[data-copy]'); if(!btn) return;
+    var el=document.getElementById(btn.dataset.copy); if(!el) return;
+    var txt=el.innerText;
+    var ok=function(){ btn.textContent='คัดลอกแล้ว'; btn.classList.add('ok');
+      setTimeout(function(){ btn.textContent='คัดลอก'; btn.classList.remove('ok'); },1800); };
+    if(navigator.clipboard && navigator.clipboard.writeText){
+      navigator.clipboard.writeText(txt).then(ok, fallback);
+    } else fallback();
+    function fallback(){
+      var ta=document.createElement('textarea'); ta.value=txt; ta.style.position='fixed'; ta.style.opacity='0';
+      document.body.appendChild(ta); ta.select();
+      try{ document.execCommand('copy'); ok(); }catch(err){ btn.textContent='กดค้างเพื่อคัดลอก'; }
+      document.body.removeChild(ta);
+    }
+  });
+})();
+</script>
