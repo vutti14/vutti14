@@ -63,26 +63,10 @@
 </script>
 
 
-<!-- [2] เว็บไซต์ + ช่องค้นหาในผลการค้นหา Google -->
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "WebSite",
-  "@id": "https://www.silalang.com/#website",
-  "url": "https://www.silalang.com/",
-  "name": "ศิลาเพชร | ศิลาแลงแท้จากเหมืองกำแพงเพชร",
-  "inLanguage": "th-TH",
-  "publisher": { "@id": "https://www.silalang.com/#organization" },
-  "potentialAction": {
-    "@type": "SearchAction",
-    "target": {
-      "@type": "EntryPoint",
-      "urlTemplate": "https://www.silalang.com/search?q={search_term_string}"
-    },
-    "query-input": "required name=search_term_string"
-  }
-}
-</script>
+<!-- ⚠️ ลบบล็อก WebSite ออกแล้ว — silalang.com มี WebSite JSON-LD ของ LnwShop อยู่แล้ว
+     (ตรวจจากหน้าเว็บจริง 6 ก.ย. 2026: มี @type WebSite พร้อม SearchAction อยู่ใน <head>)
+     ถ้าใส่ซ้ำจะมี WebSite สองอันในหน้าเดียว ซึ่ง Google อาจสับสนว่าอันไหนคือของจริง
+     หมายเหตุ: หินอ่อน.com ไม่มี ให้คงบล็อก WebSite ใน patch/head-snippet.html ไว้ตามเดิม -->
 
 
 <!-- [3] เร่งการโหลดรูป (รูปทั้งหมดอยู่บนโดเมน lnwfile.com) -->
