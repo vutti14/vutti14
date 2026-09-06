@@ -1,0 +1,111 @@
+<!-- ============================================================
+     หินอ่อน.com — โค้ดเสริมส่วนหัว (LnwShop)
+     วางที่: ระบบหลังร้าน → ตั้งค่าร้านค้า → โค้ดเสริม → ส่วน <head>
+     ------------------------------------------------------------
+     [1] Schema.org — บอก Google ว่าธุรกิจนี้คือใคร อยู่ที่ไหน
+     [2] Sitelinks Search Box — ให้ Google แสดงช่องค้นหาใต้ผลการค้นหา
+     [3] GA4 — ตอนนี้เว็บใช้ Universal Analytics (UA-18903793-17)
+         ซึ่ง Google หยุดเก็บข้อมูลตั้งแต่ 1 ก.ค. 2023 = ไม่มีข้อมูลมา 3 ปี
+     ============================================================ -->
+
+
+<!-- [1] ข้อมูลธุรกิจ (Organization + LocalBusiness)
+     >>> ตรวจสอบ 3 จุดนี้ก่อนวางจริง: รหัสไปรษณีย์ / เวลาทำการ / เลขทะเบียนพาณิชย์ <<< -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "HomeAndConstructionBusiness",
+  "@id": "https://www.xn--q3ca6cja3bzj.com/#organization",
+  "name": "SIAM STONE — หินอ่อน.com",
+  "alternateName": ["สยามสโตน", "หินอ่อน.com", "หินอ่อนดอทคอม"],
+  "url": "https://www.xn--q3ca6cja3bzj.com/",
+  "logo": "https://cy.lnwfile.com/_/cy/_raw/oj/cv/to.png",
+  "image": "https://inwfile.com/s-cy/ojcvto.png",
+  "description": "ผู้ผลิตและจำหน่ายแผ่นหินอ่อน หินแกรนิต หินศิลาแลง หินตกแต่งสวน และหญ้าเทียม ตัดตามขนาด ส่งตรงจากโรงงาน",
+  "telephone": "+66655678989",
+  "email": "siamstonesale@gmail.com",
+  "priceRange": "฿฿",
+  "currenciesAccepted": "THB",
+  "paymentAccepted": "เงินสด, โอนเงิน, บัตรเครดิต",
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "700 ถนนศรีนครินทร์ แขวงหนองบอน",
+    "addressLocality": "เขตประเวศ",
+    "addressRegion": "กรุงเทพมหานคร",
+    "postalCode": "10250",
+    "addressCountry": "TH"
+  },
+  "geo": {
+    "@type": "GeoCoordinates",
+    "latitude": 13.6710127271,
+    "longitude": 100.6442410407
+  },
+  "openingHoursSpecification": [{
+    "@type": "OpeningHoursSpecification",
+    "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"],
+    "opens": "08:00",
+    "closes": "17:00"
+  }],
+  "areaServed": { "@type": "Country", "name": "ประเทศไทย" },
+  "sameAs": [
+    "https://www.facebook.com/siamstone456",
+    "https://line.me/ti/p/~saimstone456",
+    "https://www.tiktok.com/@siamstone456",
+    "https://www.silalang.com/"
+  ],
+  "contactPoint": [{
+    "@type": "ContactPoint",
+    "telephone": "+66655678989",
+    "contactType": "sales",
+    "areaServed": "TH",
+    "availableLanguage": ["Thai"]
+  }, {
+    "@type": "ContactPoint",
+    "telephone": "+66625599000",
+    "contactType": "customer service",
+    "areaServed": "TH",
+    "availableLanguage": ["Thai"]
+  }]
+}
+</script>
+
+
+<!-- [2] เว็บไซต์ + ช่องค้นหาในผลการค้นหา Google -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "@id": "https://www.xn--q3ca6cja3bzj.com/#website",
+  "url": "https://www.xn--q3ca6cja3bzj.com/",
+  "name": "หินอ่อน.com | SIAM STONE",
+  "inLanguage": "th-TH",
+  "publisher": { "@id": "https://www.xn--q3ca6cja3bzj.com/#organization" },
+  "potentialAction": {
+    "@type": "SearchAction",
+    "target": {
+      "@type": "EntryPoint",
+      "urlTemplate": "https://www.xn--q3ca6cja3bzj.com/search?q={search_term_string}"
+    },
+    "query-input": "required name=search_term_string"
+  }
+}
+</script>
+
+
+<!-- [3] Google Analytics 4
+     >>> แทน G-XXXXXXXXXX ด้วย Measurement ID จริงจาก analytics.google.com
+         (Admin → Data Streams → Web → Measurement ID) <<<
+     ถ้าใช้ GTM-N3SX83RH ที่มีอยู่แล้ว ให้ตั้ง GA4 Configuration Tag ใน GTM แทน
+     แล้วไม่ต้องวางบล็อกนี้ — แต่อย่าวางทั้งสองทาง จะนับซ้ำ -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-XXXXXXXXXX');
+</script>
+
+
+<!-- [4] เร่งการโหลดรูป (รูปทั้งหมดอยู่บนโดเมน lnwfile.com) -->
+<link rel="preconnect" href="https://cy.lnwfile.com" crossorigin>
+<link rel="dns-prefetch" href="https://cy.lnwfile.com">

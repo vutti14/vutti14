@@ -1,0 +1,96 @@
+<!-- ============================================================
+     silalang.com (ศิลาเพชร) — โค้ดเสริมส่วนหัว
+     วางที่: หลังร้าน LnwShop → ตั้งค่าร้านค้า → โค้ดเสริม → ส่วน <head>
+     ------------------------------------------------------------
+     >>> เว็บนี้ "ไม่ต้อง" เพิ่ม GA4 <<<
+     ตรวจแล้ว G-FPKE24QWKN ทำงานอยู่จริง ยิง /g/collect ได้ปกติ ผ่าน GTM-MGT5T89
+     ถ้าเพิ่มอีกจะนับซ้ำ
+
+     สิ่งที่ควรทำแทนคือ "ลบ" ของที่ตายแล้วออก — ดูหมายเหตุท้ายไฟล์
+     ============================================================ -->
+
+
+<!-- [1] ข้อมูลธุรกิจ — เหมืองศิลาแลง
+     ใช้ MiningBusiness ไม่ได้ (schema.org ไม่มีชนิดนี้) จึงใช้ LocalBusiness
+     ที่มี additionalType ชี้ไปยัง Wikidata ของ "quarry" เพื่อความชัดเจน
+
+     >>> ต้องกรอกก่อนวางจริง: ที่อยู่เหมือง, พิกัด, เวลาทำการ, เลขทะเบียน <<<     -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "LocalBusiness",
+  "@id": "https://www.silalang.com/#organization",
+  "additionalType": "https://www.wikidata.org/wiki/Q188040",
+  "name": "ศิลาเพชร",
+  "alternateName": ["เหมืองศิลาแลงศิลาเพชร", "silalang.com"],
+  "url": "https://www.silalang.com/",
+  "image": "https://inwfile.com/s-cb/8e27d3.jpg",
+  "description": "เหมืองศิลาแลงของตัวเองที่กำแพงเพชร ตัดสดทุกวัน จำหน่ายศิลาแลงเหลี่ยม ศิลาแลงกลม ประติมากรรมศิลาแลง และพระบูชาศิลาแลงอัด ส่งทั่วประเทศ",
+  "telephone": "+66915152222",
+  "priceRange": "฿",
+  "currenciesAccepted": "THB",
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "[กรอก — ที่ตั้งเหมือง/สำนักงาน]",
+    "addressLocality": "[กรอก — อำเภอ เช่น พรานกระต่าย]",
+    "addressRegion": "กำแพงเพชร",
+    "postalCode": "[กรอก]",
+    "addressCountry": "TH"
+  },
+  "geo": {
+    "@type": "GeoCoordinates",
+    "latitude": "[กรอก]",
+    "longitude": "[กรอก]"
+  },
+  "openingHoursSpecification": [{
+    "@type": "OpeningHoursSpecification",
+    "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"],
+    "opens": "[กรอก]",
+    "closes": "[กรอก]"
+  }],
+  "areaServed": { "@type": "Country", "name": "ประเทศไทย" },
+  "sameAs": [
+    "https://www.xn--q3ca6cja3bzj.com/"
+  ],
+  "contactPoint": [{
+    "@type": "ContactPoint",
+    "telephone": "+66915152222",
+    "contactType": "sales",
+    "areaServed": "TH",
+    "availableLanguage": ["Thai"]
+  }]
+}
+</script>
+
+
+<!-- ⚠️ ลบบล็อก WebSite ออกแล้ว — silalang.com มี WebSite JSON-LD ของ LnwShop อยู่แล้ว
+     (ตรวจจากหน้าเว็บจริง 6 ก.ย. 2026: มี @type WebSite พร้อม SearchAction อยู่ใน <head>)
+     ถ้าใส่ซ้ำจะมี WebSite สองอันในหน้าเดียว ซึ่ง Google อาจสับสนว่าอันไหนคือของจริง
+     หมายเหตุ: หินอ่อน.com ไม่มี ให้คงบล็อก WebSite ใน patch/head-snippet.html ไว้ตามเดิม -->
+
+
+<!-- [3] เร่งการโหลดรูป (รูปทั้งหมดอยู่บนโดเมน lnwfile.com) -->
+<link rel="preconnect" href="https://cb.lnwfile.com" crossorigin>
+<link rel="dns-prefetch" href="https://cb.lnwfile.com">
+
+
+<!-- ============================================================
+     สิ่งที่ควร "ลบ" ออก — ทำใน GTM ไม่ใช่ที่นี่
+     ------------------------------------------------------------
+     ตรวจพบ tag ที่ยิงอยู่บนหน้าแรกตอนนี้:
+
+       G-FPKE24QWKN     GA4              ✅ ใช้งานได้จริง — เก็บไว้
+       GTM-MGT5T89      Tag Manager      ✅ เก็บไว้
+       Facebook Pixel   fbevents.js      ✅ เก็บไว้
+       UA-39933185-2    Universal Analytics  ❌ ตายแล้ว — ลบ
+       UA-18903793-17   Universal Analytics  ❌ ตายแล้ว และเป็นของหินอ่อน.com — ลบ
+       GT-NSSXP8C       Google Tag        ⚠️ ตรวจว่าซ้ำกับ GA4 ไหม
+
+     Universal Analytics หยุดเก็บข้อมูลตั้งแต่ 1 ก.ค. 2023 สองตัวนั้นไม่ได้เก็บอะไรเลย
+     แค่ทำให้เบราว์เซอร์โหลดสคริปต์เพิ่มโดยเปล่าประโยชน์
+
+     ที่น่าสังเกตคือ UA-18903793-17 เป็นตัวเดียวกับที่ยิงอยู่บนหินอ่อน.com
+     น่าจะเป็นการก๊อปโค้ดข้ามเว็บมา ควรลบทั้งสองที่
+
+     >>> ทำที่ tagmanager.google.com → workspace → Tags → ปิดหรือลบ tag UA ทั้งสองตัว <<<
+     ============================================================ -->

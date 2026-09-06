@@ -1,0 +1,112 @@
+/* ============================================================
+   silalang.com (ศิลาเพชร) — CSS เสริม
+   วางที่: หลังร้าน LnwShop → แต่งร้าน → CSS เสริม (ต่อท้ายของเดิม)
+   ทุกบล็อกมีหมายเลข ถ้าบล็อกไหนทำหน้าเพี้ยน ลบเฉพาะบล็อกนั้น
+   ============================================================ */
+
+/* [1] กันรูปโปสเตอร์ล้นกรอบ + จองพื้นที่ลด CLS
+   หน้าแรกเป็นโปสเตอร์เรียงกัน ถ้าไม่จองพื้นที่ หน้าจะกระตุกตอนรูปโหลด */
+.gadgetHTML img, .productDetail img, .articleDetail img {
+  max-width: 100%;
+  height: auto;
+  content-visibility: auto;
+}
+html, body { overflow-x: hidden; }   /* เดสก์ท็อปเกิน 2px กันไว้ก่อน */
+
+
+/* [2] มือถือ: ปุ่มกดต้องใหญ่พอ (Google 48x48 / Apple 44x44)
+   วัดจริงที่ 390x844: หน้าแรก 34/54 · หมวดพระบูชา 74/118 · บทความ 56/77 เล็กเกิน
+   selector ชุดนี้มาจากการวัด DOM จริง ไม่ได้เดา */
+@media (max-width: 767px) {
+  .gadgetThumbnail > a,
+  .name > a,
+  .more > a,
+  .product_name > a,
+  .product_button > a,
+  .middle > a,
+  .footerText > a,
+  .menu > a[class^="pname_"] {
+    display: block;
+    min-height: 44px;
+    padding-top: 11px;
+    padding-bottom: 11px;
+    box-sizing: border-box;
+  }
+
+  .page a.container, .page > a {
+    display: inline-flex; align-items: center; justify-content: center;
+    min-width: 44px; min-height: 44px;
+  }
+
+  .social a.icon,
+  .shopinfo_social > a,
+  button.search_keyword_icon,
+  button.button_copy,
+  a.tosakanth-action {
+    min-width: 44px; min-height: 44px;
+    display: inline-flex; align-items: center; justify-content: center;
+  }
+
+  button.b-subpro { min-height: 44px; }
+  .listCategory li + li, .categoryList li + li { margin-top: 4px; }
+}
+
+
+/* [3] ตัวอักษรไทยบนมือถือ 16px ขั้นต่ำ
+   ต่ำกว่า 16px ใน input ทำให้ iOS Safari ซูมหน้าจอเองตอนกดพิมพ์ */
+@media (max-width: 767px) {
+  body, .productDetail, .articleDetail, .gadgetHTML { font-size: 16px; }
+  input, select, textarea { font-size: 16px !important; }
+  .productDetail, .articleDetail { line-height: 1.75; }
+}
+
+
+/* [4] บล็อกเปิดหน้าแรก (ดู content-silalang/home-hero.html)
+   สีดึงจากแบรนด์จริงบนเว็บ: แดงอิฐศิลาแลง + ครีม */
+.sp-hero { padding: 26px 20px; background: #FBF7F2; border-radius: 12px; margin-bottom: 20px; }
+.sp-hero h1 {
+  font-size: clamp(21px, 5vw, 33px);
+  line-height: 1.35; margin: 0 0 10px; font-weight: 700; color: #1A1A1A;
+}
+.sp-hero p { font-size: clamp(15px, 3.6vw, 17px); line-height: 1.75; color: #43403C; margin: 0 0 14px; max-width: 62ch; }
+.sp-cta { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 18px; }
+.sp-cta a {
+  display: inline-flex; align-items: center; justify-content: center;
+  min-height: 48px; padding: 0 22px; border-radius: 8px;
+  font-size: 16px; font-weight: 600; text-decoration: none;
+}
+.sp-cta .sp-call  { background: #A8322A; color: #fff; }
+.sp-cta .sp-line  { background: #06C755; color: #fff; }
+.sp-cta .sp-quote { background: #fff; color: #A8322A; border: 2px solid #A8322A; }
+.sp-cta a:hover { filter: brightness(1.08); }
+
+
+/* [5] ตารางสเปก/ราคาแบบข้อความ */
+.sp-table { width: 100%; border-collapse: collapse; font-size: 15px; margin: 14px 0 22px; }
+.sp-table caption { text-align: left; font-weight: 700; font-size: 17px; padding: 10px 0; }
+.sp-table th, .sp-table td { border: 1px solid #E0D9D0; padding: 10px 12px; text-align: center; }
+.sp-table thead th { background: #2A2522; color: #fff; font-weight: 600; }
+.sp-table tbody th { text-align: left; background: #FAF7F3; font-weight: 600; }
+.sp-table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+@media (max-width: 767px) { .sp-table { font-size: 14px; } .sp-table th, .sp-table td { padding: 8px 6px; } }
+
+
+/* [6] คำบรรยายใต้รูปโปสเตอร์
+   ใช้คู่กับ home-hero.html เพื่อให้ข้อความในโปสเตอร์มีเวอร์ชันที่ Google อ่านได้ */
+.sp-figure { margin: 0 0 22px; }
+.sp-figure img { display: block; width: 100%; height: auto; border-radius: 8px; }
+.sp-figure figcaption { font-size: 15px; line-height: 1.7; color: #43403C; padding: 10px 2px 0; }
+
+
+/* [7] ซ่อนวิดเจ็ตที่ไม่ช่วยขายบนมือถือ
+   >>> ถ้ายังอยากเก็บไว้ ลบบล็อกนี้ทิ้ง <<< */
+@media (max-width: 767px) {
+  .gadgetStat, .widgetUnit.u-stat,
+  .gadgetFriend, .widgetUnit.u-friend { display: none; }
+}
+
+
+/* [8] ลิงก์เบอร์โทรบนมือถือให้กดง่าย */
+@media (max-width: 767px) {
+  a[href^="tel:"] { display: inline-flex; align-items: center; min-height: 44px; font-weight: 600; }
+}
