@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,maximum-scale=1">
+<meta name="theme-color" content="#8c1b1b">
+<meta name="description" content="เรียนภาษาจีนไทย–จีน เน้นพูด สำหรับธุรกิจวัสดุก่อสร้างและตกแต่ง">
+<title>说吧 · พูดจีนได้</title>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icons/icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="พูดจีนได้">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<div id="app">
+
+  <!-- ================= หน้าแรก ================= -->
+  <section class="screen active" id="s-home">
+    <header class="hero">
+      <div class="hero-top">
+        <div class="brand"><span class="brand-zh">说吧</span><span class="brand-th">พูดจีนได้</span></div>
+        <div class="streak" id="streak-box"><b id="streak-n">0</b><span>วันติด</span></div>
+      </div>
+      <div class="hero-plan" id="plan-box"></div>
+      <button class="btn-primary big" id="btn-start">เริ่มบทเรียนวันนี้</button>
+      <div class="hero-note" id="tts-warn" hidden></div>
+    </header>
+
+    <div class="pad">
+      <div class="quick">
+        <button class="quick-item" data-go="speakdrill"><span>🎤</span><b>ฝึกพูดรัว</b><i>ไทย → พูดจีน</i></button>
+        <button class="quick-item" data-go="dialogues"><span>💬</span><b>บทสนทนา</b><i>เล่นเป็นตัวคุณเอง</i></button>
+        <button class="quick-item" data-go="listen"><span>👂</span><b>ฟังจับใจความ</b><i>ฟังจีน เลือกความหมาย</i></button>
+        <button class="quick-item" data-go="browse"><span>📚</span><b>คลังคำ</b><i>ค้นหาก่อนออกไปเจรจา</i></button>
+      </div>
+
+      <h3 class="sec-title">ความคืบหน้า</h3>
+      <div class="card" id="progress-card"></div>
+
+      <h3 class="sec-title">หมวดคำ</h3>
+      <div id="unit-list"></div>
+      <div class="foot-space"></div>
+    </div>
+  </section>
+
+  <!-- ================= เรียน / ทวน ================= -->
+  <section class="screen" id="s-study">
+    <div class="topbar">
+      <button class="icon-btn" data-back>✕</button>
+      <div class="prog"><div class="prog-in" id="study-prog"></div></div>
+      <div class="topbar-right" id="study-count">0/0</div>
+    </div>
+    <div class="stage" id="study-stage"></div>
+    <div class="actions" id="study-actions"></div>
+  </section>
+
+  <!-- ================= ฝึกพูด ================= -->
+  <section class="screen" id="s-speak">
+    <div class="topbar">
+      <button class="icon-btn" data-back>✕</button>
+      <div class="prog"><div class="prog-in" id="speak-prog"></div></div>
+      <div class="topbar-right" id="speak-count">0/0</div>
+    </div>
+    <div class="stage" id="speak-stage"></div>
+    <div class="actions" id="speak-actions"></div>
+  </section>
+
+  <!-- ================= ฟัง ================= -->
+  <section class="screen" id="s-listen">
+    <div class="topbar">
+      <button class="icon-btn" data-back>✕</button>
+      <div class="prog"><div class="prog-in" id="listen-prog"></div></div>
+      <div class="topbar-right" id="listen-count">0/0</div>
+    </div>
+    <div class="stage" id="listen-stage"></div>
+    <div class="actions" id="listen-actions"></div>
+  </section>
+
+  <!-- ================= บทสนทนา ================= -->
+  <section class="screen" id="s-dialogues">
+    <div class="topbar"><button class="icon-btn" data-back>‹</button><div class="topbar-title">บทสนทนา</div><div class="topbar-right"></div></div>
+    <div class="pad" id="dialogue-list"></div>
+  </section>
+
+  <section class="screen" id="s-dialogue">
+    <div class="topbar"><button class="icon-btn" data-back>‹</button><div class="topbar-title" id="dlg-title"></div><div class="topbar-right"></div></div>
+    <div class="pad" id="dlg-body"></div>
+    <div class="actions" id="dlg-actions"></div>
+  </section>
+
+  <!-- ================= คลังคำ ================= -->
+  <section class="screen" id="s-browse">
+    <div class="topbar"><button class="icon-btn" data-back>‹</button><div class="topbar-title">คลังคำ</div><div class="topbar-right"></div></div>
+    <div class="search-wrap">
+      <input type="search" id="q" placeholder="ค้นหา ไทย / จีน / พินอิน เช่น กระเบื้อง, MOQ, jiage" autocomplete="off">
+      <div class="chips" id="deck-chips"></div>
+    </div>
+    <div class="pad" id="browse-list"></div>
+  </section>
+
+  <!-- ================= สถิติ ================= -->
+  <section class="screen" id="s-stats">
+    <div class="topbar"><button class="icon-btn" data-back>‹</button><div class="topbar-title">สถิติ</div><div class="topbar-right"></div></div>
+    <div class="pad" id="stats-body"></div>
+  </section>
+
+  <!-- ================= ตั้งค่า ================= -->
+  <section class="screen" id="s-settings">
+    <div class="topbar"><button class="icon-btn" data-back>‹</button><div class="topbar-title">ตั้งค่า</div><div class="topbar-right"></div></div>
+    <div class="pad" id="settings-body"></div>
+  </section>
+
+  <nav class="tabbar" id="tabbar">
+    <button data-tab="home" class="on"><span>🏠</span>หน้าแรก</button>
+    <button data-tab="browse"><span>📚</span>คลังคำ</button>
+    <button data-tab="dialogues"><span>💬</span>บทสนทนา</button>
+    <button data-tab="stats"><span>📈</span>สถิติ</button>
+    <button data-tab="settings"><span>⚙️</span>ตั้งค่า</button>
+  </nav>
+</div>
+
+<div id="toast" class="toast" hidden></div>
+
+<script src="js/data-core.js"></script>
+<script src="js/data-daily.js"></script>
+<script src="js/data-materials.js"></script>
+<script src="js/data-dialogues.js"></script>
+<script src="js/data.js"></script>
+<script src="js/srs.js"></script>
+<script src="js/speech.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
