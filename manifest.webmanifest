@@ -1,0 +1,20 @@
+{
+  "name": "说吧 · พูดจีนได้ — จีนธุรกิจสำหรับสายวัสดุก่อสร้าง",
+  "short_name": "พูดจีนได้",
+  "description": "เรียนภาษาจีนไทย–จีน เน้นพูดและใช้งานจริง สำหรับธุรกิจอสังหาริมทรัพย์ วัสดุก่อสร้างและตกแต่ง ใช้ออฟไลน์ได้",
+  "lang": "th",
+  "dir": "ltr",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#faf7f4",
+  "theme_color": "#8c1b1b",
+  "categories": ["education", "productivity"],
+  "icons": [
+    { "src": "icons/icon.svg", "sizes": "any", "type": "image/svg+xml" },
+    { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "icons/icon-maskable.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}
