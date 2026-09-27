@@ -1,0 +1,2018 @@
+<title>说吧 พูดจีนได้</title>
+<style>
+:root{
+  --bg:#faf7f4; --surface:#ffffff; --surface2:#f2ede8; --line:#e2d9d1;
+  --ink:#241c18; --ink2:#6b5d54; --ink3:#9a8a80;
+  --red:#8c1b1b; --red-soft:#b23a3a; --gold:#c8912b;
+  --ok:#1e7a4d; --warn:#a8620d; --bad:#a32020;
+  --r:16px; --shadow:0 1px 3px rgba(60,40,30,.10),0 8px 24px rgba(60,40,30,.06);
+  --zh:"PingFang SC","Hiragino Sans GB","Microsoft YaHei","Noto Sans SC","Noto Sans CJK SC","Source Han Sans SC",sans-serif;
+  --hero-grad:linear-gradient(160deg,#8c1b1b 0%,#5e1010 100%);
+  color-scheme:light;
+  --th:"Sarabun","Noto Sans Thai","Leelawadee UI",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --bg:#17120f; --surface:#221b17; --surface2:#2c231e; --line:#3a2e27;
+    --ink:#f3ece7; --ink2:#c0b0a6; --ink3:#8d7c72;
+    --red:#c94b4b; --red-soft:#e07070; --gold:#e2b25a;
+    --ok:#4bbd84; --warn:#e0a253; --bad:#e56a6a;
+    --shadow:0 1px 3px rgba(0,0,0,.4),0 8px 24px rgba(0,0,0,.3);
+    --hero-grad:linear-gradient(160deg,#7d2020 0%,#3a0d0d 100%);
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+    --bg:#17120f; --surface:#221b17; --surface2:#2c231e; --line:#3a2e27;
+    --ink:#f3ece7; --ink2:#c0b0a6; --ink3:#8d7c72;
+    --red:#c94b4b; --red-soft:#e07070; --gold:#e2b25a;
+    --ok:#4bbd84; --warn:#e0a253; --bad:#e56a6a;
+    --shadow:0 1px 3px rgba(0,0,0,.4),0 8px 24px rgba(0,0,0,.3);
+    --hero-grad:linear-gradient(160deg,#7d2020 0%,#3a0d0d 100%);
+    color-scheme:dark;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;padding:0;height:100%}
+body{
+  background:var(--bg);color:var(--ink);font-family:var(--th);
+  font-size:16px;line-height:1.5;overscroll-behavior-y:none;
+  -webkit-font-smoothing:antialiased;
+}
+#app{max-width:560px;margin:0 auto;min-height:100%;position:relative}
+.screen{display:none;padding-bottom:88px;min-height:100%}
+.screen.active{display:block}
+.pad{padding:0 16px}
+.foot-space{height:32px}
+button{font-family:inherit;font-size:inherit;color:inherit;border:0;background:none;cursor:pointer}
+
+/* ---------- hero ---------- */
+.hero{
+  background:var(--hero-grad);
+  color:#fff;padding:20px 16px 22px;
+  border-radius:0 0 26px 26px;box-shadow:var(--shadow);
+}
+.hero-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+.brand{display:flex;align-items:baseline;gap:9px}
+.brand-zh{font-family:var(--zh);font-size:26px;font-weight:700;letter-spacing:2px}
+.brand-th{font-size:14px;opacity:.85}
+.streak{background:rgba(255,255,255,.16);border-radius:999px;padding:5px 13px;display:flex;align-items:baseline;gap:5px}
+.streak b{font-size:19px}
+.streak span{font-size:11px;opacity:.85}
+.hero-plan{display:flex;gap:10px;margin-bottom:16px}
+.hero-plan .pill{flex:1;background:rgba(255,255,255,.13);border-radius:14px;padding:11px 12px}
+.hero-plan .pill b{display:block;font-size:24px;line-height:1.15}
+.hero-plan .pill span{font-size:12px;opacity:.85}
+.hero-note{margin-top:12px;font-size:12.5px;background:rgba(0,0,0,.22);padding:10px 12px;border-radius:12px;line-height:1.45}
+.btn-primary{
+  width:100%;background:#fff;color:var(--red);font-weight:700;
+  border-radius:14px;padding:15px;font-size:17px;
+}
+.btn-primary:active{transform:scale(.985)}
+.btn-primary.big{font-size:18px;padding:17px}
+.btn-primary[disabled]{opacity:.55}
+
+/* ---------- quick tiles ---------- */
+.quick{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:18px 0 4px}
+.quick-item{
+  background:var(--surface);border:1px solid var(--line);border-radius:var(--r);
+  padding:14px;text-align:left;box-shadow:var(--shadow);
+}
+.quick-item span{font-size:22px;display:block;margin-bottom:5px}
+.quick-item b{display:block;font-size:15px}
+.quick-item i{display:block;font-style:normal;font-size:11.5px;color:var(--ink3);margin-top:2px}
+
+.sec-title{font-size:13px;text-transform:none;color:var(--ink3);margin:24px 0 10px;font-weight:600}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:16px;box-shadow:var(--shadow)}
+
+.bar{height:9px;background:var(--surface2);border-radius:99px;overflow:hidden;margin:10px 0 6px}
+.bar>i{display:block;height:100%;background:linear-gradient(90deg,var(--red),var(--gold))}
+.kv{display:flex;justify-content:space-between;font-size:13px;color:var(--ink2);padding:3px 0}
+.kv b{color:var(--ink)}
+
+/* ---------- unit rows ---------- */
+.unit{
+  display:flex;align-items:center;gap:12px;background:var(--surface);
+  border:1px solid var(--line);border-radius:14px;padding:12px 14px;margin-bottom:8px;width:100%;text-align:left;
+}
+.unit .u-ico{
+  width:38px;height:38px;flex:0 0 38px;border-radius:11px;background:var(--surface2);
+  display:flex;align-items:center;justify-content:center;font-family:var(--zh);font-size:17px;color:var(--red);font-weight:600;
+}
+.unit .u-mid{flex:1;min-width:0}
+.unit .u-mid b{display:block;font-size:15px;font-weight:600}
+.unit .u-mid span{font-size:12px;color:var(--ink3)}
+.unit .u-bar{height:5px;background:var(--surface2);border-radius:99px;margin-top:6px;overflow:hidden}
+.unit .u-bar>i{display:block;height:100%;background:var(--ok)}
+.deck-head{font-size:15px;font-weight:700;margin:18px 0 4px;display:flex;align-items:center;gap:8px}
+.deck-head small{font-weight:400;color:var(--ink3);font-size:12px}
+
+/* ---------- topbar ---------- */
+.topbar{
+  top:env(safe-area-inset-top,0px);
+  display:flex;align-items:center;gap:12px;padding:10px 14px;
+  position:sticky;background:var(--bg);z-index:5;
+}
+.icon-btn{font-size:22px;width:40px;height:40px;border-radius:12px;background:var(--surface2);line-height:1}
+.topbar-title{flex:1;font-weight:700;font-size:16px;text-align:center;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.topbar-right{min-width:52px;text-align:right;font-size:13px;color:var(--ink3);font-variant-numeric:tabular-nums}
+.prog{flex:1;height:7px;background:var(--surface2);border-radius:99px;overflow:hidden}
+.prog-in{height:100%;width:0;background:linear-gradient(90deg,var(--red),var(--gold));transition:width .25s}
+
+/* ---------- study stage ---------- */
+.stage{padding:8px 16px 16px;min-height:52vh;display:flex;flex-direction:column}
+.badge{display:inline-flex;align-items:center;gap:6px;font-size:11.5px;padding:4px 10px;border-radius:99px;background:var(--surface2);color:var(--ink2);align-self:flex-start}
+.badge.new{background:rgba(200,145,43,.18);color:var(--warn)}
+.badge.rev{background:rgba(30,122,77,.14);color:var(--ok)}
+
+.qcard{
+  background:var(--surface);border:1px solid var(--line);border-radius:22px;
+  padding:26px 20px;margin-top:14px;box-shadow:var(--shadow);text-align:center;
+}
+.zh{font-family:var(--zh);font-weight:600;line-height:1.32;letter-spacing:1px}
+.zh-xl{font-size:44px}
+.zh-l{font-size:34px}
+.zh-m{font-size:24px}
+.py{font-size:16px;color:var(--red-soft);margin-top:10px;letter-spacing:.4px}
+.thp{font-size:19px;margin-top:6px;color:var(--ink)}
+.mean{font-size:17px;margin-top:14px;color:var(--ink)}
+.mean-big{font-size:24px;font-weight:600;line-height:1.4}
+.note{
+  font-size:13px;color:var(--ink2);background:var(--surface2);
+  border-radius:12px;padding:10px 12px;margin-top:14px;text-align:left;line-height:1.5;
+}
+.note::before{content:"💡 ";}
+.hint{font-size:13px;color:var(--ink3);margin-top:16px}
+.unit-tag{font-size:12px;color:var(--ink3);margin-top:2px}
+
+.audio-row{display:flex;gap:9px;justify-content:center;margin-top:16px;flex-wrap:wrap}
+.abtn{background:var(--surface2);border-radius:12px;padding:10px 16px;font-size:14px;display:inline-flex;align-items:center;gap:6px}
+.abtn.mic{background:var(--red);color:#fff}
+.abtn.mic.listening{background:var(--bad);animation:pulse 1s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.6}}
+
+.result{border-radius:14px;padding:12px 14px;margin-top:14px;text-align:left;font-size:14px;line-height:1.5}
+.result.good{background:rgba(30,122,77,.13);color:var(--ok)}
+.result.mid{background:rgba(200,145,43,.15);color:var(--warn)}
+.result.bad{background:rgba(163,32,32,.12);color:var(--bad)}
+.result .heard{font-family:var(--zh);font-size:18px;display:block;margin-top:5px;color:var(--ink)}
+
+/* ---------- actions ---------- */
+.actions{padding:0 16px 20px;display:flex;gap:9px;flex-wrap:wrap}
+.actions .btn{
+  flex:1;min-width:92px;border-radius:14px;padding:15px 8px;font-size:15px;font-weight:600;
+  background:var(--surface);border:1.5px solid var(--line);text-align:center;
+}
+.actions .btn.solid{background:var(--red);border-color:var(--red);color:#fff}
+.actions .btn.g-again{border-color:var(--bad);color:var(--bad)}
+.actions .btn.g-ok{border-color:var(--ok);color:var(--ok)}
+.actions .btn.g-easy{border-color:var(--gold);color:var(--gold)}
+.actions .btn small{display:block;font-weight:400;font-size:11px;opacity:.75;margin-top:2px}
+.actions .btn:active{transform:scale(.98)}
+
+/* ---------- choices (listen mode) ---------- */
+.choices{display:flex;flex-direction:column;gap:9px;margin-top:18px}
+.choice{
+  background:var(--surface);border:1.5px solid var(--line);border-radius:14px;
+  padding:14px 15px;text-align:left;font-size:15.5px;
+}
+.choice.right{border-color:var(--ok);background:rgba(30,122,77,.1)}
+.choice.wrong{border-color:var(--bad);background:rgba(163,32,32,.1)}
+
+/* ---------- dialogues ---------- */
+.dlg-item{display:block;width:100%;text-align:left;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:14px;margin-bottom:9px}
+.dlg-item b{display:block;font-size:15px}
+.dlg-item span{font-size:12px;color:var(--ink3)}
+.line{display:flex;margin:10px 0;gap:9px}
+.line.you{flex-direction:row-reverse}
+.bub{max-width:82%;border-radius:16px;padding:11px 13px;background:var(--surface);border:1px solid var(--line)}
+.line.you .bub{background:var(--red);border-color:var(--red);color:#fff}
+.line.you .bub .py{color:rgba(255,255,255,.85)}
+.line.you .bub .m{color:rgba(255,255,255,.9)}
+.bub .z,.bub .py,.bub .tp,.bub .m{display:block}
+.bub .z{font-family:var(--zh);font-size:20px;line-height:1.4}
+.bub .py{font-size:13px;color:var(--red-soft);margin-top:3px}
+.bub .tp{font-size:14px;margin-top:2px}
+.bub .m{font-size:13px;color:var(--ink2);margin-top:4px}
+.who{width:30px;height:30px;flex:0 0 30px;border-radius:50%;background:var(--surface2);display:flex;align-items:center;justify-content:center;font-size:14px}
+.line.dim{opacity:.32}
+.line .say{font-size:12px;margin-top:8px;background:rgba(255,255,255,.2);border-radius:9px;padding:6px 10px;display:inline-block}
+
+/* ---------- โหมดโฟกัส: ซ่อนแถบล่าง ตรึงปุ่มไว้ท้ายจอ ---------- */
+body.focus .tabbar{display:none}
+body.focus .screen.active{display:flex;flex-direction:column;padding-bottom:0;height:100%}
+body.focus .stage,body.focus .pad{flex:1;min-height:0;overflow-y:auto;-webkit-overflow-scrolling:touch}
+body.focus .actions{padding-bottom:16px;padding-top:10px;border-top:1px solid var(--line);background:var(--bg)}
+
+/* ---------- browse ---------- */
+.search-wrap{padding:0 16px 8px;position:sticky;top:0;background:var(--bg);z-index:4}
+#q{width:100%;padding:13px 15px;border-radius:14px;border:1.5px solid var(--line);background:var(--surface);color:var(--ink);font-size:16px;font-family:inherit}
+.chips{display:flex;gap:7px;margin-top:9px;overflow-x:auto;padding-bottom:2px}
+.chip{white-space:nowrap;border:1.5px solid var(--line);border-radius:99px;padding:6px 13px;font-size:13px;background:var(--surface)}
+.chip.on{background:var(--red);border-color:var(--red);color:#fff}
+.row{display:flex;gap:12px;align-items:flex-start;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:12px 14px;margin-bottom:8px}
+.row .rl{flex:1;min-width:0}
+.row .rz{font-family:var(--zh);font-size:21px;font-weight:600}
+.row .rp{font-size:12.5px;color:var(--red-soft)}
+.row .rt{font-size:14px}
+.row .rm{font-size:13.5px;color:var(--ink2);margin-top:2px}
+.row .rn{font-size:12px;color:var(--ink3);margin-top:5px;line-height:1.45;border-top:1px dashed var(--line);padding-top:5px}
+.row .rb{flex:0 0 42px;height:42px;border-radius:12px;background:var(--surface2);font-size:17px;display:flex;align-items:center;justify-content:center}
+.empty{text-align:center;color:var(--ink3);padding:36px 12px;font-size:14px}
+
+/* ---------- settings ---------- */
+.set-row{display:flex;align-items:center;justify-content:space-between;gap:12px;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:14px;margin-bottom:8px}
+.set-row .sl{flex:1;min-width:0}
+.set-row b{display:block;font-size:15px;font-weight:600}
+.set-row small{display:block;color:var(--ink3);font-size:12px;line-height:1.45;margin-top:2px}
+select,input[type=number]{font-family:inherit;font-size:15px;padding:9px 11px;border-radius:11px;border:1.5px solid var(--line);background:var(--surface2);color:var(--ink);max-width:180px}
+.sw{width:50px;height:30px;border-radius:99px;background:var(--surface2);position:relative;flex:0 0 50px;border:1.5px solid var(--line)}
+.sw::after{content:"";position:absolute;top:2px;left:2px;width:22px;height:22px;border-radius:50%;background:var(--ink3);transition:.16s}
+.sw.on{background:var(--red);border-color:var(--red)}
+.sw.on::after{left:24px;background:#fff}
+.danger{color:var(--bad)}
+.info-block{font-size:13.5px;color:var(--ink2);line-height:1.65;background:var(--surface2);border-radius:14px;padding:14px;margin-bottom:10px}
+.info-block b{color:var(--ink)}
+
+/* ---------- stats ---------- */
+.hm{display:grid;grid-template-columns:repeat(14,1fr);gap:4px;margin-top:12px}
+.hm i{aspect-ratio:1;border-radius:3px;background:var(--surface2);display:block}
+.hm i.l1{background:rgba(140,27,27,.3)}
+.hm i.l2{background:rgba(140,27,27,.55)}
+.hm i.l3{background:rgba(140,27,27,.8)}
+.hm i.l4{background:var(--red)}
+
+/* ---------- tabbar ---------- */
+.tabbar{
+  position:fixed;left:0;right:0;bottom:0;z-index:20;display:flex;
+  background:color-mix(in srgb,var(--surface) 92%,transparent);
+  backdrop-filter:blur(14px);border-top:1px solid var(--line);
+  padding-bottom:env(safe-area-inset-bottom,0px);max-width:560px;margin:0 auto;
+}
+.tabbar button{flex:1;padding:8px 2px 9px;font-size:10.5px;color:var(--ink3);display:flex;flex-direction:column;align-items:center;gap:2px}
+.tabbar button span{font-size:19px;line-height:1}
+.tabbar button.on{color:var(--red)}
+
+.toast{
+  position:fixed;left:50%;transform:translateX(-50%);bottom:96px;z-index:60;
+  background:var(--ink);color:var(--bg);padding:11px 17px;border-radius:12px;font-size:14px;
+  max-width:88%;text-align:center;box-shadow:var(--shadow);
+}
+.done-wrap{text-align:center;padding:40px 20px}
+.done-wrap .big-emo{font-size:56px}
+.done-wrap h2{margin:12px 0 6px;font-size:22px}
+.done-wrap p{color:var(--ink2);font-size:15px;margin:0 0 20px}
+
+#backup-panel{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:12px;margin-bottom:8px}
+#bk-text{width:100%;min-height:96px;resize:vertical;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12px;
+  border:1.5px solid var(--line);border-radius:11px;padding:10px;background:var(--surface2);color:var(--ink)}
+.bk-row{display:flex;gap:7px;flex-wrap:wrap;margin-top:9px}
+.bk-row .chip{cursor:pointer}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+
+<div id="app">
+
+  <!-- ================= หน้าแรก ================= -->
+  <section class="screen active" id="s-home">
+    <header class="hero">
+      <div class="hero-top">
+        <div class="brand"><span class="brand-zh">说吧</span><span class="brand-th">พูดจีนได้</span></div>
+        <div class="streak" id="streak-box"><b id="streak-n">0</b><span>วันติด</span></div>
+      </div>
+      <div class="hero-plan" id="plan-box"></div>
+      <button class="btn-primary big" id="btn-start">เริ่มบทเรียนวันนี้</button>
+      <div class="hero-note" id="tts-warn" hidden></div>
+    </header>
+
+    <div class="pad">
+      <div class="quick">
+        <button class="quick-item" data-go="speakdrill"><span>🎤</span><b>ฝึกพูดรัว</b><i>ไทย → พูดจีน</i></button>
+        <button class="quick-item" data-go="dialogues"><span>💬</span><b>บทสนทนา</b><i>เล่นเป็นตัวคุณเอง</i></button>
+        <button class="quick-item" data-go="listen"><span>👂</span><b>ฟังจับใจความ</b><i>ฟังจีน เลือกความหมาย</i></button>
+        <button class="quick-item" data-go="browse"><span>📚</span><b>คลังคำ</b><i>ค้นหาก่อนออกไปเจรจา</i></button>
+      </div>
+
+      <h3 class="sec-title">ความคืบหน้า</h3>
+      <div class="card" id="progress-card"></div>
+
+      <h3 class="sec-title">หมวดคำ</h3>
+      <div id="unit-list"></div>
+      <div class="foot-space"></div>
+    </div>
+  </section>
+
+  <!-- ================= เรียน / ทวน ================= -->
+  <section class="screen" id="s-study">
+    <div class="topbar">
+      <button class="icon-btn" data-back>✕</button>
+      <div class="prog"><div class="prog-in" id="study-prog"></div></div>
+      <div class="topbar-right" id="study-count">0/0</div>
+    </div>
+    <div class="stage" id="study-stage"></div>
+    <div class="actions" id="study-actions"></div>
+  </section>
+
+  <!-- ================= ฝึกพูด ================= -->
+  <section class="screen" id="s-speak">
+    <div class="topbar">
+      <button class="icon-btn" data-back>✕</button>
+      <div class="prog"><div class="prog-in" id="speak-prog"></div></div>
+      <div class="topbar-right" id="speak-count">0/0</div>
+    </div>
+    <div class="stage" id="speak-stage"></div>
+    <div class="actions" id="speak-actions"></div>
+  </section>
+
+  <!-- ================= ฟัง ================= -->
+  <section class="screen" id="s-listen">
+    <div class="topbar">
+      <button class="icon-btn" data-back>✕</button>
+      <div class="prog"><div class="prog-in" id="listen-prog"></div></div>
+      <div class="topbar-right" id="listen-count">0/0</div>
+    </div>
+    <div class="stage" id="listen-stage"></div>
+    <div class="actions" id="listen-actions"></div>
+  </section>
+
+  <!-- ================= บทสนทนา ================= -->
+  <section class="screen" id="s-dialogues">
+    <div class="topbar"><button class="icon-btn" data-back>‹</button><div class="topbar-title">บทสนทนา</div><div class="topbar-right"></div></div>
+    <div class="pad" id="dialogue-list"></div>
+  </section>
+
+  <section class="screen" id="s-dialogue">
+    <div class="topbar"><button class="icon-btn" data-back>‹</button><div class="topbar-title" id="dlg-title"></div><div class="topbar-right"></div></div>
+    <div class="pad" id="dlg-body"></div>
+    <div class="actions" id="dlg-actions"></div>
+  </section>
+
+  <!-- ================= คลังคำ ================= -->
+  <section class="screen" id="s-browse">
+    <div class="topbar"><button class="icon-btn" data-back>‹</button><div class="topbar-title">คลังคำ</div><div class="topbar-right"></div></div>
+    <div class="search-wrap">
+      <input type="search" id="q" placeholder="ค้นหา ไทย / จีน / พินอิน เช่น กระเบื้อง, MOQ, jiage" autocomplete="off">
+      <div class="chips" id="deck-chips"></div>
+    </div>
+    <div class="pad" id="browse-list"></div>
+  </section>
+
+  <!-- ================= สถิติ ================= -->
+  <section class="screen" id="s-stats">
+    <div class="topbar"><button class="icon-btn" data-back>‹</button><div class="topbar-title">สถิติ</div><div class="topbar-right"></div></div>
+    <div class="pad" id="stats-body"></div>
+  </section>
+
+  <!-- ================= ตั้งค่า ================= -->
+  <section class="screen" id="s-settings">
+    <div class="topbar"><button class="icon-btn" data-back>‹</button><div class="topbar-title">ตั้งค่า</div><div class="topbar-right"></div></div>
+    <div class="pad" id="settings-body"></div>
+  </section>
+
+  <nav class="tabbar" id="tabbar">
+    <button data-tab="home" class="on"><span>🏠</span>หน้าแรก</button>
+    <button data-tab="browse"><span>📚</span>คลังคำ</button>
+    <button data-tab="dialogues"><span>💬</span>บทสนทนา</button>
+    <button data-tab="stats"><span>📈</span>สถิติ</button>
+    <button data-tab="settings"><span>⚙️</span>ตั้งค่า</button>
+  </nav>
+</div>
+
+<div id="toast" class="toast" hidden></div>
+
+<script>
+/* ชุดแกน — ตัวเลข ราคา เวลา มารยาท และโครงประโยคที่ใช้ซ้ำได้ทุกสถานการณ์
+   i=id  u=unit  z=จีน  p=พินอิน  t=คำอ่านไทย  m=ความหมาย  k=w(คำ)/s(ประโยค)  l=ระดับ  n=โน้ต */
+window.DECK_CORE = [
+/* ---------- ตัวเลข ---------- */
+{i:'c001',u:'core.num',z:'一',p:'yī',t:'อี',m:'1',k:'w',l:1},
+{i:'c002',u:'core.num',z:'二',p:'èr',t:'เอ้อร์',m:'2',k:'w',l:1},
+{i:'c003',u:'core.num',z:'三',p:'sān',t:'ซาน',m:'3',k:'w',l:1},
+{i:'c004',u:'core.num',z:'四',p:'sì',t:'ซื่อ',m:'4',k:'w',l:1},
+{i:'c005',u:'core.num',z:'五',p:'wǔ',t:'หวู่',m:'5',k:'w',l:1},
+{i:'c006',u:'core.num',z:'六',p:'liù',t:'ลิ่ว',m:'6',k:'w',l:1},
+{i:'c007',u:'core.num',z:'七',p:'qī',t:'ชี',m:'7',k:'w',l:1},
+{i:'c008',u:'core.num',z:'八',p:'bā',t:'ปา',m:'8',k:'w',l:1},
+{i:'c009',u:'core.num',z:'九',p:'jiǔ',t:'จิ่ว',m:'9',k:'w',l:1},
+{i:'c010',u:'core.num',z:'十',p:'shí',t:'สือ',m:'10',k:'w',l:1},
+{i:'c011',u:'core.num',z:'零',p:'líng',t:'หลิง',m:'0 / ศูนย์',k:'w',l:1},
+{i:'c012',u:'core.num',z:'百',p:'bǎi',t:'ป่าย',m:'ร้อย',k:'w',l:1},
+{i:'c013',u:'core.num',z:'千',p:'qiān',t:'เชียน',m:'พัน',k:'w',l:1},
+{i:'c014',u:'core.num',z:'万',p:'wàn',t:'ว่าน',m:'หมื่น',k:'w',l:1,n:'จีนนับเป็นหมื่น ไม่ใช่แสน — 10万 = 1 แสน, 100万 = 1 ล้าน'},
+{i:'c015',u:'core.num',z:'两',p:'liǎng',t:'เหลี่ยง',m:'สอง (ใช้นำหน้าลักษณนาม)',k:'w',l:1,n:'两个 ไม่ใช่ 二个'},
+{i:'c016',u:'core.num',z:'个',p:'gè',t:'เก้อ',m:'อัน/ชิ้น (ลักษณนามกลาง)',k:'w',l:1},
+{i:'c017',u:'core.num',z:'十万',p:'shí wàn',t:'สือ ว่าน',m:'หนึ่งแสน',k:'w',l:2},
+{i:'c018',u:'core.num',z:'一百万',p:'yì bǎi wàn',t:'อี้ ป่าย ว่าน',m:'หนึ่งล้าน',k:'w',l:2},
+{i:'c019',u:'core.num',z:'第一',p:'dì yī',t:'ตี้ อี',m:'ที่หนึ่ง / อันดับแรก',k:'w',l:2},
+{i:'c020',u:'core.num',z:'一半',p:'yí bàn',t:'อี๋ ป้าน',m:'ครึ่งหนึ่ง',k:'w',l:2},
+{i:'c021',u:'core.num',z:'百分之十',p:'bǎi fēn zhī shí',t:'ป่าย เฟิน จือ สือ',m:'สิบเปอร์เซ็นต์',k:'w',l:3,n:'เปลี่ยนตัวท้ายได้: 百分之五 = 5%'},
+{i:'c022',u:'core.num',z:'点',p:'diǎn',t:'เตี่ยน',m:'จุด (ทศนิยม) / โมง',k:'w',l:1,n:'3.5 = 三点五'},
+
+/* ---------- ราคาและเงิน ---------- */
+{i:'c031',u:'core.money',z:'钱',p:'qián',t:'เฉียน',m:'เงิน',k:'w',l:1},
+{i:'c032',u:'core.money',z:'块',p:'kuài',t:'ไคว่',m:'บาท/หยวน (คำพูด)',k:'w',l:1},
+{i:'c033',u:'core.money',z:'元',p:'yuán',t:'หยวน',m:'หยวน (คำเขียน)',k:'w',l:1},
+{i:'c034',u:'core.money',z:'毛',p:'máo',t:'หมาว',m:'สิบเซ็นต์ (0.1 หยวน)',k:'w',l:2},
+{i:'c035',u:'core.money',z:'人民币',p:'rén mín bì',t:'เหญิน หมิน ปี้',m:'เงินหยวน (RMB)',k:'w',l:2},
+{i:'c036',u:'core.money',z:'美元',p:'měi yuán',t:'เหม่ย หยวน',m:'ดอลลาร์สหรัฐ',k:'w',l:2},
+{i:'c037',u:'core.money',z:'泰铢',p:'tài zhū',t:'ไท่ จู',m:'เงินบาทไทย',k:'w',l:2},
+{i:'c038',u:'core.money',z:'贵',p:'guì',t:'กุ้ย',m:'แพง',k:'w',l:1},
+{i:'c039',u:'core.money',z:'便宜',p:'pián yi',t:'เผียน อี',m:'ถูก',k:'w',l:1},
+{i:'c040',u:'core.money',z:'价格',p:'jià gé',t:'เจี้ย เก๋อ',m:'ราคา',k:'w',l:2},
+{i:'c041',u:'core.money',z:'多少钱？',p:'duō shao qián?',t:'ตัว เชา เฉียน',m:'ราคาเท่าไหร่',k:'s',l:1},
+{i:'c042',u:'core.money',z:'太贵了。',p:'tài guì le.',t:'ไท่ กุ้ย เลอ',m:'แพงเกินไป',k:'s',l:1},
+{i:'c043',u:'core.money',z:'能便宜一点吗？',p:'néng pián yi yì diǎn ma?',t:'เหนิง เผียน อี อี้ เตี่ยน มา',m:'ลดหน่อยได้ไหม',k:'s',l:1},
+{i:'c044',u:'core.money',z:'最低多少？',p:'zuì dī duō shao?',t:'จุ้ย ตี ตัว เชา',m:'ต่ำสุดเท่าไหร่',k:'s',l:2},
+{i:'c045',u:'core.money',z:'一共多少钱？',p:'yí gòng duō shao qián?',t:'อี๋ ก้ง ตัว เชา เฉียน',m:'ทั้งหมดเท่าไหร่',k:'s',l:1},
+{i:'c046',u:'core.money',z:'我的预算是……',p:'wǒ de yù suàn shì...',t:'หว่อ เตอ ยฺวี่ ซ่วน ซื่อ...',m:'งบของผมคือ...',k:'s',l:3},
+{i:'c047',u:'core.money',z:'含税吗？',p:'hán shuì ma?',t:'หาน ซุ่ย มา',m:'รวมภาษีหรือเปล่า',k:'s',l:3},
+{i:'c048',u:'core.money',z:'不含运费',p:'bù hán yùn fèi',t:'ปู้ หาน ยฺวิ่น เฟ่ย',m:'ไม่รวมค่าขนส่ง',k:'s',l:3},
+{i:'c049',u:'core.money',z:'打折',p:'dǎ zhé',t:'ต่า เจ๋อ',m:'ลดราคา',k:'w',l:2,n:'打八折 = ลด 20% (จ่าย 80%) — คิดกลับด้านจากไทย'},
+{i:'c050',u:'core.money',z:'打八折',p:'dǎ bā zhé',t:'ต่า ปา เจ๋อ',m:'ลด 20% (จ่าย 80%)',k:'w',l:3},
+
+/* ---------- เวลา ---------- */
+{i:'c061',u:'core.time',z:'今天',p:'jīn tiān',t:'จิน เทียน',m:'วันนี้',k:'w',l:1},
+{i:'c062',u:'core.time',z:'明天',p:'míng tiān',t:'หมิง เทียน',m:'พรุ่งนี้',k:'w',l:1},
+{i:'c063',u:'core.time',z:'昨天',p:'zuó tiān',t:'จั๋ว เทียน',m:'เมื่อวาน',k:'w',l:1},
+{i:'c064',u:'core.time',z:'后天',p:'hòu tiān',t:'โฮ่ว เทียน',m:'มะรืนนี้',k:'w',l:2},
+{i:'c065',u:'core.time',z:'现在',p:'xiàn zài',t:'เซี่ยน จ้าย',m:'ตอนนี้',k:'w',l:1},
+{i:'c066',u:'core.time',z:'星期',p:'xīng qī',t:'ซิง ชี',m:'สัปดาห์',k:'w',l:1},
+{i:'c067',u:'core.time',z:'月',p:'yuè',t:'เยฺว่',m:'เดือน',k:'w',l:1},
+{i:'c068',u:'core.time',z:'年',p:'nián',t:'เหนียน',m:'ปี',k:'w',l:1},
+{i:'c069',u:'core.time',z:'天',p:'tiān',t:'เทียน',m:'วัน',k:'w',l:1},
+{i:'c070',u:'core.time',z:'小时',p:'xiǎo shí',t:'เสี่ยว สือ',m:'ชั่วโมง',k:'w',l:2},
+{i:'c071',u:'core.time',z:'分钟',p:'fēn zhōng',t:'เฟิน จง',m:'นาที',k:'w',l:2},
+{i:'c072',u:'core.time',z:'几点？',p:'jǐ diǎn?',t:'จี่ เตี่ยน',m:'กี่โมง',k:'s',l:1},
+{i:'c073',u:'core.time',z:'什么时候？',p:'shén me shí hou?',t:'เสิน เมอ สือ โฮ่ว',m:'เมื่อไหร่',k:'s',l:1},
+{i:'c074',u:'core.time',z:'要多久？',p:'yào duō jiǔ?',t:'เย่า ตัว จิ่ว',m:'ใช้เวลานานแค่ไหน',k:'s',l:2},
+{i:'c075',u:'core.time',z:'来得及吗？',p:'lái de jí ma?',t:'ไหล เตอ จี๋ มา',m:'ทันไหม',k:'s',l:3},
+{i:'c076',u:'core.time',z:'越快越好',p:'yuè kuài yuè hǎo',t:'เยฺว่ ไคว่ เยฺว่ ห่าว',m:'ยิ่งเร็วยิ่งดี',k:'s',l:3},
+
+/* ---------- ทักทาย มารยาท ---------- */
+{i:'c081',u:'core.social',z:'你好',p:'nǐ hǎo',t:'หนี ห่าว',m:'สวัสดี',k:'s',l:1},
+{i:'c082',u:'core.social',z:'您好',p:'nín hǎo',t:'หนิน ห่าว',m:'สวัสดีครับ (สุภาพ)',k:'s',l:1,n:'ใช้กับลูกค้า เจ้าของโรงงาน คนอาวุโส'},
+{i:'c083',u:'core.social',z:'谢谢',p:'xiè xie',t:'เซี่ย เซีย',m:'ขอบคุณ',k:'s',l:1},
+{i:'c084',u:'core.social',z:'不客气',p:'bú kè qi',t:'ปู๋ เค่อ ชี',m:'ไม่เป็นไร / ยินดี',k:'s',l:1},
+{i:'c085',u:'core.social',z:'对不起',p:'duì bu qǐ',t:'ตุ้ย ปุ ฉี่',m:'ขอโทษ',k:'s',l:1},
+{i:'c086',u:'core.social',z:'没关系',p:'méi guān xi',t:'เหมย กวาน ซี',m:'ไม่เป็นไร',k:'s',l:1},
+{i:'c087',u:'core.social',z:'请',p:'qǐng',t:'ฉิ่ง',m:'เชิญ / กรุณา',k:'w',l:1},
+{i:'c088',u:'core.social',z:'再见',p:'zài jiàn',t:'จ้าย เจี้ยน',m:'ลาก่อน',k:'s',l:1},
+{i:'c089',u:'core.social',z:'我叫……',p:'wǒ jiào...',t:'หว่อ เจี้ยว...',m:'ผมชื่อ...',k:'s',l:1},
+{i:'c090',u:'core.social',z:'我是泰国人',p:'wǒ shì Tài guó rén',t:'หว่อ ซื่อ ไท่ กั๋ว เหญิน',m:'ผมเป็นคนไทย',k:'s',l:1},
+{i:'c091',u:'core.social',z:'很高兴认识你',p:'hěn gāo xìng rèn shi nǐ',t:'เหิ่น เกา ซิ่ง เญิ่น สือ หนี่',m:'ยินดีที่ได้รู้จัก',k:'s',l:2},
+{i:'c092',u:'core.social',z:'加个微信吧',p:'jiā ge Wēi xìn ba',t:'เจีย เกอ เวย ซิ่น ปา',m:'แอดวีแชทกันเถอะ',k:'s',l:2,n:'ประโยคปิดการคุยครั้งแรกที่ใช้บ่อยที่สุดในจีน'},
+{i:'c093',u:'core.social',z:'麻烦你了',p:'má fan nǐ le',t:'หมา ฟาน หนี่ เลอ',m:'รบกวนคุณแล้วนะ',k:'s',l:2},
+{i:'c094',u:'core.social',z:'辛苦了',p:'xīn kǔ le',t:'ซิน ขู่ เลอ',m:'เหนื่อยหน่อยนะ / ขอบคุณที่ลำบาก',k:'s',l:2,n:'พูดกับคนงาน คนขับรถ พนักงาน — ได้ใจมาก'},
+{i:'c095',u:'core.social',z:'请多关照',p:'qǐng duō guān zhào',t:'ฉิ่ง ตัว กวาน จ้าว',m:'ฝากเนื้อฝากตัวด้วย',k:'s',l:3},
+
+/* ---------- โครงประโยคหลัก (เปลี่ยนคำในช่องว่างได้) ---------- */
+{i:'c101',u:'core.frame',z:'我要……',p:'wǒ yào...',t:'หว่อ เย่า...',m:'ผมเอา... / ผมต้องการ...',k:'s',l:1},
+{i:'c102',u:'core.frame',z:'我想……',p:'wǒ xiǎng...',t:'หว่อ เสี่ยง...',m:'ผมอยาก...',k:'s',l:1},
+{i:'c103',u:'core.frame',z:'有没有……？',p:'yǒu méi yǒu...?',t:'โหย่ว เหมย โหย่ว...',m:'มี...ไหม',k:'s',l:1},
+{i:'c104',u:'core.frame',z:'这个多少钱？',p:'zhè ge duō shao qián?',t:'เจ้อ เกอ ตัว เชา เฉียน',m:'อันนี้เท่าไหร่',k:'s',l:1},
+{i:'c105',u:'core.frame',z:'可以……吗？',p:'kě yǐ... ma?',t:'เข่อ อี่... มา',m:'...ได้ไหม',k:'s',l:1},
+{i:'c106',u:'core.frame',z:'能不能……？',p:'néng bu néng...?',t:'เหนิง ปุ เหนิง...',m:'...ได้หรือไม่ได้',k:'s',l:2},
+{i:'c107',u:'core.frame',z:'我听不懂',p:'wǒ tīng bu dǒng',t:'หว่อ ทิง ปุ ต่ง',m:'ผมฟังไม่เข้าใจ',k:'s',l:1},
+{i:'c108',u:'core.frame',z:'请说慢一点',p:'qǐng shuō màn yì diǎn',t:'ฉิ่ง ซัว ม่าน อี้ เตี่ยน',m:'พูดช้าลงหน่อยครับ',k:'s',l:1,n:'ประโยคที่ช่วยชีวิตที่สุดตอนคุยกับคนจีน'},
+{i:'c109',u:'core.frame',z:'请再说一遍',p:'qǐng zài shuō yí biàn',t:'ฉิ่ง จ้าย ซัว อี๋ เปี้ยน',m:'พูดอีกครั้งครับ',k:'s',l:1},
+{i:'c110',u:'core.frame',z:'请写下来',p:'qǐng xiě xià lai',t:'ฉิ่ง เสี่ย เซี่ย ไหล',m:'ช่วยเขียนลงมาให้หน่อย',k:'s',l:2,n:'ตัวเลขราคา ให้เขาเขียนเสมอ กันฟังผิด'},
+{i:'c111',u:'core.frame',z:'这是什么？',p:'zhè shì shén me?',t:'เจ้อ ซื่อ เสิน เมอ',m:'นี่คืออะไร',k:'s',l:1},
+{i:'c112',u:'core.frame',z:'怎么说？',p:'zěn me shuō?',t:'เจิ่น เมอ ซัว',m:'พูดยังไง',k:'s',l:1},
+{i:'c113',u:'core.frame',z:'用中文怎么说？',p:'yòng Zhōng wén zěn me shuō?',t:'ย่ง จง เหวิน เจิ่น เมอ ซัว',m:'ภาษาจีนพูดว่าอะไร',k:'s',l:2},
+{i:'c114',u:'core.frame',z:'我的中文不太好',p:'wǒ de Zhōng wén bú tài hǎo',t:'หว่อ เตอ จง เหวิน ปู๋ ไท่ ห่าว',m:'ภาษาจีนผมไม่ค่อยดี',k:'s',l:1},
+{i:'c115',u:'core.frame',z:'没问题',p:'méi wèn tí',t:'เหมย เวิ่น ถี',m:'ไม่มีปัญหา',k:'s',l:1},
+{i:'c116',u:'core.frame',z:'我看一下',p:'wǒ kàn yí xià',t:'หว่อ ค่าน อี๋ เซี่ย',m:'ขอดูหน่อย',k:'s',l:1},
+{i:'c117',u:'core.frame',z:'等一下',p:'děng yí xià',t:'เติ่ง อี๋ เซี่ย',m:'รอสักครู่',k:'s',l:1},
+{i:'c118',u:'core.frame',z:'我考虑一下',p:'wǒ kǎo lǜ yí xià',t:'หว่อ เข่า ลฺวี่ อี๋ เซี่ย',m:'ขอคิดดูก่อน',k:'s',l:2,n:'วิธีปฏิเสธแบบไม่เสียมารยาทที่คนจีนใช้กันจริง'},
+{i:'c119',u:'core.frame',z:'我们再联系',p:'wǒ men zài lián xì',t:'หว่อ เมิน จ้าย เหลียน ซี',m:'ไว้ติดต่อกันใหม่',k:'s',l:2},
+{i:'c120',u:'core.frame',z:'给我看看',p:'gěi wǒ kàn kan',t:'เก่ย หว่อ ค่าน ค่าน',m:'ขอดูหน่อย / เอามาให้ดู',k:'s',l:1},
+{i:'c121',u:'core.frame',z:'为什么？',p:'wèi shén me?',t:'เว่ย เสิน เมอ',m:'ทำไม',k:'s',l:1},
+{i:'c122',u:'core.frame',z:'在哪里？',p:'zài nǎ lǐ?',t:'จ้าย หนา หลี่',m:'อยู่ที่ไหน',k:'s',l:1},
+{i:'c123',u:'core.frame',z:'哪个更好？',p:'nǎ ge gèng hǎo?',t:'หนา เกอ เกิ้ง ห่าว',m:'อันไหนดีกว่า',k:'s',l:2},
+{i:'c124',u:'core.frame',z:'有什么区别？',p:'yǒu shén me qū bié?',t:'โหย่ว เสิน เมอ ชฺวี เปี๋ย',m:'ต่างกันยังไง',k:'s',l:3,n:'ใช้ตอนเทียบสินค้าสองเกรด — คุ้มมาก'},
+{i:'c125',u:'core.frame',z:'我不要',p:'wǒ bú yào',t:'หว่อ ปู๋ เย่า',m:'ผมไม่เอา',k:'s',l:1},
+{i:'c126',u:'core.frame',z:'就这样吧',p:'jiù zhè yàng ba',t:'จิ้ว เจ้อ ย่าง ปา',m:'เอาแบบนี้แหละ / ตกลงตามนี้',k:'s',l:2}
+];
+
+/* ชุดชีวิตประจำวันในจีน — เอาตัวรอดและอยู่สบายตอนไปดูงาน/ซื้อของ */
+window.DECK_DAILY = [
+/* ---------- สนามบิน / เข้าเมือง / รถไฟ ---------- */
+{i:'d001',u:'daily.airport',z:'机场',p:'jī chǎng',t:'จี ฉ่าง',m:'สนามบิน',k:'w',l:1},
+{i:'d002',u:'daily.airport',z:'护照',p:'hù zhào',t:'ฮู่ จ้าว',m:'พาสปอร์ต',k:'w',l:1},
+{i:'d003',u:'daily.airport',z:'签证',p:'qiān zhèng',t:'เชียน เจิ้ง',m:'วีซ่า',k:'w',l:2},
+{i:'d004',u:'daily.airport',z:'行李',p:'xíng li',t:'สิง หลี่',m:'กระเป๋าเดินทาง',k:'w',l:2},
+{i:'d005',u:'daily.airport',z:'登机口',p:'dēng jī kǒu',t:'เติง จี โข่ว',m:'ประตูขึ้นเครื่อง',k:'w',l:2},
+{i:'d006',u:'daily.airport',z:'航班',p:'háng bān',t:'หาง ปาน',m:'เที่ยวบิน',k:'w',l:2},
+{i:'d007',u:'daily.airport',z:'高铁',p:'gāo tiě',t:'เกา เถี่ย',m:'รถไฟความเร็วสูง',k:'w',l:2},
+{i:'d008',u:'daily.airport',z:'火车站',p:'huǒ chē zhàn',t:'หั่ว เชอ จ้าน',m:'สถานีรถไฟ',k:'w',l:2},
+{i:'d009',u:'daily.airport',z:'地铁',p:'dì tiě',t:'ตี้ เถี่ย',m:'รถไฟใต้ดิน',k:'w',l:1},
+{i:'d010',u:'daily.airport',z:'票',p:'piào',t:'เพี่ยว',m:'ตั๋ว',k:'w',l:1},
+{i:'d011',u:'daily.airport',z:'我来出差',p:'wǒ lái chū chāi',t:'หว่อ ไหล ชู ไช',m:'ผมมาทำงาน/ดูงาน',k:'s',l:2,n:'ตอบ ตม. จีน คำนี้พอ'},
+{i:'d012',u:'daily.airport',z:'我来广州看展会',p:'wǒ lái Guǎng zhōu kàn zhǎn huì',t:'หว่อ ไหล ก่วง โจว ค่าน จ่าน ฮุ่ย',m:'ผมมากวางโจวเพื่อดูงานแฟร์',k:'s',l:3},
+{i:'d013',u:'daily.airport',z:'我住五天',p:'wǒ zhù wǔ tiān',t:'หว่อ จู้ หวู่ เทียน',m:'ผมพัก 5 วัน',k:'s',l:2},
+{i:'d014',u:'daily.airport',z:'行李在哪里取？',p:'xíng li zài nǎ lǐ qǔ?',t:'สิง หลี่ จ้าย หนา หลี่ ฉฺวี่',m:'รับกระเป๋าที่ไหน',k:'s',l:2},
+{i:'d015',u:'daily.airport',z:'请给我一张去佛山的票',p:'qǐng gěi wǒ yì zhāng qù Fó shān de piào',t:'ฉิ่ง เก่ย หว่อ อี้ จาง ชฺวี่ ฝัว ซาน เตอ เพี่ยว',m:'ขอตั๋วไปโฝซานหนึ่งใบ',k:'s',l:3},
+{i:'d016',u:'daily.airport',z:'哪个站下车？',p:'nǎ ge zhàn xià chē?',t:'หนา เกอ จ้าน เซี่ย เชอ',m:'ลงสถานีไหน',k:'s',l:2},
+{i:'d017',u:'daily.airport',z:'我的手机能上网吗？',p:'wǒ de shǒu jī néng shàng wǎng ma?',t:'หว่อ เตอ โส่ว จี เหนิง ซ่าง หว่าง มา',m:'มือถือผมเล่นเน็ตได้ไหม',k:'s',l:3},
+
+/* ---------- โรงแรม ---------- */
+{i:'d021',u:'daily.hotel',z:'酒店',p:'jiǔ diàn',t:'จิ่ว เตี้ยน',m:'โรงแรม',k:'w',l:1},
+{i:'d022',u:'daily.hotel',z:'房间',p:'fáng jiān',t:'ฝาง เจียน',m:'ห้องพัก',k:'w',l:1},
+{i:'d023',u:'daily.hotel',z:'前台',p:'qián tái',t:'เฉียน ไถ',m:'เคาน์เตอร์ต้อนรับ',k:'w',l:2},
+{i:'d024',u:'daily.hotel',z:'我订了房间',p:'wǒ dìng le fáng jiān',t:'หว่อ ติ้ง เลอ ฝาง เจียน',m:'ผมจองห้องไว้แล้ว',k:'s',l:2},
+{i:'d025',u:'daily.hotel',z:'我要入住',p:'wǒ yào rù zhù',t:'หว่อ เย่า ญู่ จู้',m:'ผมจะเช็คอิน',k:'s',l:2},
+{i:'d026',u:'daily.hotel',z:'我要退房',p:'wǒ yào tuì fáng',t:'หว่อ เย่า ทุ่ย ฝาง',m:'ผมจะเช็คเอาท์',k:'s',l:2},
+{i:'d027',u:'daily.hotel',z:'wifi密码是多少？',p:'wifi mì mǎ shì duō shao?',t:'ไวไฟ มี่ หม่า ซื่อ ตัว เชา',m:'รหัสไวไฟอะไร',k:'s',l:2},
+{i:'d028',u:'daily.hotel',z:'空调坏了',p:'kōng tiáo huài le',t:'คง เถียว ไฮ่ว เลอ',m:'แอร์เสีย',k:'s',l:2},
+{i:'d029',u:'daily.hotel',z:'热水没有了',p:'rè shuǐ méi yǒu le',t:'เญ่อ สุ่ย เหมย โหย่ว เลอ',m:'น้ำร้อนไม่มา',k:'s',l:2},
+{i:'d030',u:'daily.hotel',z:'能换房间吗？',p:'néng huàn fáng jiān ma?',t:'เหนิง ฮ่วน ฝาง เจียน มา',m:'เปลี่ยนห้องได้ไหม',k:'s',l:2},
+{i:'d031',u:'daily.hotel',z:'请帮我叫车',p:'qǐng bāng wǒ jiào chē',t:'ฉิ่ง ปาง หว่อ เจี้ยว เชอ',m:'ช่วยเรียกรถให้หน่อย',k:'s',l:2},
+{i:'d032',u:'daily.hotel',z:'能寄存行李吗？',p:'néng jì cún xíng li ma?',t:'เหนิง จี้ ฉุน สิง หลี่ มา',m:'ฝากกระเป๋าได้ไหม',k:'s',l:3},
+{i:'d033',u:'daily.hotel',z:'几点吃早餐？',p:'jǐ diǎn chī zǎo cān?',t:'จี่ เตี่ยน ชือ เจ่า ชาน',m:'อาหารเช้ากี่โมง',k:'s',l:2},
+
+/* ---------- แท็กซี่ / DiDi ---------- */
+{i:'d041',u:'daily.taxi',z:'出租车',p:'chū zū chē',t:'ชู จู เชอ',m:'แท็กซี่',k:'w',l:1},
+{i:'d042',u:'daily.taxi',z:'师傅',p:'shī fu',t:'ซือ ฟุ',m:'พี่คนขับ (คำเรียกสุภาพ)',k:'w',l:2,n:'เรียกคนขับ ช่าง คนงานฝีมือ ทุกคนใช้คำนี้'},
+{i:'d043',u:'daily.taxi',z:'去这里',p:'qù zhè lǐ',t:'ชฺวี่ เจ้อ หลี่',m:'ไปที่นี่ (ชี้แผนที่)',k:'s',l:1},
+{i:'d044',u:'daily.taxi',z:'到了叫我',p:'dào le jiào wǒ',t:'เต้า เลอ เจี้ยว หว่อ',m:'ถึงแล้วเรียกผมด้วย',k:'s',l:2},
+{i:'d045',u:'daily.taxi',z:'请打表',p:'qǐng dǎ biǎo',t:'ฉิ่ง ต่า เปี่ยว',m:'กดมิเตอร์ด้วยครับ',k:'s',l:2},
+{i:'d046',u:'daily.taxi',z:'停在这里',p:'tíng zài zhè lǐ',t:'ถิง จ้าย เจ้อ หลี่',m:'จอดตรงนี้',k:'s',l:2},
+{i:'d047',u:'daily.taxi',z:'我赶时间',p:'wǒ gǎn shí jiān',t:'หว่อ ก่าน สือ เจียน',m:'ผมรีบ',k:'s',l:2},
+{i:'d048',u:'daily.taxi',z:'走高速吧',p:'zǒu gāo sù ba',t:'โจ่ว เกา ซู่ ปา',m:'ไปทางด่วนเถอะ',k:'s',l:3},
+{i:'d049',u:'daily.taxi',z:'堵车',p:'dǔ chē',t:'ตู่ เชอ',m:'รถติด',k:'w',l:2},
+{i:'d050',u:'daily.taxi',z:'远吗？',p:'yuǎn ma?',t:'หยวน มา',m:'ไกลไหม',k:'s',l:1},
+
+/* ---------- ร้านอาหาร ---------- */
+{i:'d061',u:'daily.food',z:'吃饭',p:'chī fàn',t:'ชือ ฟ่าน',m:'กินข้าว',k:'w',l:1},
+{i:'d062',u:'daily.food',z:'菜单',p:'cài dān',t:'ไช่ ตาน',m:'เมนู',k:'w',l:1},
+{i:'d063',u:'daily.food',z:'服务员',p:'fú wù yuán',t:'ฝู อู้ หยวน',m:'พนักงานเสิร์ฟ',k:'w',l:1},
+{i:'d064',u:'daily.food',z:'点菜',p:'diǎn cài',t:'เตี่ยน ไช่',m:'สั่งอาหาร',k:'w',l:2},
+{i:'d065',u:'daily.food',z:'不要辣',p:'bú yào là',t:'ปู๋ เย่า ล่า',m:'ไม่เอาเผ็ด',k:'s',l:1},
+{i:'d066',u:'daily.food',z:'不要香菜',p:'bú yào xiāng cài',t:'ปู๋ เย่า เซียง ไช่',m:'ไม่เอาผักชี',k:'s',l:2},
+{i:'d067',u:'daily.food',z:'我不吃猪肉',p:'wǒ bù chī zhū ròu',t:'หว่อ ปู้ ชือ จู โญ่ว',m:'ผมไม่กินหมู',k:'s',l:2},
+{i:'d068',u:'daily.food',z:'来一瓶啤酒',p:'lái yì píng pí jiǔ',t:'ไหล อี้ ผิง ผี จิ่ว',m:'ขอเบียร์ขวดหนึ่ง',k:'s',l:2},
+{i:'d069',u:'daily.food',z:'热水',p:'rè shuǐ',t:'เญ่อ สุ่ย',m:'น้ำร้อน',k:'w',l:1},
+{i:'d070',u:'daily.food',z:'买单',p:'mǎi dān',t:'หม่าย ตาน',m:'เก็บเงิน / เช็คบิล',k:'s',l:1},
+{i:'d071',u:'daily.food',z:'我请客',p:'wǒ qǐng kè',t:'หว่อ ฉิ่ง เค่อ',m:'ผมเลี้ยงเอง',k:'s',l:2,n:'พูดคำนี้ตอนกินกับซัพพลายเออร์ = ได้ใจทันที'},
+{i:'d072',u:'daily.food',z:'AA制',p:'AA zhì',t:'เอ เอ จื้อ',m:'หารกัน',k:'w',l:2},
+{i:'d073',u:'daily.food',z:'干杯',p:'gān bēi',t:'กาน เปย',m:'ชนแก้ว',k:'s',l:1},
+{i:'d074',u:'daily.food',z:'我不能喝酒',p:'wǒ bù néng hē jiǔ',t:'หว่อ ปู้ เหนิง เฮอ จิ่ว',m:'ผมดื่มเหล้าไม่ได้',k:'s',l:2},
+{i:'d075',u:'daily.food',z:'很好吃',p:'hěn hǎo chī',t:'เหิ่น ห่าว ชือ',m:'อร่อยมาก',k:'s',l:1},
+{i:'d076',u:'daily.food',z:'打包',p:'dǎ bāo',t:'ต่า เปา',m:'ห่อกลับบ้าน',k:'w',l:2},
+{i:'d077',u:'daily.food',z:'附近有泰国菜吗？',p:'fù jìn yǒu Tài guó cài ma?',t:'ฟู่ จิ้น โหย่ว ไท่ กั๋ว ไช่ มา',m:'แถวนี้มีอาหารไทยไหม',k:'s',l:3},
+
+/* ---------- จ่ายเงิน ---------- */
+{i:'d081',u:'daily.pay',z:'微信支付',p:'Wēi xìn zhī fù',t:'เวย ซิ่น จือ ฟู่',m:'วีแชทเพย์',k:'w',l:2},
+{i:'d082',u:'daily.pay',z:'支付宝',p:'Zhī fù bǎo',t:'จือ ฟู่ ป่าว',m:'อาลีเพย์',k:'w',l:2},
+{i:'d083',u:'daily.pay',z:'扫码',p:'sǎo mǎ',t:'เส่า หม่า',m:'สแกนคิวอาร์',k:'w',l:2},
+{i:'d084',u:'daily.pay',z:'现金',p:'xiàn jīn',t:'เซี่ยน จิน',m:'เงินสด',k:'w',l:1},
+{i:'d085',u:'daily.pay',z:'刷卡',p:'shuā kǎ',t:'ซัว ข่า',m:'รูดบัตร',k:'w',l:2},
+{i:'d086',u:'daily.pay',z:'能用现金吗？',p:'néng yòng xiàn jīn ma?',t:'เหนิง ย่ง เซี่ยน จิน มา',m:'ใช้เงินสดได้ไหม',k:'s',l:2},
+{i:'d087',u:'daily.pay',z:'我扫你还是你扫我？',p:'wǒ sǎo nǐ hái shi nǐ sǎo wǒ?',t:'หว่อ เส่า หนี่ ไห สือ หนี่ เส่า หว่อ',m:'ผมสแกนคุณหรือคุณสแกนผม',k:'s',l:3},
+{i:'d088',u:'daily.pay',z:'发票',p:'fā piào',t:'ฟา เพี่ยว',m:'ใบกำกับภาษี',k:'w',l:3},
+{i:'d089',u:'daily.pay',z:'请给我发票',p:'qǐng gěi wǒ fā piào',t:'ฉิ่ง เก่ย หว่อ ฟา เพี่ยว',m:'ขอใบกำกับภาษีด้วย',k:'s',l:3},
+{i:'d090',u:'daily.pay',z:'转账',p:'zhuǎn zhàng',t:'จ่วน จ้าง',m:'โอนเงิน',k:'w',l:3},
+
+/* ---------- ซื้อของทั่วไป ---------- */
+{i:'d101',u:'daily.shop',z:'买',p:'mǎi',t:'หม่าย',m:'ซื้อ',k:'w',l:1},
+{i:'d102',u:'daily.shop',z:'卖',p:'mài',t:'ม่าย',m:'ขาย',k:'w',l:1,n:'買/賣 เสียงต่างกันแค่วรรณยุกต์ ระวังพูดสลับ'},
+{i:'d103',u:'daily.shop',z:'老板',p:'lǎo bǎn',t:'เหล่า ป่าน',m:'เจ้าของร้าน / เถ้าแก่',k:'w',l:1},
+{i:'d104',u:'daily.shop',z:'这个',p:'zhè ge',t:'เจ้อ เกอ',m:'อันนี้',k:'w',l:1},
+{i:'d105',u:'daily.shop',z:'那个',p:'nà ge',t:'น่า เกอ',m:'อันนั้น',k:'w',l:1},
+{i:'d106',u:'daily.shop',z:'颜色',p:'yán sè',t:'เหยียน เซ่อ',m:'สี',k:'w',l:1},
+{i:'d107',u:'daily.shop',z:'大小',p:'dà xiǎo',t:'ต้า เสี่ยว',m:'ขนาด',k:'w',l:1},
+{i:'d108',u:'daily.shop',z:'还有别的吗？',p:'hái yǒu bié de ma?',t:'ไห โหย่ว เปี๋ย เตอ มา',m:'มีแบบอื่นอีกไหม',k:'s',l:2},
+{i:'d109',u:'daily.shop',z:'我就看看',p:'wǒ jiù kàn kan',t:'หว่อ จิ้ว ค่าน ค่าน',m:'ผมแค่ดูเฉยๆ',k:'s',l:2},
+{i:'d110',u:'daily.shop',z:'能退吗？',p:'néng tuì ma?',t:'เหนิง ทุ่ย มา',m:'คืนได้ไหม',k:'s',l:2},
+
+/* ---------- ถามทาง / ขอความช่วยเหลือ ---------- */
+{i:'d121',u:'daily.help',z:'厕所在哪里？',p:'cè suǒ zài nǎ lǐ?',t:'เช่อ สั่ว จ้าย หนา หลี่',m:'ห้องน้ำอยู่ไหน',k:'s',l:1},
+{i:'d122',u:'daily.help',z:'怎么走？',p:'zěn me zǒu?',t:'เจิ่น เมอ โจ่ว',m:'ไปยังไง',k:'s',l:1},
+{i:'d123',u:'daily.help',z:'左边',p:'zuǒ biān',t:'จั่ว เปียน',m:'ด้านซ้าย',k:'w',l:1},
+{i:'d124',u:'daily.help',z:'右边',p:'yòu biān',t:'โย่ว เปียน',m:'ด้านขวา',k:'w',l:1},
+{i:'d125',u:'daily.help',z:'一直走',p:'yì zhí zǒu',t:'อี้ จื๋อ โจ่ว',m:'ตรงไป',k:'s',l:1},
+{i:'d126',u:'daily.help',z:'我迷路了',p:'wǒ mí lù le',t:'หว่อ หมี ลู่ เลอ',m:'ผมหลงทาง',k:'s',l:2},
+{i:'d127',u:'daily.help',z:'请帮我',p:'qǐng bāng wǒ',t:'ฉิ่ง ปาง หว่อ',m:'ช่วยผมหน่อย',k:'s',l:1},
+{i:'d128',u:'daily.help',z:'我不舒服',p:'wǒ bù shū fu',t:'หว่อ ปู้ ซู ฟุ',m:'ผมไม่สบาย',k:'s',l:2},
+{i:'d129',u:'daily.help',z:'医院',p:'yī yuàn',t:'อี ย่วน',m:'โรงพยาบาล',k:'w',l:1},
+{i:'d130',u:'daily.help',z:'药店',p:'yào diàn',t:'เย่า เตี้ยน',m:'ร้านขายยา',k:'w',l:2},
+{i:'d131',u:'daily.help',z:'我的手机没电了',p:'wǒ de shǒu jī méi diàn le',t:'หว่อ เตอ โส่ว จี เหมย เตี้ยน เลอ',m:'มือถือผมแบตหมด',k:'s',l:2},
+{i:'d132',u:'daily.help',z:'能借充电器吗？',p:'néng jiè chōng diàn qì ma?',t:'เหนิง เจี้ย ชง เตี้ยน ชี่ มา',m:'ขอยืมที่ชาร์จได้ไหม',k:'s',l:3},
+
+/* ---------- คุยเล่น สร้างความสัมพันธ์ (ใช้จริงตอนกินข้าวกับซัพพลายเออร์) ---------- */
+{i:'d141',u:'daily.chat',z:'你老家是哪里的？',p:'nǐ lǎo jiā shì nǎ lǐ de?',t:'หนี่ เหล่า เจีย ซื่อ หนา หลี่ เตอ',m:'บ้านเกิดคุณอยู่ไหน',k:'s',l:3,n:'คำถามเปิดบทสนทนาที่คนจีนชอบที่สุด'},
+{i:'d142',u:'daily.chat',z:'你做这行多久了？',p:'nǐ zuò zhè háng duō jiǔ le?',t:'หนี่ จั้ว เจ้อ หาง ตัว จิ่ว เลอ',m:'คุณทำสายนี้มานานแค่ไหน',k:'s',l:3},
+{i:'d143',u:'daily.chat',z:'我做房地产的',p:'wǒ zuò fáng dì chǎn de',t:'หว่อ จั้ว ฝาง ตี้ ฉ่าน เตอ',m:'ผมทำอสังหาริมทรัพย์',k:'s',l:3},
+{i:'d144',u:'daily.chat',z:'我也做装修材料',p:'wǒ yě zuò zhuāng xiū cái liào',t:'หว่อ เหย่ จั้ว จวง ซิว ไฉ เลี่ยว',m:'ผมทำวัสดุตกแต่งด้วย',k:'s',l:3},
+{i:'d145',u:'daily.chat',z:'我们公司在曼谷',p:'wǒ men gōng sī zài Màn gǔ',t:'หว่อ เมิน กง ซือ จ้าย ม่าน กู่',m:'บริษัทเราอยู่กรุงเทพ',k:'s',l:2},
+{i:'d146',u:'daily.chat',z:'欢迎你来泰国',p:'huān yíng nǐ lái Tài guó',t:'ฮวาน หยิง หนี่ ไหล ไท่ กั๋ว',m:'ยินดีต้อนรับมาเมืองไทย',k:'s',l:2},
+{i:'d147',u:'daily.chat',z:'下次一起吃饭',p:'xià cì yì qǐ chī fàn',t:'เซี่ย ชื่อ อี้ ฉี่ ชือ ฟ่าน',m:'คราวหน้าไปกินข้าวด้วยกัน',k:'s',l:2},
+{i:'d148',u:'daily.chat',z:'我们长期合作',p:'wǒ men cháng qī hé zuò',t:'หว่อ เมิน ฉาง ชี เหอ จั้ว',m:'เราร่วมงานกันระยะยาว',k:'s',l:3,n:'ไพ่ต่อรองที่แรงที่สุดกับโรงงานจีน'},
+{i:'d149',u:'daily.chat',z:'你的产品很好',p:'nǐ de chǎn pǐn hěn hǎo',t:'หนี่ เตอ ฉ่าน ผิ่น เหิ่น ห่าว',m:'สินค้าคุณดีมาก',k:'s',l:2},
+{i:'d150',u:'daily.chat',z:'保持联系',p:'bǎo chí lián xì',t:'ป่าว ฉือ เหลียน ซี',m:'ติดต่อกันเรื่อยๆ นะ',k:'s',l:2}
+];
+
+/* ชุดวัสดุก่อสร้าง & ตกแต่ง + ภาษาสั่งซื้อ/ตรวจของ
+   ศัพท์ส่วนใหญ่ในชุดนี้ "ไม่มีในตำรา HSK" แต่ใช้จริงทุกวันในโรงงานและตลาดวัสดุจีน */
+window.DECK_MAT = [
+/* ---------- กระเบื้อง ---------- */
+{i:'m001',u:'mat.tile',z:'瓷砖',p:'cí zhuān',t:'ฉือ จวาน',m:'กระเบื้อง',k:'w',l:2},
+{i:'m002',u:'mat.tile',z:'地砖',p:'dì zhuān',t:'ตี้ จวาน',m:'กระเบื้องปูพื้น',k:'w',l:2},
+{i:'m003',u:'mat.tile',z:'墙砖',p:'qiáng zhuān',t:'เฉียง จวาน',m:'กระเบื้องบุผนัง',k:'w',l:2},
+{i:'m004',u:'mat.tile',z:'抛光砖',p:'pāo guāng zhuān',t:'พาว กวาง จวาน',m:'กระเบื้องโพลิช',k:'w',l:3},
+{i:'m005',u:'mat.tile',z:'釉面砖',p:'yòu miàn zhuān',t:'โย่ว เมี่ยน จวาน',m:'กระเบื้องเคลือบ',k:'w',l:3},
+{i:'m006',u:'mat.tile',z:'仿古砖',p:'fǎng gǔ zhuān',t:'ฝ่าง กู่ จวาน',m:'กระเบื้องลายโบราณ (rustic)',k:'w',l:3},
+{i:'m007',u:'mat.tile',z:'通体大理石',p:'tōng tǐ dà lǐ shí',t:'ทง ถี่ ต้า หลี่ สือ',m:'กระเบื้องลายหินอ่อนเนื้อเดียวทั้งแผ่น',k:'w',l:4},
+{i:'m008',u:'mat.tile',z:'岩板',p:'yán bǎn',t:'เหยียน ป่าน',m:'แผ่นหินสังเคราะห์ (sintered stone)',k:'w',l:4},
+{i:'m009',u:'mat.tile',z:'马赛克',p:'mǎ sài kè',t:'หม่า ซ่าย เค่อ',m:'โมเสก',k:'w',l:3},
+{i:'m010',u:'mat.tile',z:'大理石',p:'dà lǐ shí',t:'ต้า หลี่ สือ',m:'หินอ่อน',k:'w',l:2},
+{i:'m011',u:'mat.tile',z:'规格',p:'guī gé',t:'กุย เก๋อ',m:'ขนาด/สเปกสินค้า',k:'w',l:3},
+{i:'m012',u:'mat.tile',z:'八百乘八百',p:'bā bǎi chéng bā bǎi',t:'ปา ป่าย เฉิง ปา ป่าย',m:'800 x 800',k:'w',l:3,n:'乘 = คูณ ใช้บอกขนาดกระเบื้องทุกครั้ง'},
+{i:'m013',u:'mat.tile',z:'吸水率',p:'xī shuǐ lǜ',t:'ซี สุ่ย ลฺวี่',m:'อัตราการดูดซึมน้ำ',k:'w',l:4,n:'ตัวเลขนี้บอกคุณภาพกระเบื้องมากกว่าคำโฆษณาใดๆ'},
+{i:'m014',u:'mat.tile',z:'防滑',p:'fáng huá',t:'ฝาง หัว',m:'กันลื่น',k:'w',l:3},
+{i:'m015',u:'mat.tile',z:'耐磨',p:'nài mó',t:'น่าย หมัว',m:'ทนการขัดสี',k:'w',l:3},
+{i:'m016',u:'mat.tile',z:'色差',p:'sè chā',t:'เซ่อ ชา',m:'สีเพี้ยน/สีไม่ตรงล็อต',k:'w',l:3,n:'ปัญหาอันดับ 1 ของการสั่งกระเบื้องจากจีน'},
+{i:'m017',u:'mat.tile',z:'平整度',p:'píng zhěng dù',t:'ผิง เจิ่ง ตู้',m:'ความเรียบของแผ่น',k:'w',l:4},
+{i:'m018',u:'mat.tile',z:'美缝剂',p:'měi fèng jì',t:'เหม่ย เฟิ่ง จี้',m:'อีพ็อกซี่ยาแนว',k:'w',l:4},
+{i:'m019',u:'mat.tile',z:'瓷砖胶',p:'cí zhuān jiāo',t:'ฉือ จวาน เจียว',m:'กาวซีเมนต์ปูกระเบื้อง',k:'w',l:3},
+{i:'m020',u:'mat.tile',z:'平方米',p:'píng fāng mǐ',t:'ผิง ฟาง หมี่',m:'ตารางเมตร',k:'w',l:2},
+{i:'m021',u:'mat.tile',z:'一片',p:'yí piàn',t:'อี๋ เพี่ยน',m:'หนึ่งแผ่น',k:'w',l:2},
+{i:'m022',u:'mat.tile',z:'一箱几片？',p:'yì xiāng jǐ piàn?',t:'อี้ เซียง จี่ เพี่ยน',m:'หนึ่งกล่องกี่แผ่น',k:'s',l:3},
+{i:'m023',u:'mat.tile',z:'这个多少钱一平方？',p:'zhè ge duō shao qián yì píng fāng?',t:'เจ้อ เกอ ตัว เชา เฉียน อี้ ผิง ฟาง',m:'อันนี้ตารางเมตรละเท่าไหร่',k:'s',l:3,n:'ประโยคที่คุณจะใช้บ่อยที่สุดในตลาดกระเบื้องโฝซาน'},
+{i:'m024',u:'mat.tile',z:'有没有大一点的规格？',p:'yǒu méi yǒu dà yì diǎn de guī gé?',t:'โหย่ว เหมย โหย่ว ต้า อี้ เตี่ยน เตอ กุย เก๋อ',m:'มีขนาดใหญ่กว่านี้ไหม',k:'s',l:4},
+{i:'m025',u:'mat.tile',z:'会不会有色差？',p:'huì bu huì yǒu sè chā?',t:'ฮุ่ย ปุ ฮุ่ย โหย่ว เซ่อ ชา',m:'จะมีปัญหาสีเพี้ยนไหม',k:'s',l:4},
+{i:'m026',u:'mat.tile',z:'同一批货可以吗？',p:'tóng yì pī huò kě yǐ ma?',t:'ถง อี้ พี ฮั่ว เข่อ อี่ มา',m:'ขอเป็นล็อตเดียวกันได้ไหม',k:'s',l:4,n:'ขอทุกครั้ง ไม่งั้นสีจะไม่ตรงกัน'},
+
+/* ---------- สุขภัณฑ์ ---------- */
+{i:'m041',u:'mat.sanitary',z:'洁具',p:'jié jù',t:'เจี๋ย จฺวี้',m:'สุขภัณฑ์',k:'w',l:3},
+{i:'m042',u:'mat.sanitary',z:'马桶',p:'mǎ tǒng',t:'หม่า ถ่ง',m:'ชักโครก',k:'w',l:2},
+{i:'m043',u:'mat.sanitary',z:'智能马桶',p:'zhì néng mǎ tǒng',t:'จื้อ เหนิง หม่า ถ่ง',m:'ชักโครกอัจฉริยะ',k:'w',l:3},
+{i:'m044',u:'mat.sanitary',z:'洗手盆',p:'xǐ shǒu pén',t:'สี่ โส่ว เผิน',m:'อ่างล้างมือ',k:'w',l:2},
+{i:'m045',u:'mat.sanitary',z:'台盆',p:'tái pén',t:'ไถ เผิน',m:'อ่างวางบนเคาน์เตอร์',k:'w',l:3},
+{i:'m046',u:'mat.sanitary',z:'浴缸',p:'yù gāng',t:'ยฺวี่ กาง',m:'อ่างอาบน้ำ',k:'w',l:2},
+{i:'m047',u:'mat.sanitary',z:'淋浴房',p:'lín yù fáng',t:'หลิน ยฺวี่ ฝาง',m:'ตู้อาบน้ำ',k:'w',l:3},
+{i:'m048',u:'mat.sanitary',z:'花洒',p:'huā sǎ',t:'ฮวา ส่า',m:'ฝักบัว',k:'w',l:3},
+{i:'m049',u:'mat.sanitary',z:'水龙头',p:'shuǐ lóng tóu',t:'สุ่ย หลง โถว',m:'ก๊อกน้ำ',k:'w',l:2},
+{i:'m050',u:'mat.sanitary',z:'角阀',p:'jiǎo fá',t:'เจี่ยว ฝา',m:'วาล์วมุม',k:'w',l:4},
+{i:'m051',u:'mat.sanitary',z:'地漏',p:'dì lòu',t:'ตี้ โล่ว',m:'ตะแกรงระบายน้ำพื้น',k:'w',l:3},
+{i:'m052',u:'mat.sanitary',z:'浴室柜',p:'yù shì guì',t:'ยฺวี่ ซื่อ กุ้ย',m:'ตู้อ่างล้างหน้า',k:'w',l:3},
+{i:'m053',u:'mat.sanitary',z:'陶瓷',p:'táo cí',t:'เถา ฉือ',m:'เซรามิก',k:'w',l:2},
+{i:'m054',u:'mat.sanitary',z:'不锈钢',p:'bú xiù gāng',t:'ปู๋ ซิ่ว กาง',m:'สแตนเลส',k:'w',l:3},
+{i:'m055',u:'mat.sanitary',z:'铜',p:'tóng',t:'ถง',m:'ทองแดง',k:'w',l:2},
+{i:'m056',u:'mat.sanitary',z:'镀铬',p:'dù gè',t:'ตู้ เก้อ',m:'ชุบโครเมียม',k:'w',l:4},
+{i:'m057',u:'mat.sanitary',z:'冲水好不好？',p:'chōng shuǐ hǎo bu hǎo?',t:'ชง สุ่ย ห่าว ปุ ห่าว',m:'กดน้ำแรงดีไหม',k:'s',l:3},
+{i:'m058',u:'mat.sanitary',z:'坑距是多少？',p:'kēng jù shì duō shao?',t:'เคิง จฺวี้ ซื่อ ตัว เชา',m:'ระยะท่อ (rough-in) เท่าไหร่',k:'s',l:4,n:'ไม่ถามข้อนี้ = ชักโครกติดตั้งไม่ได้'},
+{i:'m059',u:'mat.sanitary',z:'是纯铜的吗？',p:'shì chún tóng de ma?',t:'ซื่อ ฉุน ถง เตอ มา',m:'เป็นทองแดงแท้ไหม',k:'s',l:4},
+{i:'m060',u:'mat.sanitary',z:'保修几年？',p:'bǎo xiū jǐ nián?',t:'ป่าว ซิว จี่ เหนียน',m:'รับประกันกี่ปี',k:'s',l:3},
+
+/* ---------- ประตู หน้าต่าง กระจก ---------- */
+{i:'m071',u:'mat.door',z:'门窗',p:'mén chuāng',t:'เหมิน ชวาง',m:'ประตูหน้าต่าง',k:'w',l:2},
+{i:'m072',u:'mat.door',z:'铝合金',p:'lǚ hé jīn',t:'ลฺวี่ เหอ จิน',m:'อะลูมิเนียมอัลลอย',k:'w',l:3},
+{i:'m073',u:'mat.door',z:'断桥铝',p:'duàn qiáo lǚ',t:'ต้วน เฉียว ลฺวี่',m:'อะลูมิเนียมตัดสะพานความร้อน',k:'w',l:4},
+{i:'m074',u:'mat.door',z:'实木门',p:'shí mù mén',t:'สือ มู่ เหมิน',m:'ประตูไม้จริง',k:'w',l:3},
+{i:'m075',u:'mat.door',z:'免漆门',p:'miǎn qī mén',t:'เหมี่ยน ชี เหมิน',m:'ประตูสำเร็จไม่ต้องทาสี',k:'w',l:4},
+{i:'m076',u:'mat.door',z:'推拉门',p:'tuī lā mén',t:'ทุย ลา เหมิน',m:'ประตูบานเลื่อน',k:'w',l:3},
+{i:'m077',u:'mat.door',z:'玻璃',p:'bō li',t:'ปัว หลี',m:'กระจก',k:'w',l:2},
+{i:'m078',u:'mat.door',z:'钢化玻璃',p:'gāng huà bō li',t:'กาง ฮ่วา ปัว หลี',m:'กระจกเทมเปอร์',k:'w',l:3},
+{i:'m079',u:'mat.door',z:'中空玻璃',p:'zhōng kōng bō li',t:'จง คง ปัว หลี',m:'กระจกสองชั้น (insulated)',k:'w',l:4},
+{i:'m080',u:'mat.door',z:'纱窗',p:'shā chuāng',t:'ซา ชวาง',m:'มุ้งลวด',k:'w',l:3},
+{i:'m081',u:'mat.door',z:'门锁',p:'mén suǒ',t:'เหมิน สั่ว',m:'กลอน/ลูกบิดประตู',k:'w',l:2},
+{i:'m082',u:'mat.door',z:'合页',p:'hé yè',t:'เหอ เย่',m:'บานพับ',k:'w',l:3},
+{i:'m083',u:'mat.door',z:'密封条',p:'mì fēng tiáo',t:'มี่ เฟิง เถียว',m:'ยางซีล',k:'w',l:4},
+{i:'m084',u:'mat.door',z:'隔音',p:'gé yīn',t:'เก๋อ ยิน',m:'กันเสียง',k:'w',l:3},
+{i:'m085',u:'mat.door',z:'防水',p:'fáng shuǐ',t:'ฝาง สุ่ย',m:'กันน้ำ',k:'w',l:2},
+{i:'m086',u:'mat.door',z:'玻璃几毫米？',p:'bō li jǐ háo mǐ?',t:'ปัว หลี จี่ หาว หมี่',m:'กระจกหนากี่มิล',k:'s',l:3},
+{i:'m087',u:'mat.door',z:'能定制尺寸吗？',p:'néng dìng zhì chǐ cùn ma?',t:'เหนิง ติ้ง จื้อ ฉื่อ ชุ่น มา',m:'สั่งทำขนาดพิเศษได้ไหม',k:'s',l:4},
+{i:'m088',u:'mat.door',z:'包安装吗？',p:'bāo ān zhuāng ma?',t:'เปา อาน จวาง มา',m:'รวมค่าติดตั้งไหม',k:'s',l:3},
+
+/* ---------- พื้น ---------- */
+{i:'m101',u:'mat.floor',z:'地板',p:'dì bǎn',t:'ตี้ ป่าน',m:'พื้นไม้',k:'w',l:2},
+{i:'m102',u:'mat.floor',z:'实木地板',p:'shí mù dì bǎn',t:'สือ มู่ ตี้ ป่าน',m:'พื้นไม้จริง',k:'w',l:3},
+{i:'m103',u:'mat.floor',z:'复合地板',p:'fù hé dì bǎn',t:'ฟู่ เหอ ตี้ ป่าน',m:'พื้นลามิเนต',k:'w',l:3},
+{i:'m104',u:'mat.floor',z:'地毯',p:'dì tǎn',t:'ตี้ ถ่าน',m:'พรม',k:'w',l:2},
+{i:'m105',u:'mat.floor',z:'踢脚线',p:'tī jiǎo xiàn',t:'ที เจี่ยว เซี่ยน',m:'บัวเชิงผนัง',k:'w',l:4},
+{i:'m106',u:'mat.floor',z:'耐磨层',p:'nài mó céng',t:'น่าย หมัว เฉิง',m:'ชั้นทนการขัดสี',k:'w',l:4},
+{i:'m107',u:'mat.floor',z:'防潮',p:'fáng cháo',t:'ฝาง เฉา',m:'กันความชื้น',k:'w',l:3,n:'สำคัญมากสำหรับงานไทย'},
+{i:'m108',u:'mat.floor',z:'泰国很潮湿',p:'Tài guó hěn cháo shī',t:'ไท่ กั๋ว เหิ่น เฉา ซือ',m:'เมืองไทยชื้นมาก',k:'s',l:3,n:'ใช้บอกโรงงานว่าทำไมคุณต้องการสเปกกันชื้น'},
+
+/* ---------- สี / เคลือบผิว ---------- */
+{i:'m121',u:'mat.paint',z:'油漆',p:'yóu qī',t:'โหยว ชี',m:'สี (ทาไม้/เหล็ก)',k:'w',l:2},
+{i:'m122',u:'mat.paint',z:'乳胶漆',p:'rǔ jiāo qī',t:'หญู่ เจียว ชี',m:'สีน้ำอะคริลิก (ทาผนัง)',k:'w',l:3},
+{i:'m123',u:'mat.paint',z:'底漆',p:'dǐ qī',t:'ตี่ ชี',m:'สีรองพื้น',k:'w',l:3},
+{i:'m124',u:'mat.paint',z:'面漆',p:'miàn qī',t:'เมี่ยน ชี',m:'สีทับหน้า',k:'w',l:3},
+{i:'m125',u:'mat.paint',z:'腻子',p:'nì zi',t:'นี่ จึ',m:'สีโป๊ว/ปูนฉาบบาง',k:'w',l:4},
+{i:'m126',u:'mat.paint',z:'防水涂料',p:'fáng shuǐ tú liào',t:'ฝาง สุ่ย ถู เลี่ยว',m:'วัสดุกันซึม',k:'w',l:4},
+{i:'m127',u:'mat.paint',z:'色卡',p:'sè kǎ',t:'เซ่อ ข่า',m:'การ์ดสี',k:'w',l:3},
+{i:'m128',u:'mat.paint',z:'环保',p:'huán bǎo',t:'ฮวาน ป่าว',m:'เป็นมิตรกับสิ่งแวดล้อม',k:'w',l:3},
+{i:'m129',u:'mat.paint',z:'甲醛',p:'jiǎ quán',t:'เจี่ย เฉวียน',m:'ฟอร์มาลดีไฮด์',k:'w',l:4},
+{i:'m130',u:'mat.paint',z:'请给我色卡',p:'qǐng gěi wǒ sè kǎ',t:'ฉิ่ง เก่ย หว่อ เซ่อ ข่า',m:'ขอการ์ดสีหน่อย',k:'s',l:3},
+
+/* ---------- ไฟฟ้า / แสงสว่าง ---------- */
+{i:'m141',u:'mat.light',z:'灯',p:'dēng',t:'เติง',m:'ไฟ / โคมไฟ',k:'w',l:1},
+{i:'m142',u:'mat.light',z:'吊灯',p:'diào dēng',t:'เตี้ยว เติง',m:'โคมระย้า',k:'w',l:3},
+{i:'m143',u:'mat.light',z:'筒灯',p:'tǒng dēng',t:'ถ่ง เติง',m:'ดาวน์ไลท์',k:'w',l:3},
+{i:'m144',u:'mat.light',z:'射灯',p:'shè dēng',t:'เซ่อ เติง',m:'สปอตไลท์',k:'w',l:3},
+{i:'m145',u:'mat.light',z:'灯带',p:'dēng dài',t:'เติง ไต้',m:'ไฟเส้น LED',k:'w',l:3},
+{i:'m146',u:'mat.light',z:'吸顶灯',p:'xī dǐng dēng',t:'ซี ติ่ง เติง',m:'โคมติดเพดาน',k:'w',l:3},
+{i:'m147',u:'mat.light',z:'色温',p:'sè wēn',t:'เซ่อ เวิน',m:'อุณหภูมิสีของแสง',k:'w',l:4},
+{i:'m148',u:'mat.light',z:'暖光',p:'nuǎn guāng',t:'หน่วน กวาง',m:'แสงวอร์ม',k:'w',l:3},
+{i:'m149',u:'mat.light',z:'白光',p:'bái guāng',t:'ไผ กวาง',m:'แสงขาว',k:'w',l:3},
+{i:'m150',u:'mat.light',z:'开关',p:'kāi guān',t:'ไค กวาน',m:'สวิตช์',k:'w',l:2},
+{i:'m151',u:'mat.light',z:'插座',p:'chā zuò',t:'ชา จั้ว',m:'ปลั๊กไฟ',k:'w',l:2},
+{i:'m152',u:'mat.light',z:'电压是220伏吗？',p:'diàn yā shì èr bǎi èr shí fú ma?',t:'เตี้ยน ยา ซื่อ เอ้อร์ ป่าย เอ้อร์ สือ ฝู มา',m:'ไฟ 220 โวลต์ใช่ไหม',k:'s',l:4,n:'จีนกับไทยใช้ 220V เหมือนกัน แต่หัวปลั๊กต่างกัน ต้องถาม'},
+{i:'m153',u:'mat.light',z:'插头是什么标准？',p:'chā tóu shì shén me biāo zhǔn?',t:'ชา โถว ซื่อ เสิน เมอ เปียว จุ่น',m:'หัวปลั๊กมาตรฐานอะไร',k:'s',l:4},
+
+/* ---------- ฮาร์ดแวร์ / วัสดุพื้นฐาน ---------- */
+{i:'m161',u:'mat.hardware',z:'五金',p:'wǔ jīn',t:'หวู่ จิน',m:'ฮาร์ดแวร์/อุปกรณ์โลหะ',k:'w',l:3},
+{i:'m162',u:'mat.hardware',z:'螺丝',p:'luó sī',t:'หลัว ซือ',m:'สกรู/น็อต',k:'w',l:2},
+{i:'m163',u:'mat.hardware',z:'拉手',p:'lā shǒu',t:'ลา โส่ว',m:'มือจับ',k:'w',l:3},
+{i:'m164',u:'mat.hardware',z:'铰链',p:'jiǎo liàn',t:'เจี่ยว เลี่ยน',m:'บานพับตู้',k:'w',l:4},
+{i:'m165',u:'mat.hardware',z:'滑轨',p:'huá guǐ',t:'หัว กุ่ย',m:'รางลิ้นชัก',k:'w',l:4},
+{i:'m166',u:'mat.hardware',z:'密度板',p:'mì dù bǎn',t:'มี่ ตู้ ป่าน',m:'ไม้ MDF',k:'w',l:4},
+{i:'m167',u:'mat.hardware',z:'胶合板',p:'jiāo hé bǎn',t:'เจียว เหอ ป่าน',m:'ไม้อัด',k:'w',l:4},
+{i:'m168',u:'mat.hardware',z:'石膏板',p:'shí gāo bǎn',t:'สือ เกา ป่าน',m:'ยิปซัมบอร์ด',k:'w',l:3},
+{i:'m169',u:'mat.hardware',z:'水泥',p:'shuǐ ní',t:'สุ่ย หนี',m:'ปูนซีเมนต์',k:'w',l:2},
+{i:'m170',u:'mat.hardware',z:'钢筋',p:'gāng jīn',t:'กาง จิน',m:'เหล็กเส้น',k:'w',l:3},
+
+/* ---------- ครัว / เฟอร์นิเจอร์ ---------- */
+{i:'m181',u:'mat.kitchen',z:'橱柜',p:'chú guì',t:'ฉู กุ้ย',m:'ตู้ครัว',k:'w',l:3},
+{i:'m182',u:'mat.kitchen',z:'台面',p:'tái miàn',t:'ไถ เมี่ยน',m:'เคาน์เตอร์ท็อป',k:'w',l:3},
+{i:'m183',u:'mat.kitchen',z:'石英石',p:'shí yīng shí',t:'สือ ยิง สือ',m:'หินควอตซ์',k:'w',l:4},
+{i:'m184',u:'mat.kitchen',z:'水槽',p:'shuǐ cáo',t:'สุ่ย เฉา',m:'ซิงค์ล้างจาน',k:'w',l:3},
+{i:'m185',u:'mat.kitchen',z:'油烟机',p:'yóu yān jī',t:'โหยว เยียน จี',m:'เครื่องดูดควัน',k:'w',l:3},
+{i:'m186',u:'mat.kitchen',z:'衣柜',p:'yī guì',t:'อี กุ้ย',m:'ตู้เสื้อผ้า',k:'w',l:2},
+{i:'m187',u:'mat.kitchen',z:'沙发',p:'shā fā',t:'ซา ฟา',m:'โซฟา',k:'w',l:2},
+{i:'m188',u:'mat.kitchen',z:'餐桌',p:'cān zhuō',t:'ชาน จัว',m:'โต๊ะอาหาร',k:'w',l:2},
+{i:'m189',u:'mat.kitchen',z:'全屋定制',p:'quán wū dìng zhì',t:'เฉวียน อู ติ้ง จื้อ',m:'บิลท์อินทั้งบ้าน',k:'w',l:4},
+{i:'m190',u:'mat.kitchen',z:'定制',p:'dìng zhì',t:'ติ้ง จื้อ',m:'สั่งทำพิเศษ',k:'w',l:3},
+
+/* ---------- สเปก / คุณภาพ ---------- */
+{i:'m201',u:'mat.spec',z:'尺寸',p:'chǐ cùn',t:'ฉื่อ ชุ่น',m:'ขนาด/มิติ',k:'w',l:2},
+{i:'m202',u:'mat.spec',z:'厚度',p:'hòu dù',t:'โฮ่ว ตู้',m:'ความหนา',k:'w',l:3},
+{i:'m203',u:'mat.spec',z:'长',p:'cháng',t:'ฉาง',m:'ยาว',k:'w',l:1},
+{i:'m204',u:'mat.spec',z:'宽',p:'kuān',t:'ควาน',m:'กว้าง',k:'w',l:2},
+{i:'m205',u:'mat.spec',z:'高',p:'gāo',t:'เกา',m:'สูง',k:'w',l:1},
+{i:'m206',u:'mat.spec',z:'毫米',p:'háo mǐ',t:'หาว หมี่',m:'มิลลิเมตร',k:'w',l:2},
+{i:'m207',u:'mat.spec',z:'厘米',p:'lí mǐ',t:'หลี หมี่',m:'เซนติเมตร',k:'w',l:2},
+{i:'m208',u:'mat.spec',z:'公斤',p:'gōng jīn',t:'กง จิน',m:'กิโลกรัม',k:'w',l:2},
+{i:'m209',u:'mat.spec',z:'吨',p:'dūn',t:'ตุน',m:'ตัน',k:'w',l:3},
+{i:'m210',u:'mat.spec',z:'质量',p:'zhì liàng',t:'จื้อ เลี่ยง',m:'คุณภาพ',k:'w',l:2},
+{i:'m211',u:'mat.spec',z:'等级',p:'děng jí',t:'เติ่ง จี๋',m:'เกรด',k:'w',l:3},
+{i:'m212',u:'mat.spec',z:'一级品',p:'yī jí pǐn',t:'อี จี๋ ผิ่น',m:'สินค้าเกรดหนึ่ง',k:'w',l:4},
+{i:'m213',u:'mat.spec',z:'次品',p:'cì pǐn',t:'ชื่อ ผิ่น',m:'สินค้ามีตำหนิ/เกรดรอง',k:'w',l:4,n:'ระวังโดนผสมมาในล็อต'},
+{i:'m214',u:'mat.spec',z:'样品',p:'yàng pǐn',t:'ย่าง ผิ่น',m:'ตัวอย่างสินค้า',k:'w',l:3},
+{i:'m215',u:'mat.spec',z:'型号',p:'xíng hào',t:'สิง ห่าว',m:'รุ่น/โมเดล',k:'w',l:3},
+{i:'m216',u:'mat.spec',z:'色号',p:'sè hào',t:'เซ่อ ห่าว',m:'รหัสสี',k:'w',l:3},
+{i:'m217',u:'mat.spec',z:'材质',p:'cái zhì',t:'ไฉ จื้อ',m:'ชนิดวัสดุ',k:'w',l:3},
+{i:'m218',u:'mat.spec',z:'哑光',p:'yǎ guāng',t:'หย่า กวาง',m:'ผิวด้าน',k:'w',l:3},
+{i:'m219',u:'mat.spec',z:'亮光',p:'liàng guāng',t:'เลี่ยง กวาง',m:'ผิวเงา',k:'w',l:3},
+{i:'m220',u:'mat.spec',z:'纹理',p:'wén lǐ',t:'เหวิน หลี่',m:'ลาย/ลายไม้',k:'w',l:3},
+{i:'m221',u:'mat.spec',z:'保修',p:'bǎo xiū',t:'ป่าว ซิว',m:'การรับประกัน',k:'w',l:3},
+{i:'m222',u:'mat.spec',z:'认证',p:'rèn zhèng',t:'เญิ่น เจิ้ง',m:'ใบรับรอง/มาตรฐาน',k:'w',l:4},
+{i:'m223',u:'mat.spec',z:'有样品吗？',p:'yǒu yàng pǐn ma?',t:'โหย่ว ย่าง ผิ่น มา',m:'มีตัวอย่างไหม',k:'s',l:2},
+{i:'m224',u:'mat.spec',z:'能寄样品到泰国吗？',p:'néng jì yàng pǐn dào Tài guó ma?',t:'เหนิง จี้ ย่าง ผิ่น เต้า ไท่ กั๋ว มา',m:'ส่งตัวอย่างมาไทยได้ไหม',k:'s',l:4},
+{i:'m225',u:'mat.spec',z:'样品费多少？',p:'yàng pǐn fèi duō shao?',t:'ย่าง ผิ่น เฟ่ย ตัว เชา',m:'ค่าตัวอย่างเท่าไหร่',k:'s',l:4},
+{i:'m226',u:'mat.spec',z:'这两个有什么区别？',p:'zhè liǎng ge yǒu shén me qū bié?',t:'เจ้อ เหลี่ยง เกอ โหย่ว เสิน เมอ ชฺวี เปี๋ย',m:'สองอันนี้ต่างกันยังไง',k:'s',l:4},
+{i:'m227',u:'mat.spec',z:'为什么这个贵？',p:'wèi shén me zhè ge guì?',t:'เว่ย เสิน เมอ เจ้อ เกอ กุ้ย',m:'ทำไมอันนี้แพงกว่า',k:'s',l:3,n:'คำตอบจะบอกคุณว่าเขาซื่อสัตย์แค่ไหน'},
+{i:'m228',u:'mat.spec',z:'质量保证吗？',p:'zhì liàng bǎo zhèng ma?',t:'จื้อ เลี่ยง ป่าว เจิ้ง มา',m:'รับประกันคุณภาพไหม',k:'s',l:3},
+
+/* ---------- ราคา / สั่งซื้อ / เจรจา ---------- */
+{i:'m241',u:'mat.deal',z:'报价',p:'bào jià',t:'เป้า เจี้ย',m:'เสนอราคา',k:'w',l:3},
+{i:'m242',u:'mat.deal',z:'报价单',p:'bào jià dān',t:'เป้า เจี้ย ตาน',m:'ใบเสนอราคา',k:'w',l:3},
+{i:'m243',u:'mat.deal',z:'出厂价',p:'chū chǎng jià',t:'ชู ฉ่าง เจี้ย',m:'ราคาหน้าโรงงาน',k:'w',l:4},
+{i:'m244',u:'mat.deal',z:'批发价',p:'pī fā jià',t:'พี ฟา เจี้ย',m:'ราคาส่ง',k:'w',l:3},
+{i:'m245',u:'mat.deal',z:'起订量',p:'qǐ dìng liàng',t:'ฉี่ ติ้ง เลี่ยง',m:'ยอดสั่งซื้อขั้นต่ำ (MOQ)',k:'w',l:4,n:'คำที่สำคัญที่สุดคำหนึ่งในการนำเข้า'},
+{i:'m246',u:'mat.deal',z:'数量',p:'shù liàng',t:'ซู่ เลี่ยง',m:'จำนวน',k:'w',l:2},
+{i:'m247',u:'mat.deal',z:'订单',p:'dìng dān',t:'ติ้ง ตาน',m:'ใบสั่งซื้อ',k:'w',l:3},
+{i:'m248',u:'mat.deal',z:'下单',p:'xià dān',t:'เซี่ย ตาน',m:'สั่งซื้อ (ลงออเดอร์)',k:'w',l:3},
+{i:'m249',u:'mat.deal',z:'定金',p:'dìng jīn',t:'ติ้ง จิน',m:'เงินมัดจำ',k:'w',l:3},
+{i:'m250',u:'mat.deal',z:'尾款',p:'wěi kuǎn',t:'เหว่ย ข่วน',m:'เงินงวดสุดท้าย',k:'w',l:4},
+{i:'m251',u:'mat.deal',z:'付款方式',p:'fù kuǎn fāng shì',t:'ฟู่ ข่วน ฟาง ซื่อ',m:'วิธีการชำระเงิน',k:'w',l:4},
+{i:'m252',u:'mat.deal',z:'交货期',p:'jiāo huò qī',t:'เจียว ฮั่ว ชี',m:'ระยะเวลาส่งมอบ',k:'w',l:4},
+{i:'m253',u:'mat.deal',z:'现货',p:'xiàn huò',t:'เซี่ยน ฮั่ว',m:'ของพร้อมส่ง',k:'w',l:3},
+{i:'m254',u:'mat.deal',z:'库存',p:'kù cún',t:'คู่ ฉุน',m:'สต็อก',k:'w',l:3},
+{i:'m255',u:'mat.deal',z:'缺货',p:'quē huò',t:'เชฺว ฮั่ว',m:'ของขาด',k:'w',l:3},
+{i:'m256',u:'mat.deal',z:'合同',p:'hé tong',t:'เหอ ถง',m:'สัญญา',k:'w',l:3},
+{i:'m257',u:'mat.deal',z:'优惠',p:'yōu huì',t:'โยว ฮุ่ย',m:'ส่วนลด/ข้อเสนอพิเศษ',k:'w',l:3},
+{i:'m258',u:'mat.deal',z:'起订量是多少？',p:'qǐ dìng liàng shì duō shao?',t:'ฉี่ ติ้ง เลี่ยง ซื่อ ตัว เชา',m:'สั่งขั้นต่ำเท่าไหร่',k:'s',l:4},
+{i:'m259',u:'mat.deal',z:'我要一个集装箱',p:'wǒ yào yí ge jí zhuāng xiāng',t:'หว่อ เย่า อี๋ เกอ จี๋ จวาง เซียง',m:'ผมเอาหนึ่งตู้คอนเทนเนอร์',k:'s',l:4},
+{i:'m260',u:'mat.deal',z:'量大价格能低吗？',p:'liàng dà jià gé néng dī ma?',t:'เลี่ยง ต้า เจี้ย เก๋อ เหนิง ตี มา',m:'สั่งเยอะราคาลดได้ไหม',k:'s',l:4},
+{i:'m261',u:'mat.deal',z:'这是出厂价吗？',p:'zhè shì chū chǎng jià ma?',t:'เจ้อ ซื่อ ชู ฉ่าง เจี้ย มา',m:'นี่ราคาหน้าโรงงานใช่ไหม',k:'s',l:4,n:'ถามเพื่อเช็คว่าคุยกับโรงงานจริงหรือคนกลาง'},
+{i:'m262',u:'mat.deal',z:'你们是工厂还是贸易公司？',p:'nǐ men shì gōng chǎng hái shi mào yì gōng sī?',t:'หนี่ เมิน ซื่อ กง ฉ่าง ไห สือ ม่าว อี้ กง ซือ',m:'คุณเป็นโรงงานหรือบริษัทเทรด',k:'s',l:5,n:'ประโยคเปลี่ยนเกม — ถามตั้งแต่นาทีแรก'},
+{i:'m263',u:'mat.deal',z:'能给我报价单吗？',p:'néng gěi wǒ bào jià dān ma?',t:'เหนิง เก่ย หว่อ เป้า เจี้ย ตาน มา',m:'ขอใบเสนอราคาได้ไหม',k:'s',l:4},
+{i:'m264',u:'mat.deal',z:'交货期多长？',p:'jiāo huò qī duō cháng?',t:'เจียว ฮั่ว ชี ตัว ฉาง',m:'ใช้เวลาส่งของนานแค่ไหน',k:'s',l:4},
+{i:'m265',u:'mat.deal',z:'付多少定金？',p:'fù duō shao dìng jīn?',t:'ฟู่ ตัว เชา ติ้ง จิน',m:'มัดจำเท่าไหร่',k:'s',l:4},
+{i:'m266',u:'mat.deal',z:'我先付百分之三十',p:'wǒ xiān fù bǎi fēn zhī sān shí',t:'หว่อ เซียน ฟู่ ป่าย เฟิน จือ ซาน สือ',m:'ผมจ่ายมัดจำ 30% ก่อน',k:'s',l:5},
+{i:'m267',u:'mat.deal',z:'别家给我更低的价',p:'bié jiā gěi wǒ gèng dī de jià',t:'เปี๋ย เจีย เก่ย หว่อ เกิ้ง ตี เตอ เจี้ย',m:'เจ้าอื่นให้ราคาถูกกว่า',k:'s',l:5,n:'ไพ่ต่อรองมาตรฐาน แต่ใช้แล้วต้องพร้อมเดินออกจริง'},
+{i:'m268',u:'mat.deal',z:'如果长期合作呢？',p:'rú guǒ cháng qī hé zuò ne?',t:'หญู กั่ว ฉาง ชี เหอ จั้ว เนอ',m:'ถ้าร่วมงานกันระยะยาวล่ะ',k:'s',l:5,n:'ใช้ประโยคนี้แทนการกดราคาตรงๆ ได้ผลกว่ามาก'},
+{i:'m269',u:'mat.deal',z:'再便宜一点我就下单',p:'zài pián yi yì diǎn wǒ jiù xià dān',t:'จ้าย เผียน อี อี้ เตี่ยน หว่อ จิ้ว เซี่ย ตาน',m:'ลดอีกนิดผมสั่งเลย',k:'s',l:5},
+{i:'m270',u:'mat.deal',z:'我考虑一下再联系你',p:'wǒ kǎo lǜ yí xià zài lián xì nǐ',t:'หว่อ เข่า ลฺวี่ อี๋ เซี่ย จ้าย เหลียน ซี หนี่',m:'ขอคิดดูก่อนแล้วจะติดต่อไป',k:'s',l:4},
+
+/* ---------- โรงงาน / ตรวจของ / ขนส่ง ---------- */
+{i:'m281',u:'mat.factory',z:'工厂',p:'gōng chǎng',t:'กง ฉ่าง',m:'โรงงาน',k:'w',l:2},
+{i:'m282',u:'mat.factory',z:'参观',p:'cān guān',t:'ชาน กวาน',m:'เยี่ยมชม/ดูงาน',k:'w',l:3},
+{i:'m283',u:'mat.factory',z:'生产线',p:'shēng chǎn xiàn',t:'เซิง ฉ่าน เซี่ยน',m:'สายการผลิต',k:'w',l:4},
+{i:'m284',u:'mat.factory',z:'产能',p:'chǎn néng',t:'ฉ่าน เหนิง',m:'กำลังการผลิต',k:'w',l:4},
+{i:'m285',u:'mat.factory',z:'验货',p:'yàn huò',t:'เย่ียน ฮั่ว',m:'ตรวจสินค้า',k:'w',l:4},
+{i:'m286',u:'mat.factory',z:'质检',p:'zhì jiǎn',t:'จื้อ เจี่ยน',m:'ตรวจสอบคุณภาพ',k:'w',l:4},
+{i:'m287',u:'mat.factory',z:'包装',p:'bāo zhuāng',t:'เปา จวาง',m:'บรรจุภัณฑ์',k:'w',l:3},
+{i:'m288',u:'mat.factory',z:'纸箱',p:'zhǐ xiāng',t:'จื่อ เซียง',m:'กล่องกระดาษ',k:'w',l:3},
+{i:'m289',u:'mat.factory',z:'托盘',p:'tuō pán',t:'ทัว ผาน',m:'พาเลท',k:'w',l:4},
+{i:'m290',u:'mat.factory',z:'集装箱',p:'jí zhuāng xiāng',t:'จี๋ จวาง เซียง',m:'ตู้คอนเทนเนอร์',k:'w',l:4},
+{i:'m291',u:'mat.factory',z:'发货',p:'fā huò',t:'ฟา ฮั่ว',m:'ส่งของ',k:'w',l:3},
+{i:'m292',u:'mat.factory',z:'物流',p:'wù liú',t:'อู้ หลิว',m:'โลจิสติกส์',k:'w',l:3},
+{i:'m293',u:'mat.factory',z:'海运',p:'hǎi yùn',t:'ห่าย ยฺวิ่น',m:'ขนส่งทางเรือ',k:'w',l:4},
+{i:'m294',u:'mat.factory',z:'运费',p:'yùn fèi',t:'ยฺวิ่น เฟ่ย',m:'ค่าขนส่ง',k:'w',l:3},
+{i:'m295',u:'mat.factory',z:'清关',p:'qīng guān',t:'ชิง กวาน',m:'เคลียร์ศุลกากร',k:'w',l:4},
+{i:'m296',u:'mat.factory',z:'破损',p:'pò sǔn',t:'พั่ว สุ่น',m:'เสียหาย/แตก',k:'w',l:4},
+{i:'m297',u:'mat.factory',z:'补发',p:'bǔ fā',t:'ปู่ ฟา',m:'ส่งชดเชยให้ใหม่',k:'w',l:4},
+{i:'m298',u:'mat.factory',z:'退货',p:'tuì huò',t:'ทุ่ย ฮั่ว',m:'คืนสินค้า',k:'w',l:3},
+{i:'m299',u:'mat.factory',z:'我想参观工厂',p:'wǒ xiǎng cān guān gōng chǎng',t:'หว่อ เสี่ยง ชาน กวาน กง ฉ่าง',m:'ผมอยากไปดูโรงงาน',k:'s',l:4},
+{i:'m300',u:'mat.factory',z:'发货前我要验货',p:'fā huò qián wǒ yào yàn huò',t:'ฟา ฮั่ว เฉียน หว่อ เย่า เย่ียน ฮั่ว',m:'ก่อนส่งของผมขอตรวจก่อน',k:'s',l:5,n:'พูดตั้งแต่ตอนคุยราคา ไม่ใช่ตอนของจะออก'},
+{i:'m301',u:'mat.factory',z:'包装要加强',p:'bāo zhuāng yào jiā qiáng',t:'เปา จวาง เย่า เจีย เฉียง',m:'แพ็คให้แน่นกว่านี้',k:'s',l:4},
+{i:'m302',u:'mat.factory',z:'上次的货有破损',p:'shàng cì de huò yǒu pò sǔn',t:'ซ่าง ชื่อ เตอ ฮั่ว โหย่ว พั่ว สุ่น',m:'ของล็อตที่แล้วมีเสียหาย',k:'s',l:5},
+{i:'m303',u:'mat.factory',z:'你们要怎么处理？',p:'nǐ men yào zěn me chǔ lǐ?',t:'หนี่ เมิน เย่า เจิ่น เมอ ฉู่ หลี่',m:'คุณจะจัดการยังไง',k:'s',l:5,n:'ประโยคเคลม — สั้น สุภาพ แต่กดดัน'},
+{i:'m304',u:'mat.factory',z:'运到曼谷多少钱？',p:'yùn dào Màn gǔ duō shao qián?',t:'ยฺวิ่น เต้า ม่าน กู่ ตัว เชา เฉียน',m:'ส่งถึงกรุงเทพเท่าไหร่',k:'s',l:4},
+{i:'m305',u:'mat.factory',z:'你有泰国的客户吗？',p:'nǐ yǒu Tài guó de kè hù ma?',t:'หนี่ โหย่ว ไท่ กั๋ว เตอ เค่อ ฮู่ มา',m:'คุณมีลูกค้าคนไทยไหม',k:'s',l:4,n:'ถ้ามี แปลว่าเขารู้เรื่องเอกสารส่งออกมาไทยแล้ว'}
+];
+
+/* บทสนทนาจำลอง — คุณเล่นเป็น "คุณ" (you) แอปจะให้พูดเฉพาะบรรทัดของคุณ */
+window.DIALOGUES = [
+{id:'dg01',deck:'mat',title:'เดินตลาดกระเบื้อง — ถามราคาครั้งแรก',lvl:2,lines:[
+ {w:'t',z:'您好，看瓷砖吗？',p:'nín hǎo, kàn cí zhuān ma?',t:'หนิน ห่าว, ค่าน ฉือ จวาน มา',m:'สวัสดีครับ ดูกระเบื้องเหรอครับ'},
+ {w:'y',z:'对，我看看地砖。',p:'duì, wǒ kàn kan dì zhuān.',t:'ตุ้ย, หว่อ ค่าน ค่าน ตี้ จวาน',m:'ใช่ครับ ผมดูกระเบื้องปูพื้น'},
+ {w:'t',z:'这边都是。您要什么规格？',p:'zhè biān dōu shì. nín yào shén me guī gé?',t:'เจ้อ เปียน โตว ซื่อ. หนิน เย่า เสิน เมอ กุย เก๋อ',m:'ทางนี้ทั้งหมดเลยครับ ต้องการขนาดไหน'},
+ {w:'y',z:'八百乘八百，有吗？',p:'bā bǎi chéng bā bǎi, yǒu ma?',t:'ปา ป่าย เฉิง ปา ป่าย, โหย่ว มา',m:'800x800 มีไหม'},
+ {w:'t',z:'有，这款很好卖。',p:'yǒu, zhè kuǎn hěn hǎo mài.',t:'โหย่ว, เจ้อ ข่วน เหิ่น ห่าว ม่าย',m:'มีครับ รุ่นนี้ขายดีมาก'},
+ {w:'y',z:'多少钱一平方？',p:'duō shao qián yì píng fāng?',t:'ตัว เชา เฉียน อี้ ผิง ฟาง',m:'ตารางเมตรละเท่าไหร่'},
+ {w:'t',z:'六十八块一平方。',p:'liù shí bā kuài yì píng fāng.',t:'ลิ่ว สือ ปา ไคว่ อี้ ผิง ฟาง',m:'68 หยวนต่อตารางเมตรครับ'},
+ {w:'y',z:'请写下来。',p:'qǐng xiě xià lai.',t:'ฉิ่ง เสี่ย เซี่ย ไหล',m:'ช่วยเขียนลงมาให้หน่อย'}
+]},
+
+{id:'dg02',deck:'mat',title:'ต่อรองราคา + ถาม MOQ',lvl:4,lines:[
+ {w:'y',z:'你们是工厂还是贸易公司？',p:'nǐ men shì gōng chǎng hái shi mào yì gōng sī?',t:'หนี่ เมิน ซื่อ กง ฉ่าง ไห สือ ม่าว อี้ กง ซือ',m:'คุณเป็นโรงงานหรือบริษัทเทรด'},
+ {w:'t',z:'我们是工厂，就在佛山。',p:'wǒ men shì gōng chǎng, jiù zài Fó shān.',t:'หว่อ เมิน ซื่อ กง ฉ่าง, จิ้ว จ้าย ฝัว ซาน',m:'เราเป็นโรงงานครับ อยู่ที่โฝซานนี่เอง'},
+ {w:'y',z:'起订量是多少？',p:'qǐ dìng liàng shì duō shao?',t:'ฉี่ ติ้ง เลี่ยง ซื่อ ตัว เชา',m:'สั่งขั้นต่ำเท่าไหร่'},
+ {w:'t',z:'一个集装箱起订。',p:'yí ge jí zhuāng xiāng qǐ dìng.',t:'อี๋ เกอ จี๋ จวาง เซียง ฉี่ ติ้ง',m:'ขั้นต่ำหนึ่งตู้คอนเทนเนอร์'},
+ {w:'y',z:'量大价格能低吗？',p:'liàng dà jià gé néng dī ma?',t:'เลี่ยง ต้า เจี้ย เก๋อ เหนิง ตี มา',m:'สั่งเยอะราคาลดได้ไหม'},
+ {w:'t',z:'可以，六十五。',p:'kě yǐ, liù shí wǔ.',t:'เข่อ อี่, ลิ่ว สือ หวู่',m:'ได้ครับ 65'},
+ {w:'y',z:'如果长期合作呢？',p:'rú guǒ cháng qī hé zuò ne?',t:'หญู กั่ว ฉาง ชี เหอ จั้ว เนอ',m:'ถ้าร่วมงานกันระยะยาวล่ะ'},
+ {w:'t',z:'那我给您六十二，最低了。',p:'nà wǒ gěi nín liù shí èr, zuì dī le.',t:'น่า หว่อ เก่ย หนิน ลิ่ว สือ เอ้อร์, จุ้ย ตี เลอ',m:'งั้นให้ 62 ต่ำสุดแล้วครับ'},
+ {w:'y',z:'好，就这样吧。',p:'hǎo, jiù zhè yàng ba.',t:'ห่าว, จิ้ว เจ้อ ย่าง ปา',m:'โอเค เอาตามนี้'}
+]},
+
+{id:'dg03',deck:'mat',title:'ขอตัวอย่างส่งมาไทย',lvl:4,lines:[
+ {w:'y',z:'有样品吗？',p:'yǒu yàng pǐn ma?',t:'โหย่ว ย่าง ผิ่น มา',m:'มีตัวอย่างไหม'},
+ {w:'t',z:'有，您要哪个色号？',p:'yǒu, nín yào nǎ ge sè hào?',t:'โหย่ว, หนิน เย่า หนา เกอ เซ่อ ห่าว',m:'มีครับ ต้องการรหัสสีไหน'},
+ {w:'y',z:'这三个都要。',p:'zhè sān ge dōu yào.',t:'เจ้อ ซาน เกอ โตว เย่า',m:'เอาทั้งสามอันนี้'},
+ {w:'t',z:'好的。样品费一百块。',p:'hǎo de. yàng pǐn fèi yì bǎi kuài.',t:'ห่าว เตอ. ย่าง ผิ่น เฟ่ย อี้ ป่าย ไคว่',m:'ได้ครับ ค่าตัวอย่าง 100 หยวน'},
+ {w:'y',z:'能寄样品到泰国吗？',p:'néng jì yàng pǐn dào Tài guó ma?',t:'เหนิง จี้ ย่าง ผิ่น เต้า ไท่ กั๋ว มา',m:'ส่งตัวอย่างไปไทยได้ไหม'},
+ {w:'t',z:'可以，运费您付。',p:'kě yǐ, yùn fèi nín fù.',t:'เข่อ อี่, ยฺวิ่น เฟ่ย หนิน ฟู่',m:'ได้ครับ ค่าส่งคุณจ่าย'},
+ {w:'y',z:'没问题。加个微信吧。',p:'méi wèn tí. jiā ge Wēi xìn ba.',t:'เหมย เวิ่น ถี. เจีย เกอ เวย ซิ่น ปา',m:'ไม่มีปัญหา แอดวีแชทกันเลย'}
+]},
+
+{id:'dg04',deck:'mat',title:'ไปดูโรงงาน',lvl:4,lines:[
+ {w:'y',z:'我想参观工厂，可以吗？',p:'wǒ xiǎng cān guān gōng chǎng, kě yǐ ma?',t:'หว่อ เสี่ยง ชาน กวาน กง ฉ่าง, เข่อ อี่ มา',m:'ผมอยากไปดูโรงงาน ได้ไหม'},
+ {w:'t',z:'当然可以，明天怎么样？',p:'dāng rán kě yǐ, míng tiān zěn me yàng?',t:'ตาง หญาน เข่อ อี่, หมิง เทียน เจิ่น เมอ ย่าง',m:'ได้แน่นอน พรุ่งนี้เป็นไง'},
+ {w:'y',z:'好，几点方便？',p:'hǎo, jǐ diǎn fāng biàn?',t:'ห่าว, จี่ เตี่ยน ฟาง เปี้ยน',m:'ดีครับ กี่โมงสะดวก'},
+ {w:'t',z:'上午十点，我派车接您。',p:'shàng wǔ shí diǎn, wǒ pài chē jiē nín.',t:'ซ่าง หวู่ สือ เตี่ยน, หว่อ ไพ่ เชอ เจีย หนิน',m:'สิบโมงเช้า ผมส่งรถไปรับ'},
+ {w:'y',z:'太麻烦你了，谢谢。',p:'tài má fan nǐ le, xiè xie.',t:'ไท่ หมา ฟาน หนี่ เลอ, เซี่ย เซีย',m:'รบกวนมากเลย ขอบคุณครับ'},
+ {w:'y',z:'你们的产能是多少？',p:'nǐ men de chǎn néng shì duō shao?',t:'หนี่ เมิน เตอ ฉ่าน เหนิง ซื่อ ตัว เชา',m:'กำลังการผลิตเท่าไหร่'},
+ {w:'t',z:'一天两万平方米。',p:'yì tiān liǎng wàn píng fāng mǐ.',t:'อี้ เทียน เหลี่ยง ว่าน ผิง ฟาง หมี่',m:'วันละสองหมื่นตารางเมตร'}
+]},
+
+{id:'dg05',deck:'mat',title:'เคลมของเสียหาย (บทที่ยากที่สุด)',lvl:5,lines:[
+ {w:'y',z:'上次的货有破损。',p:'shàng cì de huò yǒu pò sǔn.',t:'ซ่าง ชื่อ เตอ ฮั่ว โหย่ว พั่ว สุ่น',m:'ของล็อตที่แล้วมีเสียหาย'},
+ {w:'t',z:'多少？有照片吗？',p:'duō shao? yǒu zhào piàn ma?',t:'ตัว เชา? โหย่ว จ้าว เพี่ยน มา',m:'เท่าไหร่ครับ มีรูปไหม'},
+ {w:'y',z:'有，我发给你。大概三十箱。',p:'yǒu, wǒ fā gěi nǐ. dà gài sān shí xiāng.',t:'โหย่ว, หว่อ ฟา เก่ย หนี่. ต้า ไก้ ซาน สือ เซียง',m:'มี ผมส่งให้ ประมาณ 30 กล่อง'},
+ {w:'t',z:'可能是运输的问题。',p:'kě néng shì yùn shū de wèn tí.',t:'เข่อ เหนิง ซื่อ ยฺวิ่น ซู เตอ เวิ่น ถี',m:'อาจเป็นปัญหาตอนขนส่ง'},
+ {w:'y',z:'包装要加强。你们要怎么处理？',p:'bāo zhuāng yào jiā qiáng. nǐ men yào zěn me chǔ lǐ?',t:'เปา จวาง เย่า เจีย เฉียง. หนี่ เมิน เย่า เจิ่น เมอ ฉู่ หลี่',m:'แพ็คต้องแน่นกว่านี้ แล้วคุณจะจัดการยังไง'},
+ {w:'t',z:'下次订单补给您。',p:'xià cì dìng dān bǔ gěi nín.',t:'เซี่ย ชื่อ ติ้ง ตาน ปู่ เก่ย หนิน',m:'ออเดอร์หน้าชดเชยให้ครับ'},
+ {w:'y',z:'好，但下次一定要加强包装。',p:'hǎo, dàn xià cì yí dìng yào jiā qiáng bāo zhuāng.',t:'ห่าว, ต้าน เซี่ย ชื่อ อี๋ ติ้ง เย่า เจีย เฉียง เปา จวาง',m:'ได้ แต่คราวหน้าต้องแพ็คให้แน่นขึ้นแน่นอน'}
+]},
+
+{id:'dg06',deck:'mat',title:'ซื้อสุขภัณฑ์ — ถามสเปก',lvl:4,lines:[
+ {w:'y',z:'我要看马桶。',p:'wǒ yào kàn mǎ tǒng.',t:'หว่อ เย่า ค่าน หม่า ถ่ง',m:'ผมอยากดูชักโครก'},
+ {w:'t',z:'这款是智能马桶，很受欢迎。',p:'zhè kuǎn shì zhì néng mǎ tǒng, hěn shòu huān yíng.',t:'เจ้อ ข่วน ซื่อ จื้อ เหนิง หม่า ถ่ง, เหิ่น โซ่ว ฮวาน หยิง',m:'รุ่นนี้เป็นชักโครกอัจฉริยะ นิยมมาก'},
+ {w:'y',z:'坑距是多少？',p:'kēng jù shì duō shao?',t:'เคิง จฺวี้ ซื่อ ตัว เชา',m:'ระยะท่อเท่าไหร่'},
+ {w:'t',z:'三百或者四百，都有。',p:'sān bǎi huò zhě sì bǎi, dōu yǒu.',t:'ซาน ป่าย ฮั่ว เจ่อ ซื่อ ป่าย, โตว โหย่ว',m:'300 หรือ 400 มีทั้งสองแบบ'},
+ {w:'y',z:'电压是220伏吗？',p:'diàn yā shì èr bǎi èr shí fú ma?',t:'เตี้ยน ยา ซื่อ เอ้อร์ ป่าย เอ้อร์ สือ ฝู มา',m:'ไฟ 220 โวลต์ใช่ไหม'},
+ {w:'t',z:'是的，跟泰国一样。',p:'shì de, gēn Tài guó yí yàng.',t:'ซื่อ เตอ, เกิน ไท่ กั๋ว อี๋ ย่าง',m:'ใช่ครับ เหมือนเมืองไทย'},
+ {w:'y',z:'保修几年？',p:'bǎo xiū jǐ nián?',t:'ป่าว ซิว จี่ เหนียน',m:'รับประกันกี่ปี'},
+ {w:'t',z:'整机三年。',p:'zhěng jī sān nián.',t:'เจิ่ง จี ซาน เหนียน',m:'ทั้งเครื่องสามปี'}
+]},
+
+{id:'dg07',deck:'daily',title:'เช็คอินโรงแรม',lvl:2,lines:[
+ {w:'y',z:'您好，我订了房间。',p:'nín hǎo, wǒ dìng le fáng jiān.',t:'หนิน ห่าว, หว่อ ติ้ง เลอ ฝาง เจียน',m:'สวัสดีครับ ผมจองห้องไว้'},
+ {w:'t',z:'请给我护照。',p:'qǐng gěi wǒ hù zhào.',t:'ฉิ่ง เก่ย หว่อ ฮู่ จ้าว',m:'ขอพาสปอร์ตด้วยค่ะ'},
+ {w:'y',z:'给你。我住五天。',p:'gěi nǐ. wǒ zhù wǔ tiān.',t:'เก่ย หนี่. หว่อ จู้ หวู่ เทียน',m:'นี่ครับ ผมพัก 5 วัน'},
+ {w:'t',z:'好的，八零六房间。',p:'hǎo de, bā líng liù fáng jiān.',t:'ห่าว เตอ, ปา หลิง ลิ่ว ฝาง เจียน',m:'ได้ค่ะ ห้อง 806'},
+ {w:'y',z:'wifi密码是多少？',p:'wifi mì mǎ shì duō shao?',t:'ไวไฟ มี่ หม่า ซื่อ ตัว เชา',m:'รหัสไวไฟอะไรครับ'},
+ {w:'t',z:'在房卡上面。',p:'zài fáng kǎ shàng miàn.',t:'จ้าย ฝาง ข่า ซ่าง เมี่ยน',m:'อยู่บนคีย์การ์ดค่ะ'},
+ {w:'y',z:'几点吃早餐？',p:'jǐ diǎn chī zǎo cān?',t:'จี่ เตี่ยน ชือ เจ่า ชาน',m:'อาหารเช้ากี่โมง'},
+ {w:'t',z:'七点到十点。',p:'qī diǎn dào shí diǎn.',t:'ชี เตี่ยน เต้า สือ เตี่ยน',m:'เจ็ดโมงถึงสิบโมง'}
+]},
+
+{id:'dg08',deck:'daily',title:'นั่งแท็กซี่ไปตลาดวัสดุ',lvl:2,lines:[
+ {w:'y',z:'师傅，去这里。',p:'shī fu, qù zhè lǐ.',t:'ซือ ฟุ, ชฺวี่ เจ้อ หลี่',m:'พี่ครับ ไปที่นี่'},
+ {w:'t',z:'好，建材市场是吧？',p:'hǎo, jiàn cái shì chǎng shì ba?',t:'ห่าว, เจี้ยน ไฉ ซื่อ ฉ่าง ซื่อ ปา',m:'ได้ ตลาดวัสดุก่อสร้างใช่ไหม'},
+ {w:'y',z:'对。远吗？',p:'duì. yuǎn ma?',t:'ตุ้ย. หยวน มา',m:'ใช่ ไกลไหม'},
+ {w:'t',z:'不远，二十分钟。',p:'bù yuǎn, èr shí fēn zhōng.',t:'ปู้ หยวน, เอ้อร์ สือ เฟิน จง',m:'ไม่ไกล ยี่สิบนาที'},
+ {w:'y',z:'我赶时间，走高速吧。',p:'wǒ gǎn shí jiān, zǒu gāo sù ba.',t:'หว่อ ก่าน สือ เจียน, โจ่ว เกา ซู่ ปา',m:'ผมรีบ ไปทางด่วนเถอะ'},
+ {w:'t',z:'行，高速费您出。',p:'xíng, gāo sù fèi nín chū.',t:'สิง, เกา ซู่ เฟ่ย หนิน ชู',m:'ได้ ค่าทางด่วนคุณจ่ายนะ'},
+ {w:'y',z:'没问题。到了叫我。',p:'méi wèn tí. dào le jiào wǒ.',t:'เหมย เวิ่น ถี. เต้า เลอ เจี้ยว หว่อ',m:'ไม่มีปัญหา ถึงแล้วเรียกผมด้วย'}
+]},
+
+{id:'dg09',deck:'daily',title:'เลี้ยงข้าวซัพพลายเออร์',lvl:3,lines:[
+ {w:'y',z:'今晚我请客。',p:'jīn wǎn wǒ qǐng kè.',t:'จิน หว่าน หว่อ ฉิ่ง เค่อ',m:'คืนนี้ผมเลี้ยงเอง'},
+ {w:'t',z:'哎呀，太客气了！',p:'āi ya, tài kè qi le!',t:'อาย ยา, ไท่ เค่อ ชี เลอ',m:'โอ๊ย เกรงใจจัง'},
+ {w:'y',z:'应该的。我们长期合作。',p:'yīng gāi de. wǒ men cháng qī hé zuò.',t:'ยิง ไก เตอ. หว่อ เมิน ฉาง ชี เหอ จั้ว',m:'ควรอยู่แล้ว เราร่วมงานกันระยะยาว'},
+ {w:'t',z:'来，干杯！',p:'lái, gān bēi!',t:'ไหล, กาน เปย',m:'มา ชนแก้ว'},
+ {w:'y',z:'干杯！我不能喝太多。',p:'gān bēi! wǒ bù néng hē tài duō.',t:'กาน เปย! หว่อ ปู้ เหนิง เฮอ ไท่ ตัว',m:'ชนแก้ว! ผมดื่มเยอะไม่ได้'},
+ {w:'t',z:'没关系，随意。',p:'méi guān xi, suí yì.',t:'เหมย กวาน ซี, สุย อี้',m:'ไม่เป็นไร ตามสบาย'},
+ {w:'y',z:'欢迎你来泰国，我请你。',p:'huān yíng nǐ lái Tài guó, wǒ qǐng nǐ.',t:'ฮวาน หยิง หนี่ ไหล ไท่ กั๋ว, หว่อ ฉิ่ง หนี่',m:'ยินดีต้อนรับมาเมืองไทย ผมเลี้ยงคุณ'}
+]},
+
+{id:'dg10',deck:'daily',title:'แนะนำตัว + แลกวีแชทที่งานแฟร์',lvl:3,lines:[
+ {w:'t',z:'您好，请问您是？',p:'nín hǎo, qǐng wèn nín shì?',t:'หนิน ห่าว, ฉิ่ง เวิ่น หนิน ซื่อ',m:'สวัสดีครับ ไม่ทราบว่าคุณคือ'},
+ {w:'y',z:'我叫阿威，我是泰国人。',p:'wǒ jiào Ā wēi, wǒ shì Tài guó rén.',t:'หว่อ เจี้ยว อา เวย, หว่อ ซื่อ ไท่ กั๋ว เหญิน',m:'ผมชื่ออาเวย ผมเป็นคนไทย'},
+ {w:'t',z:'欢迎！您做什么行业？',p:'huān yíng! nín zuò shén me háng yè?',t:'ฮวาน หยิง! หนิน จั้ว เสิน เมอ หาง เย่',m:'ยินดีต้อนรับ คุณทำธุรกิจอะไร'},
+ {w:'y',z:'我做房地产，也做装修材料。',p:'wǒ zuò fáng dì chǎn, yě zuò zhuāng xiū cái liào.',t:'หว่อ จั้ว ฝาง ตี้ ฉ่าน, เหย่ จั้ว จวง ซิว ไฉ เลี่ยว',m:'ผมทำอสังหาฯ และวัสดุตกแต่งด้วย'},
+ {w:'t',z:'太好了，我们很合适。',p:'tài hǎo le, wǒ men hěn hé shì.',t:'ไท่ ห่าว เลอ, หว่อ เมิน เหิ่น เหอ ซื่อ',m:'ดีเลย เราเข้ากันได้พอดี'},
+ {w:'y',z:'你有泰国的客户吗？',p:'nǐ yǒu Tài guó de kè hù ma?',t:'หนี่ โหย่ว ไท่ กั๋ว เตอ เค่อ ฮู่ มา',m:'คุณมีลูกค้าคนไทยไหม'},
+ {w:'t',z:'有几个，出口经验很足。',p:'yǒu jǐ ge, chū kǒu jīng yàn hěn zú.',t:'โหย่ว จี่ เกอ, ชู โข่ว จิง เย่ียน เหิ่น จู๋',m:'มีหลายราย มีประสบการณ์ส่งออกเยอะ'},
+ {w:'y',z:'很好。加个微信吧，保持联系。',p:'hěn hǎo. jiā ge Wēi xìn ba, bǎo chí lián xì.',t:'เหิ่น ห่าว. เจีย เกอ เวย ซิ่น ปา, ป่าว ฉือ เหลียน ซี',m:'ดีมาก แอดวีแชทกัน ติดต่อกันเรื่อยๆ'}
+]}
+];
+
+/* รวมคลังคำ + ข้อมูลหมวด */
+(function () {
+  const ALL = [].concat(window.DECK_CORE, window.DECK_DAILY, window.DECK_MAT);
+
+  const UNITS = {
+    'core.num':      { deck: 'core',  name: 'ตัวเลข',                  icon: '123' },
+    'core.money':    { deck: 'core',  name: 'ราคาและเงิน',             icon: '¥'   },
+    'core.time':     { deck: 'core',  name: 'เวลา',                    icon: '時'  },
+    'core.social':   { deck: 'core',  name: 'ทักทาย มารยาท',           icon: '礼'  },
+    'core.frame':    { deck: 'core',  name: 'โครงประโยคหลัก',          icon: '句'  },
+    'daily.airport': { deck: 'daily', name: 'สนามบิน รถไฟ',           icon: '✈'   },
+    'daily.hotel':   { deck: 'daily', name: 'โรงแรม',                  icon: '宿'  },
+    'daily.taxi':    { deck: 'daily', name: 'แท็กซี่ DiDi',            icon: '車'  },
+    'daily.food':    { deck: 'daily', name: 'ร้านอาหาร',               icon: '食'  },
+    'daily.pay':     { deck: 'daily', name: 'จ่ายเงิน',                icon: '付'  },
+    'daily.shop':    { deck: 'daily', name: 'ซื้อของทั่วไป',           icon: '買'  },
+    'daily.help':    { deck: 'daily', name: 'ถามทาง ขอความช่วยเหลือ',  icon: '助'  },
+    'daily.chat':    { deck: 'daily', name: 'คุยเล่น สร้างสัมพันธ์',   icon: '談'  },
+    'mat.tile':      { deck: 'mat',   name: 'กระเบื้อง',               icon: '磚'  },
+    'mat.sanitary':  { deck: 'mat',   name: 'สุขภัณฑ์',                icon: '洁'  },
+    'mat.door':      { deck: 'mat',   name: 'ประตู หน้าต่าง กระจก',    icon: '門'  },
+    'mat.floor':     { deck: 'mat',   name: 'พื้น',                    icon: '地'  },
+    'mat.paint':     { deck: 'mat',   name: 'สี เคลือบผิว',            icon: '漆'  },
+    'mat.light':     { deck: 'mat',   name: 'ไฟ ปลั๊ก',                icon: '燈'  },
+    'mat.hardware':  { deck: 'mat',   name: 'ฮาร์ดแวร์ วัสดุพื้นฐาน',  icon: '金'  },
+    'mat.kitchen':   { deck: 'mat',   name: 'ครัว เฟอร์นิเจอร์',       icon: '厨'  },
+    'mat.spec':      { deck: 'mat',   name: 'สเปก คุณภาพ',             icon: '规'  },
+    'mat.deal':      { deck: 'mat',   name: 'ราคา สั่งซื้อ เจรจา',     icon: '价'  },
+    'mat.factory':   { deck: 'mat',   name: 'โรงงาน ตรวจของ ขนส่ง',    icon: '厂'  }
+  };
+
+  const DECKS = {
+    core:  { name: 'ชุดแกน',              sub: 'ตัวเลข ราคา เวลา โครงประโยค — ใช้ได้ทุกที่' },
+    daily: { name: 'ชีวิตประจำวันในจีน',   sub: 'เอาตัวรอดและอยู่สบายตอนไปดูงาน' },
+    mat:   { name: 'วัสดุก่อสร้าง & ตกแต่ง', sub: 'ศัพท์สายงานคุณ + ภาษาสั่งซื้อ' }
+  };
+
+  const TONE = {
+    'ā':'a','á':'a','ǎ':'a','à':'a','ē':'e','é':'e','ě':'e','è':'e',
+    'ī':'i','í':'i','ǐ':'i','ì':'i','ō':'o','ó':'o','ǒ':'o','ò':'o',
+    'ū':'u','ú':'u','ǔ':'u','ù':'u','ǖ':'v','ǘ':'v','ǚ':'v','ǜ':'v','ü':'v','ń':'n','ň':'n'
+  };
+  function stripTones(s) {
+    return String(s).toLowerCase().replace(/[^\x00-\x7f]/g, function (c) { return TONE[c] !== undefined ? TONE[c] : c; });
+  }
+
+  ALL.forEach(function (it) {
+    const u = UNITS[it.u];
+    it.deck = u ? u.deck : 'core';
+    it.unitName = u ? u.name : it.u;
+    // ดัชนีค้นหา: รวมพินอินทั้งแบบมีวรรณยุกต์ ไม่มีวรรณยุกต์ และแบบติดกัน (jiage)
+    const plain = stripTones(it.p);
+    it._s = [it.m, it.z, it.p, plain, plain.replace(/[\s']/g, ''), it.t, it.unitName, it.n || ''].join(' ').toLowerCase();
+  });
+
+  const BY_ID = {};
+  ALL.forEach(function (it) { BY_ID[it.i] = it; });
+
+  window.DATA = {
+    all: ALL,
+    stripTones: stripTones,
+    byId: BY_ID,
+    units: UNITS,
+    decks: DECKS,
+    dialogues: window.DIALOGUES || [],
+    byUnit: function (u) { return ALL.filter(function (x) { return x.u === u; }); },
+    byDeck: function (d) { return ALL.filter(function (x) { return x.deck === d; }); }
+  };
+})();
+
+/* ระบบทวนอัตโนมัติ (SRS) — ตัดสินใจให้ว่าวันนี้ควรทวนคำไหน เก็บข้อมูลในเครื่อง */
+(function () {
+  const KEY = 'zhth.v1';
+  const DAY = 86400000;
+
+  const DEFAULTS = {
+    v: 1,
+    cards: {},
+    stats: { streak: 0, best: 0, lastDay: null, days: {} },
+    settings: {
+      newPerDay: 12,
+      sessionMin: 30,
+      decks: ['core', 'daily', 'mat'],
+      rate: 0.85,
+      voiceURI: null,
+      showThaiPhonetic: true,
+      showPinyin: true,
+      autoPlay: true,
+      micEnabled: true
+    }
+  };
+
+  let S = null;
+
+  function today() {
+    const d = new Date();
+    return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
+  }
+
+  function load() {
+    try {
+      const raw = localStorage.getItem(KEY);
+      S = raw ? JSON.parse(raw) : null;
+    } catch (e) { S = null; }
+    if (!S || S.v !== 1) S = JSON.parse(JSON.stringify(DEFAULTS));
+    // เติมค่าตั้งต้นที่อาจหายไปจากเวอร์ชันเก่า
+    Object.keys(DEFAULTS.settings).forEach(function (k) {
+      if (S.settings[k] === undefined) S.settings[k] = DEFAULTS.settings[k];
+    });
+    if (!S.stats.days) S.stats.days = {};
+    return S;
+  }
+
+  function save() {
+    try { localStorage.setItem(KEY, JSON.stringify(S)); } catch (e) {}
+  }
+
+  function card(id) {
+    if (!S.cards[id]) S.cards[id] = { ivl: 0, ease: 2.5, due: 0, reps: 0, lapses: 0, last: 0, spoken: 0 };
+    return S.cards[id];
+  }
+
+  function isNew(id) { return !S.cards[id] || S.cards[id].reps === 0; }
+
+  /* grade: 0 = ลืม, 1 = จำได้, 2 = ง่าย */
+  function grade(id, g) {
+    const c = card(id);
+    const now = Date.now();
+    if (g === 0) {
+      c.lapses++;
+      c.ease = Math.max(1.3, c.ease - 0.2);
+      c.ivl = 0;
+      c.due = now + 8 * 60000;           // กลับมาใน 8 นาที (ในรอบเดียวกัน)
+    } else if (g === 1) {
+      if (c.reps === 0) c.ivl = 1;
+      else if (c.ivl <= 1) c.ivl = 3;
+      else c.ivl = Math.round(c.ivl * c.ease);
+      c.due = now + c.ivl * DAY;
+    } else {
+      c.ease = Math.min(2.8, c.ease + 0.1);
+      c.ivl = c.reps === 0 ? 4 : Math.max(4, Math.round(c.ivl * c.ease * 1.3));
+      c.due = now + c.ivl * DAY;
+    }
+    c.reps++;
+    c.last = now;
+    bump(g === 0 ? 'again' : 'ok');
+    save();
+    return c;
+  }
+
+  function markSpoken(id, ok) {
+    const c = card(id);
+    if (ok) c.spoken++;
+    bump('spoke');
+    save();
+  }
+
+  function bump(kind) {
+    const d = today();
+    if (!S.stats.days[d]) S.stats.days[d] = { rev: 0, again: 0, spoke: 0, newDone: 0, sec: 0 };
+    const t = S.stats.days[d];
+    if (kind === 'ok') t.rev++;
+    else if (kind === 'again') { t.rev++; t.again++; }
+    else if (kind === 'spoke') t.spoke++;
+    else if (kind === 'new') t.newDone++;
+  }
+
+  function touchStreak() {
+    const d = today();
+    if (S.stats.lastDay === d) return;
+    const y = new Date(Date.now() - DAY);
+    const ys = y.getFullYear() + '-' + String(y.getMonth() + 1).padStart(2, '0') + '-' + String(y.getDate()).padStart(2, '0');
+    S.stats.streak = (S.stats.lastDay === ys) ? S.stats.streak + 1 : 1;
+    S.stats.best = Math.max(S.stats.best || 0, S.stats.streak);
+    S.stats.lastDay = d;
+    save();
+  }
+
+  function pool() {
+    const on = S.settings.decks;
+    return window.DATA.all.filter(function (x) { return on.indexOf(x.deck) >= 0; });
+  }
+
+  function dueList() {
+    const now = Date.now();
+    return pool().filter(function (x) {
+      const c = S.cards[x.i];
+      return c && c.reps > 0 && c.due <= now;
+    }).sort(function (a, b) { return S.cards[a.i].due - S.cards[b.i].due; });
+  }
+
+  function newList(limit) {
+    const d = today();
+    const doneToday = (S.stats.days[d] && S.stats.days[d].newDone) || 0;
+    const room = Math.max(0, (limit === undefined ? S.settings.newPerDay : limit) - doneToday);
+    if (!room) return [];
+    // เรียงจากง่ายไปยาก แล้วเรียงตามลำดับในคลัง เพื่อให้เรียนเป็นหมวดต่อเนื่อง
+    return pool().filter(function (x) { return isNew(x.i); })
+      .sort(function (a, b) { return (a.l - b.l) || a.i.localeCompare(b.i); })
+      .slice(0, room);
+  }
+
+  /* สร้างแผนของวันนี้: สลับคำใหม่แทรกกับคำทวน เพื่อไม่ให้ล้าสมอง */
+  function buildSession() {
+    const rev = dueList().slice(0, 90);
+    const nw = newList();
+    const out = [];
+    let ri = 0, ni = 0;
+    while (ri < rev.length || ni < nw.length) {
+      for (let k = 0; k < 3 && ri < rev.length; k++) out.push({ item: rev[ri++], mode: 'review' });
+      if (ni < nw.length) out.push({ item: nw[ni++], mode: 'new' });
+    }
+    return out;
+  }
+
+  function counts() {
+    const p = pool();
+    let learned = 0, mature = 0;
+    p.forEach(function (x) {
+      const c = S.cards[x.i];
+      if (c && c.reps > 0) { learned++; if (c.ivl >= 21) mature++; }
+    });
+    return {
+      total: p.length,
+      learned: learned,
+      mature: mature,
+      due: dueList().length,
+      newAvail: newList().length,
+      todayNewDone: (S.stats.days[today()] && S.stats.days[today()].newDone) || 0
+    };
+  }
+
+  function noteNewSeen() { bump('new'); save(); }
+
+  function addSeconds(sec) {
+    const d = today();
+    if (!S.stats.days[d]) S.stats.days[d] = { rev: 0, again: 0, spoke: 0, newDone: 0, sec: 0 };
+    S.stats.days[d].sec += sec;
+    save();
+  }
+
+  function reset() { S = JSON.parse(JSON.stringify(DEFAULTS)); save(); }
+
+  function exportJSON() { return JSON.stringify(S); }
+  function importJSON(txt) {
+    const o = JSON.parse(txt);
+    if (!o || o.v !== 1) throw new Error('ไฟล์ไม่ถูกต้อง');
+    S = o; load(); save();
+  }
+
+  window.SRS = {
+    load: load, save: save, state: function () { return S; },
+    settings: function () { return S.settings; },
+    grade: grade, markSpoken: markSpoken, card: card, isNew: isNew,
+    buildSession: buildSession, counts: counts, dueList: dueList,
+    touchStreak: touchStreak, noteNewSeen: noteNewSeen, addSeconds: addSeconds,
+    today: today, reset: reset, exportJSON: exportJSON, importJSON: importJSON
+  };
+})();
+
+/* เสียงพูด (TTS) และการฟังเสียงคุณเพื่อให้คะแนน (ASR)
+   ทั้งสองอย่างใช้ของที่มีอยู่ในเบราว์เซอร์ ไม่ต้องต่อ API ไม่มีค่าใช้จ่าย */
+(function () {
+  let voices = [];
+  let chosen = null;
+
+  function refresh() {
+    try { voices = window.speechSynthesis.getVoices() || []; } catch (e) { voices = []; }
+    return voices;
+  }
+
+  function zhVoices() {
+    return refresh().filter(function (v) {
+      return /^zh/i.test(v.lang || '') || /chinese|中文|普通话|國語|国语/i.test(v.name || '');
+    });
+  }
+
+  function pick(uri) {
+    const list = zhVoices();
+    if (!list.length) { chosen = null; return null; }
+    if (uri) {
+      const hit = list.filter(function (v) { return v.voiceURI === uri; })[0];
+      if (hit) { chosen = hit; return hit; }
+    }
+    // ชอบ zh-CN (จีนกลางแผ่นดินใหญ่) มากกว่า zh-TW / zh-HK
+    const cn = list.filter(function (v) { return /zh[-_]?CN|Hans/i.test(v.lang + ' ' + v.name); });
+    chosen = cn[0] || list[0];
+    return chosen;
+  }
+
+  function ttsReady() { return zhVoices().length > 0; }
+
+  function speak(text, opt) {
+    opt = opt || {};
+    if (!('speechSynthesis' in window)) return false;
+    try {
+      window.speechSynthesis.cancel();
+      const u = new SpeechSynthesisUtterance(String(text).replace(/[（(].*?[)）]/g, ''));
+      const v = chosen || pick(opt.voiceURI);
+      if (v) u.voice = v;
+      u.lang = (v && v.lang) || 'zh-CN';
+      u.rate = opt.rate || 0.85;
+      u.pitch = 1;
+      if (opt.onend) u.onend = opt.onend;
+      window.speechSynthesis.speak(u);
+      return true;
+    } catch (e) { return false; }
+  }
+
+  function stop() { try { window.speechSynthesis.cancel(); } catch (e) {} }
+
+  /* ---------- การฟังเสียง (ASR) ---------- */
+  const SR = window.SpeechRecognition || window.webkitSpeechRecognition || null;
+  function asrSupported() { return !!SR; }
+
+  let rec = null;
+  function listen(cb) {
+    if (!SR) { cb({ ok: false, err: 'unsupported' }); return null; }
+    try { if (rec) rec.abort(); } catch (e) {}
+    rec = new SR();
+    rec.lang = 'zh-CN';
+    rec.interimResults = false;
+    rec.maxAlternatives = 5;
+    rec.continuous = false;
+    let done = false;
+    rec.onresult = function (ev) {
+      done = true;
+      const alts = [];
+      const r = ev.results[0];
+      for (let i = 0; i < r.length; i++) alts.push(r[i].transcript);
+      cb({ ok: true, alts: alts, text: alts[0] || '' });
+    };
+    rec.onerror = function (ev) {
+      if (done) return;
+      done = true;
+      cb({ ok: false, err: ev.error || 'error' });
+    };
+    rec.onend = function () { if (!done) { done = true; cb({ ok: false, err: 'no-speech' }); } };
+    try { rec.start(); } catch (e) { cb({ ok: false, err: 'start-failed' }); }
+    return rec;
+  }
+
+  function abort() { try { if (rec) rec.abort(); } catch (e) {} }
+
+  /* ---------- ให้คะแนนการออกเสียง ---------- */
+  function norm(s) {
+    return String(s || '')
+      .replace(/[\s　]/g, '')
+      .replace(/[，。！？、,.!?；;：:"'“”‘’（）()【】\[\]]/g, '')
+      .toLowerCase();
+  }
+
+  function lcs(a, b) {
+    const n = a.length, m = b.length;
+    if (!n || !m) return 0;
+    let prev = new Array(m + 1).fill(0), cur = new Array(m + 1).fill(0);
+    for (let i = 1; i <= n; i++) {
+      for (let j = 1; j <= m; j++) {
+        cur[j] = a[i - 1] === b[j - 1] ? prev[j - 1] + 1 : Math.max(prev[j], cur[j - 1]);
+      }
+      const t = prev; prev = cur; cur = t; cur.fill(0);
+    }
+    return prev[m];
+  }
+
+  /* คืนคะแนน 0–100 โดยเทียบกับตัวเลือกที่เครื่องได้ยินทั้งหมด แล้วเอาอันที่ดีที่สุด */
+  function score(target, alts) {
+    const t = norm(target);
+    if (!t) return { score: 0, best: '' };
+    let best = 0, bestText = '';
+    (alts || []).forEach(function (a) {
+      const h = norm(a);
+      if (!h) return;
+      const common = lcs(t, h);
+      const s = Math.round((2 * common / (t.length + h.length)) * 100);
+      if (s > best) { best = s; bestText = a; }
+    });
+    return { score: best, best: bestText };
+  }
+
+  function errMessage(code) {
+    switch (code) {
+      case 'not-allowed':
+      case 'service-not-allowed':
+        return 'เบราว์เซอร์ไม่อนุญาตให้ใช้ไมค์ — กดอนุญาตไมโครโฟนในการตั้งค่าเว็บไซต์';
+      case 'no-speech':
+        return 'ไม่ได้ยินเสียง ลองพูดดังขึ้นและใกล้ไมค์กว่านี้';
+      case 'network':
+        return 'การฟังเสียงต้องต่ออินเทอร์เน็ต (Chrome ส่งเสียงไปประมวลผลที่เซิร์ฟเวอร์) — ตอนออฟไลน์หรืออยู่ในจีนที่เข้า Google ไม่ได้ ให้ใช้ปุ่ม "ให้คะแนนเอง" แทน';
+      case 'unsupported':
+        return 'เบราว์เซอร์นี้ไม่รองรับการฟังเสียง — ลองใช้ Chrome (Android) หรือ Safari (iOS 16 ขึ้นไป)';
+      case 'aborted':
+        return 'ยกเลิกการฟัง';
+      default:
+        return 'ฟังไม่สำเร็จ ลองใหม่อีกครั้ง';
+    }
+  }
+
+  window.SPEECH = {
+    refresh: refresh, zhVoices: zhVoices, pick: pick, ttsReady: ttsReady,
+    speak: speak, stop: stop,
+    asrSupported: asrSupported, listen: listen, abort: abort,
+    score: score, norm: norm, errMessage: errMessage,
+    current: function () { return chosen; }
+  };
+
+  if ('speechSynthesis' in window) {
+    refresh();
+    window.speechSynthesis.onvoiceschanged = function () { refresh(); if (!chosen) pick(); };
+  }
+})();
+
+/* ตรรกะหลักของแอป */
+(function () {
+  'use strict';
+  const $ = function (s, r) { return (r || document).querySelector(s); };
+  const $$ = function (s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); };
+  const D = window.DATA, S = window.SRS, SP = window.SPEECH;
+
+  S.load();
+  let stack = ['home'];
+
+  /* ================= navigation ================= */
+  const FOCUS = ['study', 'speak', 'listen', 'dialogue'];
+  function show(name) {
+    $$('.screen').forEach(function (el) { el.classList.remove('active'); });
+    document.body.classList.toggle('focus', FOCUS.indexOf(name) >= 0);
+    const el = $('#s-' + name);
+    if (el) el.classList.add('active');
+    $$('#tabbar button').forEach(function (b) { b.classList.toggle('on', b.dataset.tab === name); });
+    window.scrollTo(0, 0);
+    SP.stop(); SP.abort();
+  }
+  function go(name) {
+    if (stack[stack.length - 1] !== name) stack.push(name);
+    render(name); show(name);
+  }
+  function back() {
+    stack.pop();
+    const t = stack[stack.length - 1] || 'home';
+    render(t); show(t);
+  }
+  function pushFocus(name) {
+    while (stack.length && FOCUS.indexOf(stack[stack.length - 1]) >= 0) stack.pop();
+    stack.push(name); show(name);
+  }
+
+  function render(name) {
+    if (name === 'home') renderHome();
+    else if (name === 'browse') renderBrowse();
+    else if (name === 'dialogues') renderDialogueList();
+    else if (name === 'stats') renderStats();
+    else if (name === 'settings') renderSettings();
+  }
+
+  document.addEventListener('click', function (e) {
+    const b = e.target.closest('[data-back]');
+    if (b) { back(); return; }
+    const t = e.target.closest('#tabbar button');
+    if (t) { stack = [t.dataset.tab]; go(t.dataset.tab); return; }
+    const q = e.target.closest('[data-go]');
+    if (q) {
+      const dest = q.dataset.go;
+      if (dest === 'speakdrill') startSpeak();
+      else if (dest === 'listen') startListen();
+      else go(dest);
+    }
+  });
+
+  let toastT = null;
+  function toast(msg, ms) {
+    const el = $('#toast');
+    el.textContent = msg; el.hidden = false;
+    clearTimeout(toastT);
+    toastT = setTimeout(function () { el.hidden = true; }, ms || 2600);
+  }
+
+  function esc(s) {
+    return String(s).replace(/[&<>"]/g, function (c) {
+      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c];
+    });
+  }
+  function zhSize(z) { return z.length <= 3 ? 'zh-xl' : (z.length <= 7 ? 'zh-l' : 'zh-m'); }
+  function say(text, slow) {
+    const st = S.settings();
+    SP.speak(text, { rate: slow ? 0.55 : st.rate, voiceURI: st.voiceURI });
+  }
+
+  /* ================= หน้าแรก ================= */
+  function renderHome() {
+    const c = S.counts(), st = S.state();
+    $('#streak-n').textContent = st.stats.streak || 0;
+
+    $('#plan-box').innerHTML =
+      '<div class="pill"><b>' + c.due + '</b><span>คำที่ถึงคิวทวน</span></div>' +
+      '<div class="pill"><b>' + c.newAvail + '</b><span>คำใหม่วันนี้</span></div>' +
+      '<div class="pill"><b>' + Math.round(estMin(c)) + '</b><span>นาที (ประมาณ)</span></div>';
+
+    const btn = $('#btn-start');
+    if (c.due + c.newAvail === 0) {
+      btn.textContent = 'วันนี้เรียนครบแล้ว — ฝึกพูดต่อ';
+      btn.onclick = startSpeak;
+    } else {
+      btn.textContent = 'เริ่มบทเรียนวันนี้';
+      btn.onclick = startStudy;
+    }
+
+    const warn = $('#tts-warn');
+    if (!SP.ttsReady()) {
+      warn.hidden = false;
+      warn.innerHTML = '⚠️ ยังไม่พบเสียงภาษาจีนในเครื่องนี้ — ไปที่ <b>ตั้งค่า</b> เพื่อดูวิธีเปิดใช้ (ไม่งั้นจะไม่ได้ยินเสียงอ่าน)';
+    } else warn.hidden = true;
+
+    const pct = c.total ? Math.round(c.learned / c.total * 100) : 0;
+    $('#progress-card').innerHTML =
+      '<div class="kv"><span>เรียนไปแล้ว</span><b>' + c.learned + ' / ' + c.total + ' คำ</b></div>' +
+      '<div class="bar"><i style="width:' + pct + '%"></i></div>' +
+      '<div class="kv"><span>จำได้แน่นแล้ว (ทวนห่างเกิน 21 วัน)</span><b>' + c.mature + '</b></div>' +
+      '<div class="kv"><span>สถิติต่อเนื่องสูงสุด</span><b>' + (st.stats.best || 0) + ' วัน</b></div>';
+
+    const ul = $('#unit-list');
+    let html = '';
+    ['core', 'daily', 'mat'].forEach(function (dk) {
+      if (S.settings().decks.indexOf(dk) < 0) return;
+      const info = D.decks[dk];
+      html += '<div class="deck-head">' + esc(info.name) + ' <small>' + esc(info.sub) + '</small></div>';
+      Object.keys(D.units).forEach(function (u) {
+        if (D.units[u].deck !== dk) return;
+        const items = D.byUnit(u);
+        const done = items.filter(function (x) { return !S.isNew(x.i); }).length;
+        const p = items.length ? Math.round(done / items.length * 100) : 0;
+        html += '<button class="unit" data-unit="' + u + '">' +
+          '<span class="u-ico">' + esc(D.units[u].icon) + '</span>' +
+          '<span class="u-mid"><b>' + esc(D.units[u].name) + '</b>' +
+          '<span>' + done + '/' + items.length + ' คำ</span>' +
+          '<span class="u-bar"><i style="width:' + p + '%"></i></span></span>' +
+          '<span style="color:var(--ink3)">›</span></button>';
+      });
+    });
+    ul.innerHTML = html;
+    $$('.unit', ul).forEach(function (b) {
+      b.onclick = function () { startStudy(D.byUnit(b.dataset.unit).slice(0, 30).map(function (x) { return { item: x, mode: S.isNew(x.i) ? 'new' : 'review' }; })); };
+    });
+  }
+
+  function estMin(c) {
+    // คำทวนราว 7 วิ/คำ, คำใหม่ราว 22 วิ/คำ
+    return (c.due * 7 + c.newAvail * 22) / 60;
+  }
+
+  /* ================= โหมดเรียน / ทวน ================= */
+  let ST = null;
+  function startStudy(custom) {
+    const queue = Array.isArray(custom) ? custom : S.buildSession();
+    if (!queue.length) { toast('ไม่มีคำที่ต้องเรียนตอนนี้ ลองฝึกพูดแทน'); return; }
+    ST = { q: queue, i: 0, revealed: false, total: queue.length, t0: Date.now() };
+    S.touchStreak();
+    pushFocus('study');
+    drawStudy();
+  }
+
+  function drawStudy() {
+    if (!ST) return;
+    if (ST.i >= ST.q.length) return finishStudy();
+    const cur = ST.q[ST.i], it = cur.item;
+    $('#study-count').textContent = (ST.i + 1) + '/' + ST.total;
+    $('#study-prog').style.width = (ST.i / ST.total * 100) + '%';
+
+    const stage = $('#study-stage'), act = $('#study-actions');
+    const isNewCard = cur.mode === 'new';
+    const set = S.settings();
+
+    if (isNewCard || ST.revealed) {
+      stage.innerHTML =
+        '<span class="badge ' + (isNewCard ? 'new' : 'rev') + '">' + (isNewCard ? '✨ คำใหม่' : '🔁 ทวน') + '</span>' +
+        '<div class="qcard">' +
+          '<div class="zh ' + zhSize(it.z) + '">' + esc(it.z) + '</div>' +
+          (set.showPinyin ? '<div class="py">' + esc(it.p) + '</div>' : '') +
+          (set.showThaiPhonetic ? '<div class="thp">' + esc(it.t) + '</div>' : '') +
+          '<div class="mean">' + esc(it.m) + '</div>' +
+          '<div class="unit-tag">' + esc(it.unitName) + '</div>' +
+          (it.n ? '<div class="note">' + esc(it.n) + '</div>' : '') +
+          '<div class="audio-row">' +
+            '<button class="abtn" id="a-play">🔊 ฟัง</button>' +
+            '<button class="abtn" id="a-slow">🐢 ช้า</button>' +
+            (SP.asrSupported() && set.micEnabled ? '<button class="abtn mic" id="a-mic">🎤 พูดตาม</button>' : '') +
+          '</div>' +
+          '<div id="mic-out"></div>' +
+        '</div>';
+
+      if (isNewCard) {
+        act.innerHTML = '<button class="btn solid" id="b-next">เข้าใจแล้ว · ต่อไป</button>';
+        $('#b-next').onclick = function () { S.noteNewSeen(); S.grade(it.i, 1); next(); };
+      } else {
+        act.innerHTML =
+          '<button class="btn g-again" data-g="0">ลืม<small>ทวนอีก 8 นาที</small></button>' +
+          '<button class="btn g-ok" data-g="1">จำได้<small>ทวนตามรอบ</small></button>' +
+          '<button class="btn g-easy" data-g="2">ง่ายมาก<small>ทิ้งช่วงยาว</small></button>';
+        $$('[data-g]', act).forEach(function (b) {
+          b.onclick = function () { S.grade(it.i, +b.dataset.g); next(); };
+        });
+      }
+      if (set.autoPlay) setTimeout(function () { say(it.z); }, 220);
+    } else {
+      // ด้านหน้า: เห็นความหมายไทย ต้องนึกภาษาจีนให้ออกก่อน
+      stage.innerHTML =
+        '<span class="badge rev">🔁 ทวน — พูดออกมาก่อนกดเฉลย</span>' +
+        '<div class="qcard">' +
+          '<div class="mean mean-big">' + esc(it.m) + '</div>' +
+          '<div class="unit-tag">' + esc(it.unitName) + '</div>' +
+          '<div class="audio-row">' +
+            (SP.asrSupported() && set.micEnabled ? '<button class="abtn mic" id="a-mic">🎤 พูดเลย</button>' : '') +
+          '</div>' +
+          '<div id="mic-out"></div>' +
+          '<div class="hint">พูดออกเสียงจริงๆ ก่อนกดเฉลย — การนึกออกเองคือสิ่งที่ทำให้จำได้</div>' +
+        '</div>';
+      act.innerHTML = '<button class="btn solid" id="b-reveal">เฉลย</button>';
+      $('#b-reveal').onclick = function () { ST.revealed = true; drawStudy(); };
+    }
+
+    const p = $('#a-play'); if (p) p.onclick = function () { say(it.z); };
+    const sl = $('#a-slow'); if (sl) sl.onclick = function () { say(it.z, true); };
+    const mc = $('#a-mic'); if (mc) mc.onclick = function () { doMic(it, mc, $('#mic-out'), function () { if (!ST.revealed && !isNewCard) { ST.revealed = true; drawStudy(); } }); };
+  }
+
+  function next() { ST.i++; ST.revealed = false; drawStudy(); }
+
+  function finishStudy() {
+    const sec = Math.round((Date.now() - ST.t0) / 1000);
+    S.addSeconds(sec);
+    const n = ST.total;
+    ST = null;
+    $('#study-prog').style.width = '100%';
+    $('#study-stage').innerHTML =
+      '<div class="done-wrap"><div class="big-emo">🎉</div>' +
+      '<h2>จบรอบแล้ว</h2>' +
+      '<p>' + n + ' คำ · ใช้เวลา ' + Math.round(sec / 60) + ' นาที<br>' +
+      'พรุ่งนี้ระบบจะเอาคำที่คุณเกือบลืมกลับมาให้อัตโนมัติ</p></div>';
+    $('#study-actions').innerHTML =
+      '<button class="btn solid" id="b-speak">ฝึกพูดต่อ 🎤</button>' +
+      '<button class="btn" data-back>กลับหน้าแรก</button>';
+    $('#b-speak').onclick = startSpeak;
+  }
+
+  /* ================= ไมค์ ================= */
+  function doMic(it, btn, out, onScored) {
+    if (!SP.asrSupported()) { out.innerHTML = '<div class="result bad">' + esc(SP.errMessage('unsupported')) + '</div>'; return; }
+    SP.stop();
+    btn.classList.add('listening');
+    btn.textContent = '🎤 กำลังฟัง…';
+    out.innerHTML = '';
+    SP.listen(function (r) {
+      btn.classList.remove('listening');
+      btn.textContent = '🎤 พูดอีกครั้ง';
+      if (!r.ok) {
+        out.innerHTML = '<div class="result mid">' + esc(SP.errMessage(r.err)) + '</div>' +
+          '<div class="audio-row"><button class="abtn" id="m-self">✅ ผมพูดถูก (ให้คะแนนเอง)</button></div>';
+        const sb = $('#m-self', out);
+        if (sb) sb.onclick = function () { S.markSpoken(it.i, true); out.innerHTML = '<div class="result good">บันทึกแล้ว</div>'; if (onScored) onScored(); };
+        return;
+      }
+      const sc = SP.score(it.z, r.alts);
+      const cls = sc.score >= 80 ? 'good' : (sc.score >= 55 ? 'mid' : 'bad');
+      const msg = sc.score >= 80 ? 'ตรงมาก คนจีนเข้าใจแน่นอน'
+                : sc.score >= 55 ? 'ใกล้แล้ว ลองฟังเสียงต้นแบบแล้วพูดตามอีกรอบ'
+                : 'ยังห่าง กดฟังแบบช้าแล้วเลียนเสียงทีละพยางค์';
+      out.innerHTML = '<div class="result ' + cls + '"><b>' + sc.score + '%</b> — ' + esc(msg) +
+        '<span class="heard">เครื่องได้ยิน: ' + esc(sc.best || r.text || '—') + '</span></div>';
+      S.markSpoken(it.i, sc.score >= 80);
+      if (onScored) onScored();
+    });
+  }
+
+  /* ================= ฝึกพูดรัว ================= */
+  let SPK = null;
+  function startSpeak() {
+    const set = S.settings();
+    let pool = D.all.filter(function (x) { return set.decks.indexOf(x.deck) >= 0 && !S.isNew(x.i); });
+    if (pool.length < 6) pool = D.all.filter(function (x) { return set.decks.indexOf(x.deck) >= 0 && x.l <= 2; });
+    // ให้น้ำหนักประโยคมากกว่าคำเดี่ยว เพราะเป้าหมายคือพูดได้ ไม่ใช่ท่องศัพท์
+    const sents = shuffle(pool.filter(function (x) { return x.k === 's'; }));
+    const words = shuffle(pool.filter(function (x) { return x.k === 'w'; }));
+    const q = sents.slice(0, 12).concat(words.slice(0, 6));
+    if (!q.length) { toast('ยังไม่มีคำให้ฝึก เริ่มบทเรียนก่อนนะครับ'); return; }
+    SPK = { q: shuffle(q), i: 0, ok: 0, t0: Date.now() };
+    pushFocus('speak');
+    drawSpeak();
+  }
+
+  function drawSpeak() {
+    if (!SPK) return;
+    if (SPK.i >= SPK.q.length) {
+      const sec = Math.round((Date.now() - SPK.t0) / 1000);
+      S.addSeconds(sec);
+      $('#speak-prog').style.width = '100%';
+      $('#speak-stage').innerHTML = '<div class="done-wrap"><div class="big-emo">🎤</div><h2>ฝึกพูดครบแล้ว</h2>' +
+        '<p>ผ่าน ' + SPK.ok + ' จาก ' + SPK.q.length + ' ประโยค</p></div>';
+      $('#speak-actions').innerHTML = '<button class="btn solid" id="b-again">ฝึกอีกรอบ</button><button class="btn" data-back>กลับ</button>';
+      $('#b-again').onclick = startSpeak;
+      SPK = null; return;
+    }
+    const it = SPK.q[SPK.i];
+    $('#speak-count').textContent = (SPK.i + 1) + '/' + SPK.q.length;
+    $('#speak-prog').style.width = (SPK.i / SPK.q.length * 100) + '%';
+    $('#speak-stage').innerHTML =
+      '<span class="badge">🎤 พูดประโยคนี้เป็นภาษาจีน</span>' +
+      '<div class="qcard">' +
+        '<div class="mean mean-big">' + esc(it.m) + '</div>' +
+        '<div class="unit-tag">' + esc(it.unitName) + '</div>' +
+        '<div class="audio-row"><button class="abtn mic" id="s-mic">🎤 พูดเลย</button>' +
+        '<button class="abtn" id="s-hint">👀 ขอดูคำใบ้</button></div>' +
+        '<div id="s-out"></div>' +
+      '</div>';
+    $('#s-hint').onclick = function () {
+      $('#s-out').innerHTML = '<div class="result mid"><span class="heard">' + esc(it.z) + '</span>' +
+        esc(it.p) + ' · ' + esc(it.t) + '</div>';
+      say(it.z, true);
+    };
+    $('#s-mic').onclick = function () {
+      doMic(it, $('#s-mic'), $('#s-out'), null);
+    };
+    $('#speak-actions').innerHTML =
+      '<button class="btn" id="s-skip">ข้าม</button>' +
+      '<button class="btn solid" id="s-next">ถัดไป</button>';
+    $('#s-skip').onclick = function () { SPK.i++; drawSpeak(); };
+    $('#s-next').onclick = function () {
+      const res = $('#s-out .result.good');
+      if (res) SPK.ok++;
+      SPK.i++; drawSpeak();
+    };
+  }
+
+  /* ================= ฟังจับใจความ ================= */
+  let LS = null;
+  function startListen() {
+    const set = S.settings();
+    let pool = D.all.filter(function (x) { return set.decks.indexOf(x.deck) >= 0 && !S.isNew(x.i); });
+    if (pool.length < 8) pool = D.all.filter(function (x) { return set.decks.indexOf(x.deck) >= 0 && x.l <= 2; });
+    if (pool.length < 4) { toast('ยังมีคำน้อยเกินไป เริ่มบทเรียนก่อนนะครับ'); return; }
+    LS = { q: shuffle(pool).slice(0, 14), i: 0, ok: 0, pool: pool, t0: Date.now() };
+    pushFocus('listen');
+    drawListen();
+  }
+
+  function drawListen() {
+    if (!LS) return;
+    if (LS.i >= LS.q.length) {
+      S.addSeconds(Math.round((Date.now() - LS.t0) / 1000));
+      $('#listen-prog').style.width = '100%';
+      $('#listen-stage').innerHTML = '<div class="done-wrap"><div class="big-emo">👂</div><h2>จบแบบฝึกฟัง</h2><p>ถูก ' + LS.ok + ' จาก ' + LS.q.length + '</p></div>';
+      $('#listen-actions').innerHTML = '<button class="btn solid" id="l-again">อีกรอบ</button><button class="btn" data-back>กลับ</button>';
+      $('#l-again').onclick = startListen;
+      LS = null; return;
+    }
+    const it = LS.q[LS.i];
+    const wrong = shuffle(LS.pool.filter(function (x) { return x.i !== it.i && x.m !== it.m; })).slice(0, 3);
+    const opts = shuffle([it].concat(wrong));
+    $('#listen-count').textContent = (LS.i + 1) + '/' + LS.q.length;
+    $('#listen-prog').style.width = (LS.i / LS.q.length * 100) + '%';
+    $('#listen-stage').innerHTML =
+      '<span class="badge">👂 ฟังแล้วเลือกความหมาย</span>' +
+      '<div class="qcard"><div class="audio-row">' +
+        '<button class="abtn" id="l-play">🔊 ฟังอีกครั้ง</button>' +
+        '<button class="abtn" id="l-slow">🐢 ช้า</button></div></div>' +
+      '<div class="choices">' + opts.map(function (o, k) {
+        return '<button class="choice" data-k="' + k + '">' + esc(o.m) + '</button>';
+      }).join('') + '</div>';
+    $('#listen-actions').innerHTML = '';
+    $('#l-play').onclick = function () { say(it.z); };
+    $('#l-slow').onclick = function () { say(it.z, true); };
+    setTimeout(function () { say(it.z); }, 260);
+
+    $$('#listen-stage .choice').forEach(function (b) {
+      b.onclick = function () {
+        const chosen = opts[+b.dataset.k];
+        const right = chosen.i === it.i;
+        if (right) LS.ok++;
+        $$('#listen-stage .choice').forEach(function (x, k) {
+          x.onclick = null;
+          if (opts[k].i === it.i) x.classList.add('right');
+          else if (x === b) x.classList.add('wrong');
+        });
+        $('#listen-stage .qcard').insertAdjacentHTML('beforeend',
+          '<div class="result ' + (right ? 'good' : 'bad') + '"><span class="heard">' + esc(it.z) + '</span>' +
+          esc(it.p) + ' · ' + esc(it.t) + '</div>');
+        $('#listen-actions').innerHTML = '<button class="btn solid" id="l-next">ถัดไป</button>';
+        $('#l-next').onclick = function () { LS.i++; drawListen(); };
+      };
+    });
+  }
+
+  /* ================= บทสนทนา ================= */
+  function renderDialogueList() {
+    const el = $('#dialogue-list');
+    el.innerHTML = '<div class="info-block">เล่นเป็น <b>ตัวคุณเอง</b> — ฟังอีกฝ่ายพูด แล้วพูดตอบกลับเป็นภาษาจีน นี่คือส่วนที่ใกล้ของจริงที่สุดในแอปนี้</div>' +
+      D.dialogues.map(function (d) {
+        return '<button class="dlg-item" data-d="' + d.id + '"><b>' + esc(d.title) + '</b>' +
+          '<span>' + d.lines.length + ' บรรทัด · ระดับ ' + d.lvl + ' · ' + (d.deck === 'mat' ? 'ธุรกิจ' : 'ชีวิตประจำวัน') + '</span></button>';
+      }).join('');
+    $$('.dlg-item', el).forEach(function (b) {
+      b.onclick = function () { openDialogue(b.dataset.d); };
+    });
+  }
+
+  let DG = null;
+  function openDialogue(id) {
+    const d = D.dialogues.filter(function (x) { return x.id === id; })[0];
+    if (!d) return;
+    DG = { d: d, i: 0 };
+    $('#dlg-title').textContent = d.title;
+    pushFocus('dialogue');
+    drawDialogue();
+  }
+
+  function drawDialogue() {
+    const d = DG.d;
+    $('#dlg-body').innerHTML = d.lines.map(function (L, k) {
+      const mine = L.w === 'y';
+      const hidden = k > DG.i;
+      const masked = mine && k === DG.i;
+      return '<div class="line ' + (mine ? 'you' : 'them') + (hidden ? ' dim' : '') + '" data-k="' + k + '">' +
+        '<span class="who">' + (mine ? '🙋' : '🧑‍🏭') + '</span>' +
+        '<span class="bub">' +
+          (hidden ? '<span class="z">· · ·</span>' :
+            (masked ? '<span class="m" style="color:inherit">' + esc(L.m) + '</span><span class="say">🎤 พูดประโยคนี้เป็นภาษาจีน</span>'
+              : '<span class="z">' + esc(L.z) + '</span><span class="py">' + esc(L.p) + '</span>' +
+                '<span class="tp">' + esc(L.t) + '</span><span class="m">' + esc(L.m) + '</span>')) +
+        '</span></div>';
+    }).join('') + '<div id="dlg-out"></div><div class="foot-space"></div>';
+
+    const cur = d.lines[DG.i];
+    const act = $('#dlg-actions');
+    if (!cur) {
+      act.innerHTML = '<button class="btn solid" id="dg-restart">เล่นอีกรอบ</button><button class="btn" data-back>กลับ</button>';
+      $('#dg-restart').onclick = function () { DG.i = 0; drawDialogue(); };
+      return;
+    }
+    if (cur.w === 'y') {
+      act.innerHTML =
+        (SP.asrSupported() && S.settings().micEnabled ? '<button class="btn solid" id="dg-mic">🎤 พูด</button>' : '') +
+        '<button class="btn" id="dg-hint">คำใบ้</button>' +
+        '<button class="btn" id="dg-skip">ข้าม</button>';
+      const m = $('#dg-mic');
+      if (m) m.onclick = function () {
+        doMic({ i: 'dlg-' + d.id + '-' + DG.i, z: cur.z }, m, $('#dlg-out'), null);
+      };
+      $('#dg-hint').onclick = function () {
+        $('#dlg-out').innerHTML = '<div class="result mid"><span class="heard">' + esc(cur.z) + '</span>' + esc(cur.p) + ' · ' + esc(cur.t) + '</div>';
+        say(cur.z, true);
+      };
+      $('#dg-skip').onclick = function () { DG.i++; drawDialogue(); scrollBottom(); };
+    } else {
+      act.innerHTML = '<button class="btn" id="dg-replay">🔊 ฟังซ้ำ</button><button class="btn solid" id="dg-go">ต่อไป</button>';
+      $('#dg-replay').onclick = function () { say(cur.z); };
+      $('#dg-go').onclick = function () { DG.i++; drawDialogue(); scrollBottom(); };
+      setTimeout(function () { say(cur.z); }, 260);
+    }
+    scrollBottom();
+  }
+  function scrollBottom() {
+    setTimeout(function () {
+      const box = $('#s-dialogue .pad');
+      if (box) box.scrollTop = box.scrollHeight;
+    }, 60);
+  }
+
+  /* ================= คลังคำ ================= */
+  let bFilter = 'all';
+  function renderBrowse() {
+    const chips = $('#deck-chips');
+    const list = [['all', 'ทั้งหมด'], ['core', 'ชุดแกน'], ['daily', 'ชีวิตประจำวัน'], ['mat', 'วัสดุ/ธุรกิจ'], ['s', 'เฉพาะประโยค'], ['star', 'ที่ยังไม่แม่น']];
+    chips.innerHTML = list.map(function (c) {
+      return '<button class="chip' + (bFilter === c[0] ? ' on' : '') + '" data-f="' + c[0] + '">' + esc(c[1]) + '</button>';
+    }).join('');
+    $$('.chip', chips).forEach(function (b) {
+      b.onclick = function () { bFilter = b.dataset.f; renderBrowse(); };
+    });
+    drawBrowseList();
+  }
+
+  function drawBrowseList() {
+    const q = ($('#q').value || '').trim().toLowerCase();
+    let items = D.all.slice();
+    if (bFilter === 'core' || bFilter === 'daily' || bFilter === 'mat') items = items.filter(function (x) { return x.deck === bFilter; });
+    else if (bFilter === 's') items = items.filter(function (x) { return x.k === 's'; });
+    else if (bFilter === 'star') items = items.filter(function (x) { const c = S.state().cards[x.i]; return c && c.lapses > 0 && c.ivl < 21; });
+    if (q) {
+      const nq = D.stripTones(q);
+      items = items.filter(function (x) { return x._s.indexOf(nq) >= 0; });
+    }
+    const el = $('#browse-list');
+    if (!items.length) { el.innerHTML = '<div class="empty">ไม่พบคำที่ค้นหา</div>'; return; }
+    el.innerHTML = '<div class="empty" style="padding:6px 0 12px">' + items.length + ' รายการ</div>' +
+      items.slice(0, 300).map(function (x) {
+        return '<div class="row"><div class="rl">' +
+          '<div class="rz">' + esc(x.z) + '</div>' +
+          '<div class="rp">' + esc(x.p) + '</div>' +
+          '<div class="rt">' + esc(x.t) + '</div>' +
+          '<div class="rm">' + esc(x.m) + '</div>' +
+          (x.n ? '<div class="rn">' + esc(x.n) + '</div>' : '') +
+          '</div><button class="rb" data-say="' + esc(x.z) + '">🔊</button></div>';
+      }).join('') + '<div class="foot-space"></div>';
+    $$('[data-say]', el).forEach(function (b) { b.onclick = function () { say(b.dataset.say); }; });
+  }
+  $('#q').addEventListener('input', drawBrowseList);
+
+  /* ================= สถิติ ================= */
+  function renderStats() {
+    const st = S.state(), c = S.counts();
+    const days = [];
+    for (let k = 27; k >= 0; k--) {
+      const d = new Date(Date.now() - k * 86400000);
+      const key = d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
+      days.push(st.stats.days[key] || null);
+    }
+    const totRev = Object.keys(st.stats.days).reduce(function (a, k) { return a + (st.stats.days[k].rev || 0); }, 0);
+    const totSec = Object.keys(st.stats.days).reduce(function (a, k) { return a + (st.stats.days[k].sec || 0); }, 0);
+    const totSpoke = Object.keys(st.stats.days).reduce(function (a, k) { return a + (st.stats.days[k].spoke || 0); }, 0);
+    const t = st.stats.days[S.today()] || { rev: 0, spoke: 0, sec: 0, newDone: 0 };
+
+    $('#stats-body').innerHTML =
+      '<div class="card"><div class="kv"><span>วันนี้</span><b>' + t.rev + ' คำ · ' + Math.round(t.sec / 60) + ' นาที</b></div>' +
+      '<div class="kv"><span>คำใหม่วันนี้</span><b>' + t.newDone + '</b></div>' +
+      '<div class="kv"><span>ฝึกพูดวันนี้</span><b>' + t.spoke + ' ครั้ง</b></div></div>' +
+      '<h3 class="sec-title">28 วันที่ผ่านมา</h3>' +
+      '<div class="card"><div class="hm">' + days.map(function (d) {
+        const n = d ? d.rev : 0;
+        const lv = n === 0 ? '' : n < 15 ? 'l1' : n < 40 ? 'l2' : n < 80 ? 'l3' : 'l4';
+        return '<i class="' + lv + '" title="' + n + '"></i>';
+      }).join('') + '</div></div>' +
+      '<h3 class="sec-title">รวมทั้งหมด</h3>' +
+      '<div class="card">' +
+      '<div class="kv"><span>ทวนไปแล้ว</span><b>' + totRev + ' ครั้ง</b></div>' +
+      '<div class="kv"><span>ฝึกพูด</span><b>' + totSpoke + ' ครั้ง</b></div>' +
+      '<div class="kv"><span>เวลาเรียนสะสม</span><b>' + Math.round(totSec / 60) + ' นาที</b></div>' +
+      '<div class="kv"><span>คำที่เรียนแล้ว</span><b>' + c.learned + ' / ' + c.total + '</b></div>' +
+      '<div class="kv"><span>จำแน่นแล้ว</span><b>' + c.mature + '</b></div></div>' +
+      '<div class="foot-space"></div>';
+  }
+
+  /* ================= ตั้งค่า ================= */
+  function renderSettings() {
+    const set = S.settings();
+    const voices = SP.zhVoices();
+    const el = $('#settings-body');
+    el.innerHTML =
+      '<div class="set-row"><div class="sl"><b>คำใหม่ต่อวัน</b><small>12 คำ ≈ 30 นาที เมื่อรวมการทวน ถ้ารู้สึกหนักให้ลดลง อย่าฝืน</small></div>' +
+        '<input type="number" id="st-new" min="0" max="40" value="' + set.newPerDay + '"></div>' +
+
+      '<div class="set-row"><div class="sl"><b>ความเร็วเสียง</b><small>0.85 คือความเร็วที่ฟังทันแต่ยังเป็นธรรมชาติ</small></div>' +
+        '<select id="st-rate">' + [0.6, 0.7, 0.8, 0.85, 0.9, 1.0].map(function (r) {
+          return '<option value="' + r + '"' + (Math.abs(r - set.rate) < 0.001 ? ' selected' : '') + '>' + r + '×</option>';
+        }).join('') + '</select></div>' +
+
+      '<div class="set-row"><div class="sl"><b>เสียงพูด</b><small>' +
+        (voices.length ? 'พบเสียงจีน ' + voices.length + ' เสียงในเครื่องนี้' : 'ยังไม่พบเสียงภาษาจีน — ดูวิธีแก้ด้านล่าง') +
+        '</small></div><select id="st-voice"' + (voices.length ? '' : ' disabled') + '>' +
+        voices.map(function (v) {
+          return '<option value="' + esc(v.voiceURI) + '"' + (set.voiceURI === v.voiceURI ? ' selected' : '') + '>' + esc(v.name) + '</option>';
+        }).join('') + '</select></div>' +
+
+      '<div class="set-row"><div class="sl"><b>แสดงพินอิน</b><small>ตัวสะกดสากล ใช้พิมพ์จีนในมือถือได้ด้วย</small></div>' +
+        '<button class="sw' + (set.showPinyin ? ' on' : '') + '" data-t="showPinyin"></button></div>' +
+
+      '<div class="set-row"><div class="sl"><b>แสดงคำอ่านไทย</b><small>อ่านง่ายกว่า แต่ถ้าอยากพูดให้ตรงจริงๆ แนะนำให้ปิดหลังผ่านไปสัก 2 เดือน</small></div>' +
+        '<button class="sw' + (set.showThaiPhonetic ? ' on' : '') + '" data-t="showThaiPhonetic"></button></div>' +
+
+      '<div class="set-row"><div class="sl"><b>เล่นเสียงอัตโนมัติ</b><small>ได้ยินทุกคำโดยไม่ต้องกด</small></div>' +
+        '<button class="sw' + (set.autoPlay ? ' on' : '') + '" data-t="autoPlay"></button></div>' +
+
+      '<div class="set-row"><div class="sl"><b>ใช้ไมโครโฟนให้คะแนน</b><small>' +
+        (SP.asrSupported() ? 'เบราว์เซอร์นี้รองรับ' : 'เบราว์เซอร์นี้ไม่รองรับ') + '</small></div>' +
+        '<button class="sw' + (set.micEnabled ? ' on' : '') + '" data-t="micEnabled"></button></div>' +
+
+      '<h3 class="sec-title">ชุดที่กำลังเรียน</h3>' +
+      ['core', 'daily', 'mat'].map(function (dk) {
+        return '<div class="set-row"><div class="sl"><b>' + esc(D.decks[dk].name) + '</b><small>' + esc(D.decks[dk].sub) + '</small></div>' +
+          '<button class="sw' + (set.decks.indexOf(dk) >= 0 ? ' on' : '') + '" data-deck="' + dk + '"></button></div>';
+      }).join('') +
+
+      '<h3 class="sec-title">เรื่องที่ควรรู้</h3>' +
+      '<div class="info-block"><b>คำอ่านไทยในแอปนี้ใช้กติกา:</b><br>' +
+      'เสียง 1 = เสียงสามัญ (มา) · เสียง 2 = จัตวา (หมา) · เสียง 3 = เอก (หม่า) · เสียง 4 = โท (ม่า/ม้า)<br>' +
+      'คำอ่านไทยเป็นแค่ตัวช่วยตอนเริ่มต้น — ภาษาไทยไม่มีเสียง zh/ch/sh/r และสระ ü จริงๆ ' +
+      'เพราะฉะนั้น<b>ให้ยึดเสียงที่ได้ยินจากปุ่ม 🔊 เป็นหลักเสมอ</b> ไม่ใช่ตัวหนังสือไทย</div>' +
+
+      '<div class="info-block"><b>ถ้าไม่ได้ยินเสียงจีน:</b><br>' +
+      '<u>iPhone/iPad</u> — ตั้งค่า › การช่วยการเข้าถึง › เนื้อหาที่พูด › เสียง › ภาษาจีน (แมนดาริน จีนแผ่นดินใหญ่) แล้วโหลดเสียงลงเครื่อง<br>' +
+      '<u>Android</u> — ตั้งค่า › ระบบ › ภาษาและการป้อนข้อมูล › เอาต์พุตแปลงข้อความเป็นคำพูด › ติดตั้งข้อมูลเสียง › 中文 (จีน) แล้วเลือกดาวน์โหลดเพื่อใช้ออฟไลน์<br>' +
+      'เมื่อโหลดเสียงลงเครื่องแล้ว จะพูดได้แม้ไม่มีเน็ต</div>' +
+
+      '<div class="info-block"><b>เรื่องไมโครโฟน:</b><br>' +
+      (SP.asrSupported()
+        ? 'เบราว์เซอร์นี้รองรับการให้คะแนนด้วยไมค์ แต่บน Chrome/Android <b>ต้องต่ออินเทอร์เน็ต</b> เพราะเสียงถูกส่งไปประมวลผลที่เซิร์ฟเวอร์ของ Google — ในจีนที่เข้า Google ไม่ได้ ให้กด “ให้คะแนนเอง” แทน<br>บน Safari/iOS ใช้ระบบของ Apple ซึ่งมักใช้งานได้ในจีน'
+        : 'หน้านี้เปิดอยู่ในกรอบที่ปิดกั้นไมโครโฟน ปุ่มให้คะแนนด้วยเสียงจึงใช้ไม่ได้ที่นี่ — ทุกโหมดยังเรียนได้ครบ แค่ให้คะแนนตัวเอง<br><b>อยากได้ไมค์ให้ครบ:</b> บันทึกไฟล์ HTML ที่ได้รับลงเครื่อง แล้วเปิดตรงๆ หรือเอาขึ้นเว็บโฮสต์ของคุณเอง') +
+      '<br>ส่วนเสียงอ่าน 🔊 และการเรียนทุกอย่างที่เหลือ ใช้ได้ตามปกติ</div>' +
+
+      '<h3 class="sec-title">ข้อมูลของคุณ</h3>' +
+      '<div class="set-row"><div class="sl"><b>สำรอง / กู้คืนข้อมูล</b><small>ย้ายความคืบหน้าไปเครื่องอื่นได้</small></div>' +
+        '<button class="chip" id="st-backup">เปิด</button></div>' +
+      '<div id="backup-panel" hidden>' +
+        '<textarea id="bk-text" spellcheck="false" placeholder="กด “ดึงข้อมูลของผม” เพื่อเอาข้อความสำรองออกมา — หรือวางข้อความที่เคยสำรองไว้ลงช่องนี้แล้วกด “กู้คืน”"></textarea>' +
+        '<div class="bk-row">' +
+          '<button class="chip" id="bk-fill">ดึงข้อมูลของผม</button>' +
+          '<button class="chip" id="bk-copy">คัดลอก</button>' +
+          '<button class="chip" id="bk-restore">กู้คืน</button>' +
+        '</div></div>' +
+      '<div class="set-row"><div class="sl"><b class="danger">ล้างความคืบหน้าทั้งหมด</b><small>เริ่มต้นใหม่ ย้อนกลับไม่ได้</small></div>' +
+        '<button class="chip danger" id="st-reset">ล้าง</button></div>' +
+      '<div class="foot-space"></div>';
+
+    $('#st-new').onchange = function () { set.newPerDay = Math.max(0, Math.min(40, +this.value || 0)); S.save(); toast('บันทึกแล้ว'); };
+    $('#st-rate').onchange = function () { set.rate = +this.value; S.save(); say('你好'); };
+    const vs = $('#st-voice');
+    if (vs && voices.length) vs.onchange = function () { set.voiceURI = this.value; SP.pick(this.value); S.save(); say('你好，很高兴认识你'); };
+
+    $$('[data-t]', el).forEach(function (b) {
+      b.onclick = function () { set[b.dataset.t] = !set[b.dataset.t]; S.save(); renderSettings(); };
+    });
+    $$('[data-deck]', el).forEach(function (b) {
+      b.onclick = function () {
+        const dk = b.dataset.deck, k = set.decks.indexOf(dk);
+        if (k >= 0) { if (set.decks.length === 1) { toast('ต้องเปิดอย่างน้อยหนึ่งชุด'); return; } set.decks.splice(k, 1); }
+        else set.decks.push(dk);
+        S.save(); renderSettings();
+      };
+    });
+    $('#st-backup').onclick = function () {
+      const p = $('#backup-panel');
+      p.hidden = !p.hidden;
+      this.textContent = p.hidden ? 'เปิด' : 'ปิด';
+    };
+    $('#bk-fill').onclick = function () { $('#bk-text').value = S.exportJSON(); toast('ดึงข้อมูลออกมาแล้ว — คัดลอกเก็บไว้ได้เลย'); };
+    $('#bk-copy').onclick = function () {
+      const ta = $('#bk-text');
+      if (!ta.value) ta.value = S.exportJSON();
+      const done = function () { toast('คัดลอกแล้ว วางเก็บไว้ในโน้ตได้เลย'); };
+      try {
+        navigator.clipboard.writeText(ta.value).then(done, function () { ta.select(); toast('เลือกข้อความให้แล้ว กดคัดลอกเองได้เลย'); });
+      } catch (e) { ta.select(); toast('เลือกข้อความให้แล้ว กดคัดลอกเองได้เลย'); }
+    };
+    $('#bk-restore').onclick = function () {
+      const txt = ($('#bk-text').value || '').trim();
+      if (!txt) { toast('วางข้อความสำรองลงช่องก่อนนะครับ'); return; }
+      try { S.importJSON(txt); toast('กู้คืนเรียบร้อย'); renderSettings(); } catch (e) { toast('ข้อความไม่ถูกต้อง ลองคัดลอกมาใหม่'); }
+    };
+    let armed = false, armT = null;
+    $('#st-reset').onclick = function () {
+      if (!armed) {
+        armed = true; this.textContent = 'กดอีกครั้งเพื่อยืนยัน';
+        const b = this;
+        armT = setTimeout(function () { armed = false; b.textContent = 'ล้าง'; }, 4000);
+        return;
+      }
+      clearTimeout(armT); S.reset(); toast('ล้างความคืบหน้าแล้ว'); renderSettings();
+    };
+  }
+
+  /* ================= utils ================= */
+  function shuffle(a) {
+    a = a.slice();
+    for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); const t = a[i]; a[i] = a[j]; a[j] = t; }
+    return a;
+  }
+
+  /* ================= boot ================= */
+  SP.pick(S.settings().voiceURI);
+  renderHome();
+  setTimeout(function () { if (SP.zhVoices().length) { SP.pick(S.settings().voiceURI); renderHome(); } }, 900);
+
+})();
+</script>
