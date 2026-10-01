@@ -110,3 +110,53 @@ html, body { overflow-x: hidden; }   /* เดสก์ท็อปเกิน 
 @media (max-width: 767px) {
   a[href^="tel:"] { display: inline-flex; align-items: center; min-height: 44px; font-weight: 600; }
 }
+
+
+/* [11] กันหน้าเว็บกระตุกตอนโหลด (วัดได้ CLS 0.506 ควรต่ำกว่า 0.1)
+   ------------------------------------------------------------
+   เว็บนี้กระตุกหนักกว่าหินอ่อน.com — เกินเกณฑ์ Google 5 เท่า
+   สาเหตุ: รูปไม่ได้บอกความกว้างความสูงไว้ล่วงหน้า (unsized-images)
+   พอรูปโหลดเสร็จก็ดันของข้างล่างลงไป ปุ่มสั่งซื้อเลื่อนหนีมือลูกค้า
+
+   aspect-ratio บอกสัดส่วนไว้ล่วงหน้า เบราว์เซอร์จองที่ไว้ก่อนรูปมาถึง
+   ถ้าธีมใช้สัดส่วนอื่น รูปจะถูก crop กลางภาพ ซึ่งยังดูดีอยู่ */
+
+/* รูปสินค้าในหน้ารายการและหน้าหมวด — จัตุรัส
+   สำคัญกับเว็บนี้เป็นพิเศษ เพราะพระบูชา 39 องค์อยู่ในหน้ารายการเดียวกัน */
+.productList img, .productLists img,
+.gadgetProduct img, .widgetProduct img {
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  width: 100%;
+  height: auto;
+}
+
+/* แบนเนอร์สไลด์หน้าแรก — 16:9 บนจอใหญ่ 4:3 บนมือถือ */
+.gadgetSlide img, .widgetSlide img,
+.slideshow img, .bannerSlide img {
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  width: 100%;
+  height: auto;
+}
+@media (max-width: 767px) {
+  .gadgetSlide img, .widgetSlide img,
+  .slideshow img, .bannerSlide img { aspect-ratio: 4 / 3; }
+}
+
+/* รูปใหญ่ในหน้าสินค้า — ใช้ contain ไม่ใช่ cover
+   พระบูชาและประติมากรรมต้องเห็นครบองค์ ห้าม crop หัวหรือฐาน */
+.productDetail .mainImg img,
+.productDetail .productImg img {
+  aspect-ratio: 1 / 1;
+  object-fit: contain;
+  width: 100%;
+  height: auto;
+}
+
+/* กันรูปในบทความดันข้อความ (บทความศิลาแลงแท้ vs เทียม มีรูปเทียบหลายรูป) */
+.articleDetail img, .contentDetail img {
+  max-width: 100%;
+  height: auto;
+}
+

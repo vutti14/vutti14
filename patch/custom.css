@@ -165,3 +165,52 @@ html, body { overflow-x: hidden; }
 @media (max-width: 767px) {
   a[href^="tel:"] { display: inline-flex; align-items: center; min-height: 44px; font-weight: 600; }
 }
+
+
+/* [11] กันหน้าเว็บกระตุกตอนโหลด (วัดได้ CLS 0.375 ควรต่ำกว่า 0.1)
+   ------------------------------------------------------------
+   สาเหตุ: รูปไม่ได้บอกความกว้างความสูงไว้ล่วงหน้า (unsized-images)
+   เบราว์เซอร์ไม่รู้จะเว้นที่เท่าไร พอรูปโหลดเสร็จก็ดันของข้างล่างลงไป
+   ลูกค้ากำลังจะกดปุ่มสั่งซื้อ แล้วปุ่มเลื่อนหนี กดโดนอย่างอื่น
+
+   aspect-ratio บอกสัดส่วนไว้ล่วงหน้า เบราว์เซอร์จองที่ไว้ก่อนรูปมาถึง
+   ตัวเลขสัดส่วนเป็นค่ามาตรฐานของ LnwShop ถ้าธีมคุณใช้สัดส่วนอื่น
+   รูปจะถูก crop กลางภาพ (object-fit: cover) ซึ่งยังดูดีอยู่ */
+
+/* รูปสินค้าในหน้ารายการและหน้าหมวด — จัตุรัส */
+.productList img, .productLists img,
+.gadgetProduct img, .widgetProduct img {
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  width: 100%;
+  height: auto;
+}
+
+/* แบนเนอร์สไลด์หน้าแรก — 16:9 บนจอใหญ่ 4:3 บนมือถือ */
+.gadgetSlide img, .widgetSlide img,
+.slideshow img, .bannerSlide img {
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  width: 100%;
+  height: auto;
+}
+@media (max-width: 767px) {
+  .gadgetSlide img, .widgetSlide img,
+  .slideshow img, .bannerSlide img { aspect-ratio: 4 / 3; }
+}
+
+/* รูปใหญ่ในหน้าสินค้า */
+.productDetail .mainImg img,
+.productDetail .productImg img {
+  aspect-ratio: 1 / 1;
+  object-fit: contain;
+  width: 100%;
+  height: auto;
+}
+
+/* กันรูปในบทความดันข้อความ */
+.articleDetail img, .contentDetail img {
+  max-width: 100%;
+  height: auto;
+}
+
