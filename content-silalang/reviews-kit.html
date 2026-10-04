@@ -1,0 +1,209 @@
+<!-- ============================================================
+     ชุดรีวิวลูกค้า — ใช้ได้ทั้ง silalang.com และ หินอ่อน.com
+     อ่าน docs/REVIEWS-AND-RATINGS.md ก่อนใช้
+
+     ⚠️ คำเตือนสำคัญที่สุดในไฟล์นี้:
+     ห้ามใส่ §B (aggregateRating) ลงในหน้าที่ไม่มีรีวิวจริงแสดงอยู่
+     Google ถือเป็นการปลอมข้อมูลโครงสร้าง และตัดสิทธิ์ rich result ได้ทั้งเว็บ
+     ============================================================ -->
+
+
+<!-- ============================================================
+     §A — กล่องแสดงรีวิวบนหน้าสินค้า
+     วางท้ายคำอธิบายสินค้า · ใส่เฉพาะรีวิวจริงของสินค้าชิ้นนั้น
+     ตัวเลขในหัวกล่องต้องตรงกับจำนวนรีวิวที่แสดงจริงข้างล่าง
+     ============================================================ -->
+<section class="rv">
+  <div class="rv__head">
+    <div class="rv__score">
+      <div class="rv__num">4.7</div>
+      <div class="rv__stars" aria-label="คะแนนเฉลี่ย 4.7 จาก 5">★★★★★</div>
+      <div class="rv__count">จากรีวิว 6 รายการ</div>
+    </div>
+    <div class="rv__bars">
+      <div class="rv__bar"><span>5 ดาว</span><i style="--w:67%"></i><b>4</b></div>
+      <div class="rv__bar"><span>4 ดาว</span><i style="--w:33%"></i><b>2</b></div>
+      <div class="rv__bar"><span>3 ดาว</span><i style="--w:0%"></i><b>0</b></div>
+      <div class="rv__bar"><span>2 ดาว</span><i style="--w:0%"></i><b>0</b></div>
+      <div class="rv__bar"><span>1 ดาว</span><i style="--w:0%"></i><b>0</b></div>
+    </div>
+  </div>
+
+  <!-- ตัวอย่างรีวิว — แทนที่ด้วยข้อความจริงจากลูกค้า ห้ามแต่งขึ้นเอง -->
+  <article class="rv__item">
+    <div class="rv__meta">
+      <strong class="rv__who">คุณสมชาย</strong>
+      <span class="rv__where">กำแพงเพชร</span>
+      <span class="rv__stars rv__stars--sm">★★★★★</span>
+      <time datetime="2026-07-14">14 ก.ค. 2026</time>
+    </div>
+    <p class="rv__text">
+      สั่ง 800 ก้อนไปก่อกำแพงรั้ว ของมาครบตามนัด ก้อนแตกมา 3 ก้อน ทางร้านส่งชดเชยให้เลยไม่ต้องทวง
+      สีแต่ละก้อนไม่เหมือนกันซึ่งตอนแรกกังวล แต่พอก่อขึ้นแล้วสวยกว่าที่คิด
+    </p>
+    <div class="rv__photos">
+      <img src="URL_รูปที่ลูกค้าส่งมา" alt="กำแพงรั้วก่อด้วยศิลาแลง 20x40 ซม. ที่ลูกค้าติดตั้งเสร็จแล้ว" loading="lazy" width="160" height="160">
+    </div>
+  </article>
+
+  <article class="rv__item">
+    <div class="rv__meta">
+      <strong class="rv__who">คุณวรรณา</strong>
+      <span class="rv__where">นครสวรรค์</span>
+      <span class="rv__stars rv__stars--sm">★★★★☆</span>
+      <time datetime="2026-06-02">2 มิ.ย. 2026</time>
+    </div>
+    <p class="rv__text">
+      หินสวยดีค่ะ ตรงตามรูป แต่ส่งช้ากว่าที่นัดไว้ 4 วันเพราะฝนตกที่เหมือง
+      ทางร้านโทรมาบอกล่วงหน้าก็โอเค ถ้าใครรีบควรเผื่อเวลาไว้หน่อย
+    </p>
+  </article>
+
+  <!-- ⚠️ รีวิว 4 ดาวข้างบนคือตัวอย่างว่าทำไมถึงควรเก็บรีวิวที่ไม่ใช่ 5 ดาวไว้ด้วย
+       ร้านที่มีแต่ 5 ดาวทุกอันดูปลอมกว่าร้านที่ 4.7 แล้วมีข้อติปนอยู่บ้าง -->
+
+  <div class="rv__ask">
+    <p><strong>เคยสั่งของกับเราแล้วใช่ไหม</strong> ช่วยเขียนรีวิวให้หน่อยได้ไหมครับ ใช้เวลาไม่ถึงนาที</p>
+    <a class="rv__btn" href="URL_ลิงก์รีวิว_GOOGLE">เขียนรีวิวบน Google</a>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     §B — Product schema + aggregateRating + Review
+     ⚠️ ใส่ได้เฉพาะหน้าที่มีรีวิวจริงแสดงอยู่ตาม §A แล้วเท่านั้น
+     ⚠️ ค่า ratingValue และ reviewCount ต้องตรงกับที่แสดงบนหน้าเป๊ะ
+     ⚠️ ห้ามคัดลอกบล็อกนี้ไปแปะทุกหน้าสินค้าโดยเปลี่ยนแค่ชื่อสินค้า
+     ============================================================ -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Product",
+  "name": "หินศิลาแลง ขนาด 20 × 40 เซนติเมตร",
+  "description": "ศิลาแลงแท้จากเหมืองศิลาเพชร กำแพงเพชร ผิวพรุนสีน้ำตาลส้มธรรมชาติ เหมาะกับงานก่อกำแพงรั้วและกรุผนัง",
+  "image": "https://cb.lnwfile.com/_/cb/_raw/wn/cr/gy.jpg",
+  "sku": "SILA-2040",
+  "brand": { "@type": "Brand", "name": "ศิลาเพชร" },
+  "offers": {
+    "@type": "Offer",
+    "url": "https://www.silalang.com/product/4/",
+    "priceCurrency": "THB",
+    "price": "35",
+    "availability": "https://schema.org/InStock",
+    "seller": { "@type": "Organization", "name": "ศิลาเพชร" }
+  },
+  "aggregateRating": {
+    "@type": "AggregateRating",
+    "ratingValue": "4.7",
+    "reviewCount": "6",
+    "bestRating": "5",
+    "worstRating": "1"
+  },
+  "review": [
+    {
+      "@type": "Review",
+      "author": { "@type": "Person", "name": "สมชาย" },
+      "datePublished": "2026-07-14",
+      "reviewRating": { "@type": "Rating", "ratingValue": "5", "bestRating": "5", "worstRating": "1" },
+      "reviewBody": "สั่ง 800 ก้อนไปก่อกำแพงรั้ว ของมาครบตามนัด ก้อนแตกมา 3 ก้อน ทางร้านส่งชดเชยให้เลยไม่ต้องทวง สีแต่ละก้อนไม่เหมือนกันซึ่งตอนแรกกังวล แต่พอก่อขึ้นแล้วสวยกว่าที่คิด"
+    },
+    {
+      "@type": "Review",
+      "author": { "@type": "Person", "name": "วรรณา" },
+      "datePublished": "2026-06-02",
+      "reviewRating": { "@type": "Rating", "ratingValue": "4", "bestRating": "5", "worstRating": "1" },
+      "reviewBody": "หินสวยดีค่ะ ตรงตามรูป แต่ส่งช้ากว่าที่นัดไว้ 4 วันเพราะฝนตกที่เหมือง ทางร้านโทรมาบอกล่วงหน้าก็โอเค ถ้าใครรีบควรเผื่อเวลาไว้หน่อย"
+    }
+  ]
+}
+</script>
+
+<!-- ============================================================
+     ❌ สิ่งที่ห้ามทำ — ตัวอย่างที่ผิด
+     อย่าเอา aggregateRating ไปใส่ใน LocalBusiness หรือ HomeAndConstructionBusiness
+     ที่อยู่ใน patch-silalang/head-snippet.html และ patch/head-snippet.html
+
+     ตั้งแต่ กันยายน 2019 Google ไม่แสดงดาวจาก self-serving reviews
+     บนหน้าประเภทธุรกิจอีกแล้ว ใส่ไปก็ไม่ขึ้น และอาจโดนเตือนใน Search Console
+     ดาวของธุรกิจให้ไปทำที่ Google Business Profile แทน (ฟรี และขึ้นแน่กว่า)
+     ============================================================ -->
+
+
+<!-- ============================================================
+     §C — กล่องขอรีวิว วางท้ายหน้า "ผลงานของเรา" หรือหน้าติดต่อ
+     ============================================================ -->
+<div class="rv-cta">
+  <h3>เคยใช้บริการเราแล้วใช่ไหมครับ</h3>
+  <p>
+    รีวิวของคุณช่วยคนที่กำลังตัดสินใจอยู่ได้มาก โดยเฉพาะถ้าแนบรูปงานที่ติดตั้งแล้วมาด้วย
+    เพราะคนอยากเห็นของจริงหน้างานมากกว่ารูปในเว็บ
+  </p>
+  <p class="rv-cta__honest">
+    ถ้ามีอะไรไม่พอใจ <strong>บอกเราตรง ๆ ก่อนได้เลยครับ</strong> โทร 091-515-2222
+    เราอยากแก้ให้มากกว่าอยากได้ดาว
+  </p>
+  <a class="rv__btn" href="URL_ลิงก์รีวิว_GOOGLE">เขียนรีวิวบน Google</a>
+</div>
+
+
+<!-- ============================================================
+     วิธีหาลิงก์รีวิว Google (URL_ลิงก์รีวิว_GOOGLE ข้างบน)
+     1. เข้า business.google.com แล้วเลือกโปรไฟล์ธุรกิจ
+     2. กด "ขอรีวิว" หรือ "Ask for reviews"
+     3. คัดลอกลิงก์สั้นที่ได้ (หน้าตาแบบ https://g.page/r/XXXXXXXX/review)
+     4. เอามาแทนที่ URL_ลิงก์รีวิว_GOOGLE ทั้ง 2 จุดในไฟล์นี้
+     ต้องทำแยกกันสองโปรไฟล์: ศิลาเพชร (กำแพงเพชร) และ SIAM STONE (ศรีนครินทร์)
+     ============================================================ -->
+
+
+<!-- ============================================================
+     CSS — เพิ่มต่อท้าย patch-silalang/custom.css และ patch/custom.css
+     ============================================================ -->
+<style>
+.rv { margin: 32px 0; padding: 22px; border: 1px solid #E4DAD0; border-radius: 10px; background: #fff; }
+.rv__head { display: flex; flex-wrap: wrap; gap: 26px; align-items: center;
+            padding-bottom: 18px; margin-bottom: 18px; border-bottom: 1px solid #EDE5DC; }
+.rv__score { text-align: center; min-width: 130px; }
+.rv__num { font-size: 40px; font-weight: 700; line-height: 1; color: #2E2A26; }
+.rv__stars { color: #E8A33D; font-size: 19px; letter-spacing: 2px; margin: 6px 0 4px; }
+.rv__stars--sm { font-size: 14px; letter-spacing: 1px; margin: 0; }
+.rv__count { font-size: 13.5px; color: #7A6E64; }
+.rv__bars { flex: 1; min-width: 220px; }
+.rv__bar { display: flex; align-items: center; gap: 10px; font-size: 13px; color: #7A6E64; margin-bottom: 5px; }
+.rv__bar span { flex: 0 0 42px; }
+.rv__bar b { flex: 0 0 20px; text-align: right; font-weight: 600; color: #4A423B; }
+.rv__bar i { flex: 1; height: 8px; border-radius: 4px; background: #EDE5DC; position: relative; }
+.rv__bar i::after { content: ""; position: absolute; inset: 0 auto 0 0; width: var(--w);
+                    border-radius: 4px; background: #E8A33D; }
+
+.rv__item { padding: 16px 0; border-bottom: 1px solid #F2ECE5; }
+.rv__item:last-of-type { border-bottom: none; }
+.rv__meta { display: flex; flex-wrap: wrap; align-items: center; gap: 10px;
+            font-size: 13.5px; color: #7A6E64; margin-bottom: 8px; }
+.rv__who { color: #2E2A26; font-size: 15px; }
+.rv__where { padding: 2px 9px; border-radius: 999px; background: #F3E3DE; color: #7A2A22; font-size: 12px; }
+.rv__text { margin: 0 0 10px; line-height: 1.8; color: #3A332D; font-size: 15px; }
+.rv__photos { display: flex; gap: 8px; flex-wrap: wrap; }
+.rv__photos img { width: 100px; height: 100px; object-fit: cover; border-radius: 6px; border: 1px solid #E4DAD0; }
+
+.rv__ask, .rv-cta { margin-top: 18px; padding: 18px; border-radius: 8px;
+                    background: #FBF7F2; border: 1px solid #E4DAD0; }
+.rv-cta { margin: 32px 0; }
+.rv-cta h3 { margin: 0 0 10px; font-size: 18px; color: #2E2A26; }
+.rv__ask p, .rv-cta p { margin: 0 0 12px; font-size: 15px; line-height: 1.75; color: #4A423B; }
+.rv-cta__honest { font-size: 14px !important; color: #6B5227 !important;
+                  background: #FDF3E7; border-left: 3px solid #C98A2E;
+                  padding: 10px 14px; border-radius: 6px; }
+.rv__btn { display: inline-flex; align-items: center; justify-content: center;
+           min-height: 48px; padding: 12px 24px; border-radius: 6px;
+           background: #A8322A; color: #fff; font-weight: 600; font-size: 15px; text-decoration: none; }
+.rv__btn:hover { background: #8C2921; color: #fff; }
+
+@media (max-width: 767px) {
+  .rv { padding: 16px; }
+  .rv__head { gap: 16px; }
+  .rv__num { font-size: 32px; }
+  .rv__btn { width: 100%; }
+  .rv__photos img { width: 78px; height: 78px; }
+}
+</style>
